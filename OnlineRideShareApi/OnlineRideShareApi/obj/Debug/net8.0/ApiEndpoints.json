@@ -92,7 +92,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.RolesController",
+    "ContainingType": "OnlineRideShareApi.Controllers.RolesController",
     "Method": "CreateRole",
     "RelativePath": "api/Roles",
     "HttpMethod": "POST",
@@ -108,7 +108,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "API.Controllers.RolesController",
+    "ContainingType": "OnlineRideShareApi.Controllers.RolesController",
     "Method": "GetRoles",
     "RelativePath": "api/Roles",
     "HttpMethod": "GET",
@@ -128,7 +128,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.RolesController",
+    "ContainingType": "OnlineRideShareApi.Controllers.RolesController",
     "Method": "DeleteRole",
     "RelativePath": "api/Roles/{id}",
     "HttpMethod": "DELETE",
@@ -144,7 +144,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "API.Controllers.RolesController",
+    "ContainingType": "OnlineRideShareApi.Controllers.RolesController",
     "Method": "AssignRole",
     "RelativePath": "api/Roles/assign",
     "HttpMethod": "POST",

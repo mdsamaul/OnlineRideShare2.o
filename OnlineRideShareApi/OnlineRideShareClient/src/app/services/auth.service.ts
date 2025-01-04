@@ -6,6 +6,7 @@ import { AuthResponse } from '../interfaces/auth-response';
 import { HttpClient } from '@angular/common/http';
 import { response } from 'express';
 import { jwtDecode } from 'jwt-decode';
+import { RegisterRequest } from '../interfaces/RegisterRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,18 @@ login(data:LoginRequest):Observable<AuthResponse>{
   })
  ))
 }
+
+register(data:RegisterRequest):Observable<AuthResponse>{
+  return this.http.post<AuthResponse>(`${this.apiUrl}account/register`,data).pipe((
+   map((response)=>{
+     if(response.isSuccess){
+       console.log('API Response:', response); 
+       localStorage.setItem(this.tokenKey, response.token);
+     }
+     return response;
+   })
+  ))
+ }
 
 getUserDetail = () => {
   const token = this.getToken();

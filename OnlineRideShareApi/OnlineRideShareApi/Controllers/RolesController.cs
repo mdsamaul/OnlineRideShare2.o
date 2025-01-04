@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using OnlineRideShareApi.Dtos;
 using OnlineRideShareApi.Models;
 
-namespace API.Controllers
+namespace OnlineRideShareApi.Controllers
 {
     [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
-    public class RolesController:ControllerBase
+    public class RolesController : ControllerBase
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<AppUser> _userManager;
@@ -18,52 +18,75 @@ namespace API.Controllers
         public RolesController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
             _roleManager = roleManager;
-            _userManager=userManager;
+            _userManager = userManager;
         }
 
 
         [HttpPost]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto createRoleDto)
         {
-            if(string.IsNullOrEmpty(createRoleDto.RoleName))
+            if (string.IsNullOrEmpty(createRoleDto.RoleName))
             {
                 return BadRequest("Role name is required");
             }
 
             var roleExist = await _roleManager.RoleExistsAsync(createRoleDto.RoleName);
 
-            if(roleExist)
+            if (roleExist)
             {
                 return BadRequest("Role already exist");
             }
 
             var roleResult = await _roleManager.CreateAsync(new IdentityRole(createRoleDto.RoleName));
 
-            if(roleResult.Succeeded)
+            if (roleResult.Succeeded)
             {
-                return Ok(new {message="Role Created successfully"});
+                return Ok(new { message = "Role Created successfully" });
             }
 
             return BadRequest("Role creation failed.");
-            
-        }
 
+        }
+        //[AllowAnonymous]
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<RoleResponseDto>>> GetRoles()
+        //{
+
+
+        //    // list of roles with total users in each role 
+
+        //    var roles = await _roleManager.Roles.Select(r => new RoleResponseDto
+        //    {
+        //        Id = r.Id,
+        //        Name = r.Name,
+        //        TotalUsers = _userManager.GetUsersInRoleAsync(r.Name!).Result.Count
+        //    }).ToListAsync();
+
+        //    return Ok(roles);
+        //}
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleResponseDto>>> GetRoles()
         {
-            
+            var roles = new List<RoleResponseDto>();
 
-            // list of roles with total users in each role 
+            var allRoles = await _roleManager.Roles.ToListAsync();
 
-            var roles = await _roleManager.Roles.Select(r=>new RoleResponseDto{
-                Id = r.Id,
-                Name = r.Name,
-                TotalUsers = _userManager.GetUsersInRoleAsync(r.Name!).Result.Count
-            }).ToListAsync();
+            foreach (var role in allRoles)
+            {
+                var totalUsers = await _userManager.GetUsersInRoleAsync(role.Name);
+
+                roles.Add(new RoleResponseDto
+                {
+                    Id = role.Id,
+                    Name = role.Name,
+                    TotalUsers = totalUsers.Count
+                });
+            }
 
             return Ok(roles);
         }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRole(string id)
@@ -72,20 +95,20 @@ namespace API.Controllers
 
             var role = await _roleManager.FindByIdAsync(id);
 
-            if(role is null)
+            if (role is null)
             {
                 return NotFound("Role not found.");
             }
 
             var result = await _roleManager.DeleteAsync(role);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
-                return Ok( new {message="Role deleted successfully."});
+                return Ok(new { message = "Role deleted successfully." });
             }
 
             return BadRequest("Role deletion failed.");
-            
+
         }
 
 
@@ -94,24 +117,24 @@ namespace API.Controllers
         {
             var user = await _userManager.FindByIdAsync(roleAssignDto.UserId);
 
-            if(user is null)
+            if (user is null)
             {
                 return NotFound("User not found.");
             }
 
-            var role =await _roleManager.FindByIdAsync(roleAssignDto.RoleId);
+            var role = await _roleManager.FindByIdAsync(roleAssignDto.RoleId);
 
-            if(role is null)
+            if (role is null)
 
             {
                 return NotFound("Role not found.");
             }
 
-            var result = await _userManager.AddToRoleAsync(user,role.Name!);
+            var result = await _userManager.AddToRoleAsync(user, role.Name!);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
-                return Ok(new {message="Role assigned successfully"});
+                return Ok(new { message = "Role assigned successfully" });
             }
 
             var error = result.Errors.FirstOrDefault();
@@ -120,4 +143,5 @@ namespace API.Controllers
 
         }
     }
+
 }
