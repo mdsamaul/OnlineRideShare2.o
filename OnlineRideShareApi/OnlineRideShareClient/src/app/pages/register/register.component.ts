@@ -95,10 +95,13 @@ export class RegisterComponent implements OnInit {
       },
       {
         validator: this.passwordMatchValidator,
-      }
+      },
+      
+
     );
 
     this.roles$ = this.roleService.getRoles();
+    
   }
 
   private passwordMatchValidator(

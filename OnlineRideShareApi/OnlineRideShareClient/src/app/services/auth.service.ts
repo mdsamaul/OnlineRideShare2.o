@@ -1,75 +1,94 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
+import { Injectable, OnInit } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { LoginRequest } from '../interfaces/login-request';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { AuthResponse } from '../interfaces/auth-response';
 import { HttpClient } from '@angular/common/http';
-import { response } from 'express';
 import { jwtDecode } from 'jwt-decode';
+import { UserDetail } from '../interfaces/user-detail';
 import { RegisterRequest } from '../interfaces/RegisterRequest';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
+  apiUrl: string = environment.apiUrl;
+  private tokenKey = 'token';
 
-apiUrl:string= environment.apiUrl;
-private tokenKey = 'token';
-  constructor(private http:HttpClient) { }
-login(data:LoginRequest):Observable<AuthResponse>{
- return this.http.post<AuthResponse>(`${this.apiUrl}account/login`,data).pipe((
-  map((response)=>{
-    if(response.isSuccess){
-      console.log('API Response:', response); 
-      localStorage.setItem(this.tokenKey, response.token);
-    }
-    return response;
-  })
- ))
-}
+  constructor(private http: HttpClient) {}
 
-register(data:RegisterRequest):Observable<AuthResponse>{
-  return this.http.post<AuthResponse>(`${this.apiUrl}account/register`,data).pipe((
-   map((response)=>{
-     if(response.isSuccess){
-       console.log('API Response:', response); 
-       localStorage.setItem(this.tokenKey, response.token);
-     }
-     return response;
-   })
-  ))
- }
+  login(data: LoginRequest): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}account/login`, data)
+      .pipe(
+        map((response) => {
+          if (response.isSuccess) {
+            localStorage.setItem(this.tokenKey, response.token);
+          }
+          return response;
+        })
+      );
+  }
 
-getUserDetail = () => {
-  const token = this.getToken();
-  if (!token) return null;
-  const decodedToken: any = jwtDecode(token);
-  const userDetail = {
-    id: decodedToken.nameid,
-    fullName: decodedToken.name,
-    email: decodedToken.email,
-    roles: decodedToken.role || [],
+  register(data: RegisterRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}account/register`, data);
+  }
+
+  getDetail = (): Observable<UserDetail> =>
+    this.http.get<UserDetail>(`${this.apiUrl}account/detail`);
+
+  getUserDetail = () => {
+    const token = this.getToken();
+    if (!token) return null;
+    const decodedToken: any = jwtDecode(token);
+    const userDetail = {
+      id: decodedToken.nameid,
+      fullName: decodedToken.name,
+      email: decodedToken.email,
+      roles: decodedToken.role || [],
+    };
+
+    return userDetail;
   };
-  return userDetail;
-};
 
-isLoggedIn = ():boolean=>{
-  const token = this.getToken();
-  if(!token) return false;
-  return !this.isTokenExpired();
-}
+  isLoggedIn = (): boolean => {
+    const token = this.getToken();
+    if (!token) return false;
+    return !this.isTokenExpired();
+  };
 
-private isTokenExpired() {
-  const token = this.getToken();
-  if(!token) return true;
-  const decoded = jwtDecode(token);
-  const isTokenExpired= Date.now() >= decoded['exp']! *1000;
-  if(isTokenExpired) this.logout();
-  return isTokenExpired;
-}
+  private isTokenExpired() {
+    const token = this.getToken();
+    if (!token) return true;
+    const decoded = jwtDecode(token);
+    const isTokenExpired = Date.now() >= decoded['exp']! * 1000;
+    if (isTokenExpired) this.logout();
+    return isTokenExpired;
+  }
 
-logout = ():void=>{
-localStorage.removeItem(this.tokenKey);
-}
-getToken = (): string | null => localStorage.getItem(this.tokenKey) || '';
+  getRoles = (): string[] | null => {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.role || null;
+  };
+
+
+  logout = (): void => {
+    localStorage.removeItem(this.tokenKey);
+  };
+
+  getAll = (): Observable<UserDetail[]> =>
+    this.http.get<UserDetail[]>(`${this.apiUrl}account`);
+
+  // getToken = (): string | null => localStorage.getItem(this.tokenKey) || '';
+
+  getToken(): string | null {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('token');
+    }
+    console.warn('localStorage is not available on the server side.');
+    return null;
+  }
 }
