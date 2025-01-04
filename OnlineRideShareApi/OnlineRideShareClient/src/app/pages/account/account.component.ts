@@ -15,13 +15,9 @@ export class AccountComponent implements OnInit{
   authService = inject(AuthService);
   accountDetail$ = this.authService.getDetail();
  
-  // this.yourService.getDetail().subscribe(
-  //   (data) => {
-  //     console.log('Fetched User Detail:', data);
-  //     this.userDetail = data; // Response থেকে Data Store করা হচ্ছে
-  //   },
+  
   ngOnInit(): void {
-   console.log(this.accountDetail$);
+  //  console.log(this.accountDetail$);
       
   }
 }

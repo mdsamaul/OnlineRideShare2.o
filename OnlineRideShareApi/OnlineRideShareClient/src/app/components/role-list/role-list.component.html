@@ -1,0 +1,28 @@
+<div class="border-slate-200 border-b p-3 flex gap-2 justify-between bg-gray-50 shadow-lg rounded-lg">
+    <table class="text-left w-full border border-gray-300 bg-white rounded-lg">
+      <thead class="bg-gray-200 text-gray-700">
+        <tr>
+          <th colspan="3" class="p-4 text-lg font-semibold text-center border-b border-gray-300">Role Info</th>
+        </tr>
+        <tr>
+          <th class="border border-gray-300 p-3 font-medium">Name</th>
+          <th class="border border-gray-300 p-3 font-medium">Users</th>
+          <th class="border border-gray-300 p-3 font-medium">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (role of torole | async ; track role.id) {
+          <tr class="border-b hover:bg-gray-100">
+            <td class="border border-gray-300 p-3 text-gray-600">{{role.name}}</td>
+            <td class="border border-gray-300 p-3 text-gray-600 text-center">{{role.totalUsers}}</td>
+            <td class="border border-gray-300 p-3 flex items-center gap-5">
+              <div class="w-full flex justify-center items-center">
+                <mat-icon (click)="delete(role.id)" class="cursor-pointer text-red-600 hover:text-red-800">delete</mat-icon>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  

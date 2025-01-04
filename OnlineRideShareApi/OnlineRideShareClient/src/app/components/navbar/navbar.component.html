@@ -28,11 +28,28 @@
                                 View Profile
                             </span>
                         </button>
+                        
+                        <button mat-menu-item [routerLink]="['/user']" *ngIf="userDetail?.roles.includes('Admin')" >
+                            <mat-icon>groups</mat-icon>
+                            <span>All User</span>
+                        </button>
+                        <button mat-menu-item [routerLink]="['/role']" *ngIf="userDetail?.roles.includes('Admin')">
+                            <mat-icon>settings</mat-icon>
+                            <span>Role</span>
+                        </button>
+                        <hr>
                         <button mat-menu-item (click)="logout()">
                             <mat-icon>logout</mat-icon>
                             <span>Logout</span>
                         </button>
                     </mat-menu>
+                   
+                    <!-- <a mat-button [routerLink]="['/user']" *ngIf="userDetail?.roles.includes('Admin')" mat-button>
+                        <mat-icon>group</mat-icon>
+                    </a>
+                    <a mat-button [routerLink]="['/role']" *ngIf="userDetail?.roles.includes('Admin')" mat-button>
+                        <mat-icon>settings</mat-icon> Role
+                    </a> -->
                 </div>
             </div>
         }@else {

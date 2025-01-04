@@ -9,6 +9,7 @@ import { authGuard } from './guards/auth.guard';
 import { UsersComponent } from './pages/users/users.component';
 import { roleGuard } from './guards/role.guard';
 import { SamaulComponent } from './pages/samaul/samaul.component';
+import { RoleComponent } from './pages/role/role.component';
 
 export const routes: Routes = [
     {path:'', component:HomeComponent},
@@ -30,5 +31,10 @@ export const routes: Routes = [
         roles:['User']
     }
    },
+   {path:'role', component:RoleComponent,
+    canActivate:[roleGuard],data:{
+        roles:['Admin']
+    }
+   }
 
 ];

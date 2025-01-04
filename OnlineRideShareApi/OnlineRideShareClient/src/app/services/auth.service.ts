@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { LoginRequest } from '../interfaces/login-request';
 import { Observable, map } from 'rxjs';
@@ -73,7 +73,6 @@ export class AuthService {
     const decodedToken: any = jwtDecode(token);
     return decodedToken.role || null;
   };
-
 
   logout = (): void => {
     localStorage.removeItem(this.tokenKey);
