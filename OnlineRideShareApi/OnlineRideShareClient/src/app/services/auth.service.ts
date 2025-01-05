@@ -15,7 +15,7 @@ import { ChangePasswordRequest } from '../interfaces/change-password-request';
 })
 export class AuthService {
   apiUrl: string = environment.apiUrl;
-  private tokenKey = 'token';
+  private userKey = 'user';
 
   constructor(private http: HttpClient) {}
 
@@ -25,7 +25,7 @@ export class AuthService {
       .pipe(
         map((response) => {
           if (response.isSuccess) {
-            localStorage.setItem(this.tokenKey, response.token);
+            localStorage.setItem(this.userKey, JSON.stringify(response));
           }
           return response;
         })
@@ -66,7 +66,8 @@ changePassword=(data:ChangePasswordRequest):Observable<AuthResponse> =>
   isLoggedIn = (): boolean => {
     const token = this.getToken();
     if (!token) return false;
-    return !this.isTokenExpired();
+    // return !this.isTokenExpired();
+    return true;
   };
 
   private isTokenExpired() {
@@ -74,8 +75,9 @@ changePassword=(data:ChangePasswordRequest):Observable<AuthResponse> =>
     if (!token) return true;
     const decoded = jwtDecode(token);
     const isTokenExpired = Date.now() >= decoded['exp']! * 1000;
-    if (isTokenExpired) this.logout();
-    return isTokenExpired;
+    // if (isTokenExpired) this.logout();
+    // return isTokenExpired;
+    return true;
   }
 
   getRoles = (): string[] | null => {
@@ -87,17 +89,36 @@ changePassword=(data:ChangePasswordRequest):Observable<AuthResponse> =>
   };
 
   logout = (): void => {
-    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.userKey);
   };
 
   getAll = (): Observable<UserDetail[]> =>
     this.http.get<UserDetail[]>(`${this.apiUrl}account`);
 
-  // getToken = (): string | null => localStorage.getItem(this.tokenKey) || '';
+
+  refreshToken = (data:{email:string; token:string; refreshToken:string}): Observable<AuthResponse> =>
+    this.http.post<AuthResponse>(`${this.apiUrl}account/refresh-token`,data);
+
+  // getToken = (): string | null => localStorage.getItem(this.userKey) || '';
 
   getToken(): string | null {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('token');
+      // return localStorage.getItem('token');
+      const user = localStorage.getItem(this.userKey);
+      if(!user) return null;
+      const userDetail : AuthResponse= JSON.parse(user);
+      return userDetail.token;
+    }
+    console.warn('localStorage is not available on the server side.');
+    return null;
+  }
+  getRefreshToken(): string | null {
+    if (typeof window !== 'undefined') {
+      // return localStorage.getItem('token');
+      const user = localStorage.getItem(this.userKey);
+      if(!user) return null;
+      const userDetail : AuthResponse= JSON.parse(user);
+      return userDetail.refreshToken;
     }
     console.warn('localStorage is not available on the server side.');
     return null;

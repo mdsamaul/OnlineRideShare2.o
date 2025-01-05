@@ -29,9 +29,10 @@ export class NavbarComponent {
     this.authService.logout();
     this.matSnackBar.open('Logout success', "Close",{
       duration:5000,
-      horizontalPosition:'center'
+      horizontalPosition:'center' 
     })
     this.router.navigate(['/login']);
+    location.reload();     
   }
  
 }

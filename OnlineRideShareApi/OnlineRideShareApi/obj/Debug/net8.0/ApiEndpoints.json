@@ -99,6 +99,32 @@
   },
   {
     "ContainingType": "OnlineRideShareApi.Controllers.AccountController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/Account/refresh-token",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tokenDto",
+        "Type": "OnlineRideShareApi.Dtos.TokenDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "OnlineRideShareApi.Dtos.AuthResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "OnlineRideShareApi.Controllers.AccountController",
     "Method": "Register",
     "RelativePath": "api/Account/register",
     "HttpMethod": "POST",
