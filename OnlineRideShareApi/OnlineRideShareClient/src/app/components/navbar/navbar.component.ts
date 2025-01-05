@@ -7,22 +7,24 @@ import { AuthService } from '../../services/auth.service';
 import {MatMenuModule} from '@angular/material/menu'
 import { CommonModule } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
+import {MatSidenavModule} from '@angular/material/sidenav'
+import {MatDividerModule} from '@angular/material/divider'
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MatToolbarModule,MatIconModule, MatSnackBarModule, MatButtonModule, MatIcon, RouterLink , MatMenuModule, CommonModule],
+  imports: [MatToolbarModule,MatIconModule, MatDividerModule ,MatButtonModule,MatSidenavModule, MatSnackBarModule, MatButtonModule, MatIcon, RouterLink , MatMenuModule, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  showFiller = false;
   authService = inject(AuthService);
   matSnackBar = inject(MatSnackBar);
   router = inject(Router);
   isLoggedIn (){
     return this.authService.isLoggedIn();
   }
-
+  drawer: any;
   logout=()=>{
     this.authService.logout();
     this.matSnackBar.open('Logout success', "Close",{
@@ -31,4 +33,5 @@ export class NavbarComponent {
     })
     this.router.navigate(['/login']);
   }
+ 
 }

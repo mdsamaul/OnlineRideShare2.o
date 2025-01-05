@@ -10,6 +10,9 @@ import { UsersComponent } from './pages/users/users.component';
 import { roleGuard } from './guards/role.guard';
 import { SamaulComponent } from './pages/samaul/samaul.component';
 import { RoleComponent } from './pages/role/role.component';
+import { ForgetPasswordComponent } from './pages/forget-password/forget-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
 export const routes: Routes = [
     {path:'', component:HomeComponent},
@@ -35,6 +38,9 @@ export const routes: Routes = [
     canActivate:[roleGuard],data:{
         roles:['Admin']
     }
-   }
+   },
+   {path:'forget-password', component:ForgetPasswordComponent},
+   {path:'reset-password', component:ResetPasswordComponent},
+   {path:'change-password', component:ChangePasswordComponent, canActivateChild:[authGuard]},
 
 ];

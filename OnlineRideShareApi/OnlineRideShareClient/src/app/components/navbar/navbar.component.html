@@ -1,65 +1,122 @@
-<div>
-    <mat-toolbar color="primary" style="padding: 10px 30px;">
-        <button mat-icon-button>
-            <mat-icon>menu</mat-icon>
-        </button>
-        <a routerLink="/">Online Ride Share</a>
-        <div class="w-full"></div>
-        @if (isLoggedIn()) {
-            <div *ngIf="authService.getUserDetail() as userDetail">
-                <div class="flex gap-5 items-center">
-                    <a [matMenuTriggerFor]="menu" class="flex gap-2 cursor-pointer items-center">
-                        <div class="bg-red-400 to-white font-bold shadow-md rounded-full w-5 h-5 p-5 flex justify-center items-center">
-                          a
-                        </div>
-                        <div class="text-white flex flex-col">
-                            <h1 class="p-0 m-0 font-medium"> 
-                                {{userDetail?.fullName}}
-                            </h1>
-                            <p class="p-0 m-0 font-medium text-xs">
-                                {{userDetail?.roles}}
-                            </p>
-                        </div>
-                    </a>
-                    <mat-menu #menu="matMenu">
-                        <button [routerLink]="['account',userDetail.id]" mat-menu-item>
-                            <mat-icon>account_circle</mat-icon>
-                            <span>
-                                View Profile
-                            </span>
-                        </button>
-                        
-                        <button mat-menu-item [routerLink]="['/user']" *ngIf="userDetail?.roles.includes('Admin')" >
-                            <mat-icon>groups</mat-icon>
-                            <span>All User</span>
-                        </button>
-                        <button mat-menu-item [routerLink]="['/role']" *ngIf="userDetail?.roles.includes('Admin')">
-                            <mat-icon>settings</mat-icon>
-                            <span>Role</span>
-                        </button>
-                        <hr>
-                        <button mat-menu-item (click)="logout()">
-                            <mat-icon>logout</mat-icon>
-                            <span>Logout</span>
-                        </button>
-                    </mat-menu>
-                   
-                    <!-- <a mat-button [routerLink]="['/user']" *ngIf="userDetail?.roles.includes('Admin')" mat-button>
-                        <mat-icon>group</mat-icon>
-                    </a>
-                    <a mat-button [routerLink]="['/role']" *ngIf="userDetail?.roles.includes('Admin')" mat-button>
-                        <mat-icon>settings</mat-icon> Role
-                    </a> -->
-                </div>
+    <!-- Toolbar -->
+    <mat-toolbar color="primary" class="flex justify-between items-center px-6 py-4 fixed top-0 left-0 z-50">
+      <!-- Sidenav Toggle Button -->
+      @if (isLoggedIn()) {
+ <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      }
+     
+      <!-- Logo -->
+      <a routerLink="/" class="text-white text-xl font-bold">Online Ride Share</a>
+      <!-- Spacer -->
+      <span class="flex-grow"></span>
+      <!-- User Section -->
+      @if (isLoggedIn()) {
+        <div *ngIf="authService.getUserDetail() as userDetail" class="flex items-center gap-4">
+          <a [matMenuTriggerFor]="menu" class="flex items-center gap-2 cursor-pointer">
+            <!-- User Icon -->
+            <div class="bg-red-400 text-white font-bold shadow-md rounded-full w-10 h-10 flex justify-center items-center">
+              {{ userDetail?.fullName.charAt(0) }}
             </div>
-        }@else {
-            <div>
-                <div class="flex gap-5 items-center">
-                    <a mat-button routerLink="/login">Login</a>
-                    <a mat-button routerLink="/register">Register</a>
-                </div>
+            <!-- User Info -->
+            <div class="text-white flex flex-col">
+              <h1 class="text-sm font-medium">{{ userDetail?.fullName }}</h1>
+              <p class="text-xs font-light">{{ userDetail?.roles }}</p>
             </div>
-        }
-        
+          </a>
+          <!-- User Menu -->
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="['account', userDetail.id]">
+              <mat-icon>account_circle</mat-icon>
+              <span>View Profile</span>
+            </button>
+            <button mat-menu-item [routerLink]="['/user']" *ngIf="userDetail?.roles.includes('Admin')">
+              <mat-icon>groups</mat-icon>
+              <span>All Users</span>
+            </button>
+            <button mat-menu-item [routerLink]="['/role']" *ngIf="userDetail?.roles.includes('Admin')">
+              <mat-icon>settings</mat-icon>
+              <span>Role</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item [routerLink]="['/change-password']" >
+              <mat-icon>password</mat-icon>
+              <span>Change Password</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+        </div>
+      }@else {
+        <!-- Login/Register Section -->
+        <div class="flex items-center gap-4">
+          <a mat-button routerLink="/login" class="text-white">Login</a>
+          <a mat-button routerLink="/register" class="text-white">Register</a>
+        </div>
+      }
     </mat-toolbar>
-</div>
+  
+    <!-- Sidenav Container -->
+    <mat-drawer-container class="h-screen">
+      <!-- Sidenav -->
+      <mat-drawer #drawer mode="side" class="w-64 bg-gray-900 text-whitem pt-20">
+        <div class="p-4">
+          <h2 class="font-bold mb-4 border rounded-full w-32 h-32 text-center flex justify-center items-center text-6xl">s</h2>
+          <ul class="space-y-3">
+            <li>
+              <a routerLink="/" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/rides" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                <mat-icon>commute</mat-icon>
+                <span>Rides</span>
+              </a>
+            </li>
+            <li>
+                <a routerLink="/bookings" 
+                   class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105">
+                  <mat-icon>book_online</mat-icon>
+                  <span>Bookings</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/bookings" 
+                   class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                  <mat-icon>book_online</mat-icon>
+                  <span>Bookings</span>
+                </a>
+              </li>
+              
+            <li>
+              <a routerLink="/profile" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                <mat-icon>person</mat-icon>
+                <span>Profile</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/about" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                <mat-icon>info</mat-icon>
+                <span>About</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </mat-drawer>
+  
+      <!-- Main Content -->
+      <!-- <mat-drawer-content>
+        <div class="p-6">
+          <h1 class="text-2xl font-bold mb-4">Welcome to Online Ride Share!</h1>
+          <p class="text-gray-600">Select a menu option to get started.</p>
+        </div>
+      </mat-drawer-content> -->
+    </mat-drawer-container>
+ 

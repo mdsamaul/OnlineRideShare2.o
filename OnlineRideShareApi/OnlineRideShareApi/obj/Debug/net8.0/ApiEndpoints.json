@@ -21,6 +21,22 @@
   },
   {
     "ContainingType": "OnlineRideShareApi.Controllers.AccountController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/Account/change-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "changePasswordDto",
+        "Type": "OnlineRideShareApi.Dtos.ChangePasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OnlineRideShareApi.Controllers.AccountController",
     "Method": "GetUserDetail",
     "RelativePath": "api/Account/detail",
     "HttpMethod": "GET",
@@ -38,6 +54,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "OnlineRideShareApi.Controllers.AccountController",
+    "Method": "ForgotPassowrd",
+    "RelativePath": "api/Account/forgot-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "forgotPasswordDto",
+        "Type": "OnlineRideShareApi.Dtos.ForgotPasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnlineRideShareApi.Controllers.AccountController",
@@ -90,6 +122,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "OnlineRideShareApi.Controllers.AccountController",
+    "Method": "ResetPassword",
+    "RelativePath": "api/Account/reset-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "resetPasswordDto",
+        "Type": "OnlineRideShareApi.Dtos.ResetPasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnlineRideShareApi.Controllers.RolesController",

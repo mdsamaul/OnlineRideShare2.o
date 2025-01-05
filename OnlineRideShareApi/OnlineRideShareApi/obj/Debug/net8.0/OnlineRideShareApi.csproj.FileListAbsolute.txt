@@ -171,3 +171,4 @@ D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\obj\Debug\net
 D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\obj\Debug\net8.0\OnlineRideShareApi.pdb
 D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\obj\Debug\net8.0\OnlineRideShareApi.genruntimeconfig.cache
 D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\obj\Debug\net8.0\ref\OnlineRideShareApi.dll
+D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net8.0\RestSharp.dll
