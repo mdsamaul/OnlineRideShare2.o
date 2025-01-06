@@ -1,0 +1,35 @@
+<div class="overflow-x-auto m-16 border">
+  <div class="flex justify-around items-center">
+    <div></div>
+    <h1 class="text-4xl font-bold py-4 text-center">All Companies</h1>
+    <a [routerLink]="['/company/form']" class="px-3 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md">Add Company</a>
+  </div>
+  <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+    <thead class="bg-gray-100 border-b">
+      <tr>
+        <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">ID</th>
+        <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Company Name</th>
+        <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Address</th>
+        <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Email</th>
+        <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Phone</th>
+        <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Loop through companies using *ngFor -->
+      <tr *ngFor="let company of companies$ | async; let i = index" class="border-b hover:bg-gray-50">
+        <td class="px-6 py-4 text-center text-sm text-gray-700">{{i + 1}}</td> <!-- Displaying index + 1 -->
+        <td class="px-6 py-4 text-center text-sm text-gray-700">{{company.companyName}}</td>
+        <td class="px-6 py-4 text-center text-sm text-gray-700">{{company.address}}</td>
+        <td class="px-6 py-4 text-center text-sm text-blue-500">
+          <a href="mailto:{{company.companyEmail}}">{{company.companyEmail}}</a>
+        </td>
+        <td class="px-6 py-4 text-center text-sm text-gray-700">{{company.companyPhoneNumber}}</td>
+        <td class="px-6 py-4 flex gap-4 justify-center items-center">
+          <a [routerLink]="['/company/', company.id]" class="px-3 py-1 text-white bg-yellow-500 hover:bg-yellow-600 rounded-md">Edit</a>
+          <button (click)="deleteCompany(company.id)" class="px-3 py-1 text-white bg-red-500 hover:bg-red-600 rounded-md">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

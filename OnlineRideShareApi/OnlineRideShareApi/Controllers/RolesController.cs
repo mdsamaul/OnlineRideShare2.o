@@ -75,7 +75,7 @@ namespace OnlineRideShareApi.Controllers
 
             foreach (var role in allRoles)
             {
-                var totalUsers = await _userManager.GetUsersInRoleAsync(role.Name);
+                var totalUsers = await _userManager.GetUsersInRoleAsync(role.Name!);
 
                 roles.Add(new RoleResponseDto
                 {

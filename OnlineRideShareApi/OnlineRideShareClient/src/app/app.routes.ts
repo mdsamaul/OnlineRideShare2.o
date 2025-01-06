@@ -8,11 +8,12 @@ import { AccountComponent } from './pages/account/account.component';
 import { authGuard } from './guards/auth.guard';
 import { UsersComponent } from './pages/users/users.component';
 import { roleGuard } from './guards/role.guard';
-import { SamaulComponent } from './pages/samaul/samaul.component';
 import { RoleComponent } from './pages/role/role.component';
 import { ForgetPasswordComponent } from './pages/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import { CompanyComponent } from './pages/company/company.component';
+import { CompanyFormComponent } from './components/company-form/company-form.component';
 
 export const routes: Routes = [
     {path:'', component:HomeComponent},
@@ -27,13 +28,7 @@ export const routes: Routes = [
         roles:['Admin']
     }
    },
-   {
-    path:'samaul', component:SamaulComponent,
-    canActivate:[roleGuard],
-    data:{
-        roles:['User']
-    }
-   },
+  
    {path:'role', component:RoleComponent,
     canActivate:[roleGuard],data:{
         roles:['Admin']
@@ -42,5 +37,13 @@ export const routes: Routes = [
    {path:'forget-password', component:ForgetPasswordComponent},
    {path:'reset-password', component:ResetPasswordComponent},
    {path:'change-password', component:ChangePasswordComponent, canActivateChild:[authGuard]},
-
+     {
+    path:'company', component:CompanyComponent,
+    canActivate:[authGuard],
+    // data:{
+    //     roles:['User']
+    // }
+   },
+   {path:'company/form', component:CompanyFormComponent , canActivate:[authGuard] },
+   {path:'company/:id', component:CompanyFormComponent , canActivate:[authGuard] },
 ];

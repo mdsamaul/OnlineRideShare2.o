@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OnlineRideShareApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b557201f6c6364f7cb99b9a38180bd2ec3893c14")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+771ae6e45bce55a160e8147c4260de8884a8160b")]
 [assembly: System.Reflection.AssemblyProductAttribute("OnlineRideShareApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OnlineRideShareApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

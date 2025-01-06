@@ -16,7 +16,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Role } from '../../interfaces/tole';
+import { Role } from '../../interfaces/role';
 import { validationError } from '../../interfaces/validation-error';
 
 @Component({

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Role } from '../interfaces/tole';
+import { Role } from '../interfaces/role';
 import { RoleCreateRequest } from '../interfaces/RoleCreateRequest';
 
 @Injectable({
