@@ -1,0 +1,133 @@
+<div class="container mx-auto max-w-2xl mt-10">
+    <mat-card class="p-6 shadow-lg">
+      <mat-card-header>
+        <mat-card-title class="text-2xl font-semibold text-gray-800">
+          {{isEdit ? 'Edit Driver' : 'Add Driver'}}
+        </mat-card-title>
+        <mat-card-subtitle class="text-sm text-gray-600">
+          Please fill in the details below
+        </mat-card-subtitle>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <!-- Driver Name -->
+          <!-- <div *ngIf="form.controls['driverName'].errors && form.controls['driverName'].touched" class="text-red-500">
+            Name is required
+          </div> -->
+          @if(form.controls['driverName'].errors && form.controls['driverName'].touched){
+            <span class="text-red-500">
+                Name is required
+            </span>
+          }
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">person</mat-icon>
+            <mat-label>Driver Name</mat-label>
+            <input formControlName="driverName" matInput type="text" placeholder="Enter driver name" />
+          </mat-form-field>
+          
+          
+  
+          <!-- Phone Number -->
+          @if(form.controls['phoneNumber'].errors && form.controls['phoneNumber'].touched){
+            <span class="text-red-500">
+                phone Number is required
+            </span>
+          }
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">phone</mat-icon>
+            <mat-label>Phone Number</mat-label>
+            <input formControlName="phoneNumber" matInput type="text" placeholder="Enter phone number" />
+          </mat-form-field>
+          <!-- <div *ngIf="form.controls['phoneNumber'].errors && form.controls['phoneNumber'].touched" class="text-red-500">
+            Phone Number is required
+          </div> -->
+
+          @if(form.controls['email'].errors && form.controls['email'].touched){
+            <span class="text-red-500">
+                Email is required
+            </span>
+          }
+          <!-- Email -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">email</mat-icon>
+            <mat-label>Email</mat-label>
+            <input formControlName="email" matInput type="email" placeholder="Enter email" />
+          </mat-form-field>
+          <!-- <div *ngIf="form.controls['email'].errors && form.controls['email'].touched" class="text-red-500">
+            Email is required
+          </div> -->
+  
+
+          @if(form.controls['drivingLicenseNo'].errors && form.controls['drivingLicenseNo'].touched){
+            <span class="text-red-500">
+                Email is required
+            </span>
+          }
+          <!-- Driving License Number -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">credit_card</mat-icon>
+            <mat-label>Driving License No</mat-label>
+            <input formControlName="drivingLicenseNo" matInput type="text" placeholder="Enter driving license number" />
+          </mat-form-field>
+  
+
+          @if(form.controls['driverNid'].errors && form.controls['driverNid'].touched){
+            <span class="text-red-500">
+                Email is required
+            </span>
+          }
+          <!-- Driver NID -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">assignment_ind</mat-icon>
+            <mat-label>Driver NID</mat-label>
+            <input formControlName="driverNid" matInput type="text" placeholder="Enter driver NID" />
+          </mat-form-field>
+  
+          <!-- Driver Image -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">image</mat-icon>
+            <mat-label>Driver Image URL</mat-label>
+            <input formControlName="driverImage" matInput type="text" placeholder="Enter image URL" />
+          </mat-form-field>
+  
+          <!-- Company ID -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">business</mat-icon>
+            <mat-label>Company ID</mat-label>
+            <input formControlName="companyId" matInput type="number" placeholder="Enter company ID" />
+          </mat-form-field>
+  
+          <!-- Latitude -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">location_on</mat-icon>
+            <mat-label>Latitude</mat-label>
+            <input formControlName="driverLatitude" matInput type="number" placeholder="Enter driver latitude" />
+          </mat-form-field>
+  
+          <!-- Longitude -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">location_on</mat-icon>
+            <mat-label>Longitude</mat-label>
+            <input formControlName="driverLongitude" matInput type="number" placeholder="Enter driver longitude" />
+          </mat-form-field>
+  
+          <!-- Availability -->
+          <!-- <mat-checkbox formControlName="isAvailable">Is Available</mat-checkbox> -->
+          <mat-checkbox formControlName="isAvailable">Is Available</mat-checkbox>
+         
+          <!-- Submit Button -->
+          <div class="flex justify-end gap-5 mt-4">
+            <a [routerLink]="['/driver']" mat-raised-button type="button" color="accent" class="px-6 py-2 text-white">
+              Cancel
+            </a>
+            <button mat-raised-button type="submit" [disabled]="form.invalid" class="px-6 py-2 bg-red-500 text-white">
+              {{ isEdit ? 'Edit' : 'Add' }} Driver
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    <!-- {{form.value | json}} -->
+  </div>
+  

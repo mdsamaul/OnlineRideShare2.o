@@ -1,15 +1,15 @@
     <!-- Toolbar -->
-    <mat-toolbar color="primary" class="flex justify-between items-center px-6 py-4 fixed top-0 left-0 z-50">
+    <mat-toolbar color="primary" style="scrollbar-width: none;" class="flex justify-between items-center px-6 py-4 fixed top-0 left-0 z-50">
       <!-- Sidenav Toggle Button -->
       @if (isLoggedIn()) {
- <button mat-icon-button (click)="drawer.toggle()">
+        <button mat-icon-button (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
 
       }
      
       <!-- Logo -->
-      <a routerLink="/" class="text-white text-xl font-bold">Online Ride Share</a>
+      <a routerLink="/" class="text-white text-xl font-bold"> @if(!isLoggedIn()){<mat-icon class="animate-bounce"> local_car_wash</mat-icon>}  Online Ride Share @if(isLoggedIn()){<mat-icon class="animate-bounce"> local_car_wash</mat-icon>} </a>
       <!-- Spacer -->
       <span class="flex-grow"></span>
       <!-- User Section -->
@@ -55,22 +55,22 @@
       }@else {
         <!-- Login/Register Section -->
         <div class="flex items-center gap-4">
-          <a mat-button routerLink="/login" class="text-white">Login</a>
-          <a mat-button routerLink="/register" class="text-white">Register</a>
+          <a mat-button routerLink="/login" class="text-white animate-pulse">Login</a>
+          <a mat-button routerLink="/register" class="text-white animate-pulse">Register</a>
         </div>
       }
     </mat-toolbar>
   
     <!-- Sidenav Container -->
-    <mat-drawer-container class="h-screen">
+    <mat-drawer-container class="h-screen" style="scrollbar-width: none;">
       <!-- Sidenav -->
-      <mat-drawer #drawer mode="side"  class="bg-red-900 text-whitem pt-20">
-        <div class="p-4 w-60">
+      <mat-drawer #drawer mode="side" style="scrollbar-width: none;"  class="bg-red-900 text-whitem pt-20">
+        <div class="p-4 w-56" style="scrollbar-width: none;">
           <div>
-            <div class="flex justify-center items-center w-full animate-ping relative -z-10">
+            <div class="flex justify-center items-center w-full animate-ping relative -z-10" style="scrollbar-width: none;">
               <h2 class="font-bold mb-4 border rounded-full w-32 h-32 text-center flex justify-center items-center text-6xl">s</h2>
              </div>
-             <div class="flex justify-center items-center w-full absolute top-20 p-4 z-20">
+             <div class="flex justify-center items-center w-full absolute top-20 p-4 z-20" style="scrollbar-width: none;">
               <h2 class="font-bold mb-4 border rounded-full w-32 h-32 text-center flex justify-center items-center text-6xl" style="
               margin-right: 30px;
               border-right-width: 1px;
@@ -91,10 +91,10 @@
               </a>
             </li>
             <li>
-                <a routerLink="/bookings" 
+                <a routerLink="/driver" 
                    class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105">
-                  <mat-icon>book_online</mat-icon>
-                  <span>Bookings</span>
+                  <mat-icon>airline_seat_recline_normal</mat-icon>
+                  <span>Driver</span>
                 </a>
               </li>
               <li>
@@ -121,7 +121,6 @@
         </div>
       </mat-drawer>
   
-      <!-- Main Content -->
       <!-- <mat-drawer-content>
         <div class="p-6">
           <h1 class="text-2xl font-bold mb-4">Welcome to Online Ride Share!</h1>

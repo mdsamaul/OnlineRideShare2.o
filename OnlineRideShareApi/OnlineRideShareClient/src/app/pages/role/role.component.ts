@@ -31,10 +31,11 @@ selectedRole:string ='';
 createRole(role: RoleCreateRequest){
   this.roleService.createRole(role).subscribe({
     next:(response:{message:string})=>{
-      this.roles$= this.roleService.getRoles();
+      // this.roles$= this.roleService.getRoles();
       this.snackBar.open('Role Create Successfully','ok', {
         duration:5000,
       });
+      location.reload();
     },
     error:(error:HttpErrorResponse)=>{
       if(error.status == 400){
@@ -49,10 +50,11 @@ createRole(role: RoleCreateRequest){
 deleteRole(id:string){
 this.roleService.delete(id).subscribe({
   next:(response)=>{
-    this.roles$= this.roleService.getRoles();
+    // this.roles$= this.roleService.getRoles();
     this.snackBar.open('Role Deleted Successfully', 'close',{
       duration:3000
     })
+    location.reload();
   },
   error:(error:HttpErrorResponse)=>{
     this.snackBar.open(error.message, 'close',{
@@ -65,10 +67,11 @@ this.roleService.delete(id).subscribe({
 assignRole(){
   this.roleService.assignRole(this.selectedUser, this.selectedRole).subscribe({
     next:(response)=>{
-      this.roles$= this.roleService.getRoles();
+      // this.roles$= this.roleService.getRoles();
       this.snackBar.open('Role Assign Successfully', 'close',{
         duration:3000
       })
+      location.reload();
     },
     error:(error:HttpErrorResponse)=>{
       this.snackBar.open(error.message, 'close',{

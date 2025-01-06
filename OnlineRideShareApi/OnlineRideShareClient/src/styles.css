@@ -19,3 +19,7 @@
     height: 5px !important;
     border-radius: 10px !important;
   }
+
+  .mat-drawer-inner-container{
+    scrollbar-width: none;
+  }

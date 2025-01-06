@@ -1,0 +1,57 @@
+<div class="overflow-x-auto m-16 border">
+    <div class="flex justify-around items-center">
+      <div></div>
+      <h1 class="text-4xl font-bold py-4 text-center">All Driver</h1>
+      <a [routerLink]="['/driver/form']" class="px-3 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md">Add Driver</a>
+    </div>
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+      <thead class="bg-gray-100 border-b">
+        <tr>
+          <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">sl</th>
+          <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Name</th>
+          <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Phone Number</th>
+          <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Email</th>
+          <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Driving License No</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase text-center">Driver Nid</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase text-center">Driver Image</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase text-center">Company Name</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase text-center">driver Laitude</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase text-center">driver Longtiude</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase text-center">Is Aviable</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Loop through companies using *ngFor -->
+        <tr *ngFor="let driver of drivers$ | async; let i = index" class="border-b hover:bg-gray-50">
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{i + 1}}</td> 
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{driver.driverName}}</td>
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{driver.phoneNumber}}</td>
+          <td class="px-6 py-4 text-center text-sm text-blue-500">
+            <a href="mailto:{{driver.email}}">{{driver.email}}</a>
+          </td>
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{driver.drivingLicenseNo}}</td>
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{driver.driverNid}}</td>
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{driver.driverImage}}</td>
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{driver.companyId}}</td>
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{driver.driverLatitude}}</td>
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{driver.driverLongitude}}</td>
+          <!-- <td class="px-6 py-4 text-center text-sm text-gray-700">{{driver.isAvailable}}</td> -->
+          <td class="px-6 py-4 text-center text-sm text-gray-700">
+            <mat-slide-toggle
+              [checked]="driver.isAvailable"
+              disabled
+              color="primary"
+            >
+              {{ driver.isAvailable ? 'Available' : 'Not Available' }}
+            </mat-slide-toggle>
+          </td>
+          <td class="px-6 py-4 flex gap-4 justify-center items-center">
+            <a [routerLink]="['/driver/', driver.driverId]" class="px-3 py-1 text-white bg-yellow-500 hover:bg-yellow-600 rounded-md">Edit</a>
+            <button (click)="deleteDriver(driver.driverId)" class="px-3 py-1 text-white bg-red-500 hover:bg-red-600 rounded-md">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

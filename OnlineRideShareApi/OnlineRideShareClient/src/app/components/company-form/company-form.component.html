@@ -53,7 +53,15 @@
             </span>
           }
           <!-- Submit Button -->
-            <div class="flex justify-end gap-5">
+          <div class="flex justify-end gap-5 mt-4">
+            <a [routerLink]="['/company']" mat-raised-button type="button" color="accent" class="px-6 py-2 text-white">
+              Cancel
+            </a>
+            <button mat-raised-button type="submit" [disabled]="form.invalid" class="px-6 py-2 bg-red-500 text-white">
+              {{ isEdit ? 'Edit' : 'Add' }} Company
+            </button>
+          </div>
+            <!-- <div class="flex justify-end gap-5">
                 <a [routerLink]="['/company']"
                    mat-raised-button
                    type="button"
@@ -70,7 +78,7 @@
                 >
                 {{isEdit?'Edit': 'Add'}}
                 </button>
-              </div>
+              </div> -->
           
         </form>
       </mat-card-content>
