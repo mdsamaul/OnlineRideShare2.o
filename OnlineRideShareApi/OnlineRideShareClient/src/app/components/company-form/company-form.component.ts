@@ -13,6 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-company-form',
@@ -40,7 +41,11 @@ id: number = 0;
 companyFormSubscription! : Subscription;
 paramsSubscription! : Subscription;
 
-  constructor(private fb: FormBuilder, private activatedRouter: ActivatedRoute, private router:Router) {}
+  constructor(private fb: FormBuilder, 
+    private activatedRouter: ActivatedRoute, 
+    private router:Router,
+    private toastr: ToastrService,
+  ) {}
   
   ngOnDestroy(): void {
     if(this.companyFormSubscription){
@@ -65,7 +70,7 @@ onSubmit(): void {
     // debugger
     this.companyFormSubscription = this.authServices.CreateCompany(this.form.value).subscribe({
       next: (response) => {
-      
+       this.toastr.success('Added Company Successfully');
         console.log(response);
         this.router.navigateByUrl('/company');
         this.matSnackBar.open('added company', 'Close', {
@@ -75,6 +80,7 @@ onSubmit(): void {
       },
       error: (err) => {
         console.log(err);
+        this.toastr.error(err.error.message!)
         this.matSnackBar.open("Compnay Create Failed", 'Close', {
           duration: 5000
         });
@@ -95,6 +101,7 @@ onSubmit(): void {
       next:value=> {      
         console.log('Edit', Response);
         this.router.navigateByUrl('/company');
+        this.toastr.success("Edit Successfully");
         this.matSnackBar.open('Edit company', 'Close', {
           duration: 5000
         });
@@ -102,6 +109,7 @@ onSubmit(): void {
       },
       error: (err) => {
         console.log(err);
+        this.toastr.error("Edit Successfully faild");
         this.matSnackBar.open("Compnay Edit Failed", 'Close', {
           duration: 5000
         });
@@ -149,4 +157,5 @@ onSubmit(): void {
       companyPhoneNumber: ['', [Validators.required]] 
     });
   }
+ 
 }

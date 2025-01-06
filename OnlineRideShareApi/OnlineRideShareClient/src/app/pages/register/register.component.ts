@@ -16,8 +16,9 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Role } from '../../interfaces/role';
+import { Role } from '../../interfaces/tole';
 import { validationError } from '../../interfaces/validation-error';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -47,6 +48,10 @@ export class RegisterComponent implements OnInit {
   passwordHide: boolean = true;
   errors!: validationError[];
 
+constructor(private toastrService : ToastrService){
+
+}
+
   register() {
     const rolesArray  = this.registerForm.get('roles')?.value || [];
     // const roles = this.registerForm.get('roles')?.value;
@@ -64,7 +69,7 @@ export class RegisterComponent implements OnInit {
     this.authService.register(registrationData).subscribe({
       next: (response) => {
         console.log(response);
-
+        this.toastrService.success(response.message);
         this.matSnackbar.open(response.message, 'Close', {
           duration: 5000,
           horizontalPosition: 'center',
@@ -74,6 +79,7 @@ export class RegisterComponent implements OnInit {
       error: (err: HttpErrorResponse) => {
         if (err!.status === 400) {
           this.errors = err!.error;
+          this.toastrService.error(err.error.message!);
           this.matSnackbar.open('Validations error', 'Close', {
             duration: 5000,
             horizontalPosition: 'center',

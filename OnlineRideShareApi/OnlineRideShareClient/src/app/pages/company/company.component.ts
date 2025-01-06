@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-company',
@@ -19,16 +20,21 @@ export class CompanyComponent implements OnInit{
 companies$!:Observable<CompanyCreateRequest[]>;
 authService = inject(AuthService);
 matSnackBar = inject(MatSnackBar);
+constructor(private toastrService : ToastrService){
+
+}
 sid: number=0;
 deleteCompany(id: number){
 console.log(id);
 this.authService.deleteCompany(id).subscribe({
   next:(response)=>{
+    this.toastrService.success( response.message)
     this.getCompany();
     this.matSnackBar.open(response.message, 'Close',{
       duration:5000,
     });
   },error:(error:HttpErrorResponse)=>{
+    this.toastrService.error('Delete successfully')
     this.matSnackBar.open(error.error.message,'Close',{
       duration:5000,
     });

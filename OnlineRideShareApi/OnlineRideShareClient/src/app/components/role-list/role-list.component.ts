@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { Role } from '../../interfaces/role';
+import { Role } from '../../interfaces/tole';
 import { MatButtonModule } from '@angular/material/button';
 import {  MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';

@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatSidenavModule} from '@angular/material/sidenav'
 import {MatDividerModule} from '@angular/material/divider'
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -21,12 +22,15 @@ export class NavbarComponent {
   authService = inject(AuthService);
   matSnackBar = inject(MatSnackBar);
   router = inject(Router);
+constructor(private toastrService: ToastrService){}
+
   isLoggedIn (){
     return this.authService.isLoggedIn();
   }
   drawer: any;
   logout=()=>{
     this.authService.logout();
+    this.toastrService.success("Logout Successfully");
     this.matSnackBar.open('Logout success', "Close",{
       duration:5000,
       horizontalPosition:'center' 

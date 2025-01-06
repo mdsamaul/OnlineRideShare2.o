@@ -6,10 +6,11 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar'
 import { MatRippleModule } from '@angular/material/core';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [  MatRippleModule, MatInputModule,MatIconModule,MatSnackBarModule , ReactiveFormsModule, RouterLink],
+  imports: [  MatRippleModule, MatInputModule,MatIconModule,MatSnackBarModule , ReactiveFormsModule, RouterLink, ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -21,11 +22,14 @@ hide=true;
 form!: FormGroup;
 fb= inject(FormBuilder);
 
+constructor(private toastrService: ToastrService){}
+
 login(){
   this.authService.login(this.form.value).subscribe({  
     
     next:(response)=>{
       console.log(this.form.value);
+      this.toastrService.success(response.message);
       this.matSnackBar.open(response.message, 'Close',{
         duration:5000,
         horizontalPosition:'center'
@@ -33,6 +37,7 @@ login(){
       this.router.navigate(['/']);
     },
     error:(error)=>{
+      this.toastrService.error(error.else.message!);
       this.matSnackBar.open(error.error.message, 'Close',{
         duration:5000,
         horizontalPosition:'center'
