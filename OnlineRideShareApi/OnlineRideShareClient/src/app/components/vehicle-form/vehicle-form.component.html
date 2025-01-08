@@ -1,0 +1,50 @@
+<div class="form-container">
+    <div class="card">
+      <h2 class="form-headline">Vehicle Information Form</h2>
+  
+      <form [formGroup]="vehicleTForm" (ngSubmit)="onVTSubmit()">
+        <div class="flex justify-center items-center gap-5 w-full">
+            <!-- Vehicle Type Name -->
+        <mat-form-field appearance="fill" class="lg:w-4/12 mb-6">
+            <mat-label>Vehicle Type Name</mat-label>
+            <input
+              matInput
+              formControlName="vehicleTypeName"
+              placeholder="Enter Vehicle Type Name"
+            />
+            <mat-error *ngIf="vehicleTForm.get('vehicleTypeName')?.hasError('required')">
+              Vehicle Type Name is required.
+            </mat-error>
+            <mat-error *ngIf="vehicleTForm.get('vehicleTypeName')?.hasError('minlength')">
+              Vehicle Type Name must be at least 3 characters.
+            </mat-error>
+          </mat-form-field>
+    
+          <!-- Per Km Fare -->
+          <mat-form-field appearance="fill" class="lg:w-4/12 mb-6">
+            <mat-label>Per Km Fare</mat-label>
+            <input
+              matInput
+              formControlName="perKmFare"
+              type="number"
+              placeholder="Enter Per Km Fare"
+            />
+            <mat-error *ngIf="vehicleTForm.get('perKmFare')?.hasError('required')">
+              Per Km Fare is required.
+            </mat-error>
+            <mat-error *ngIf="vehicleTForm.get('perKmFare')?.hasError('min')">
+              Per Km Fare must be greater than 0.
+            </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!-- Submit Button -->
+       <div class="lg:w-full flex justify-center">
+        <button mat-raised-button color="primary" type="submit" [disabled]="vehicleTForm.invalid">
+            Submit
+          </button>
+       </div>
+      </form>
+    </div>
+  </div>
+  

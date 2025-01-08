@@ -92,12 +92,30 @@
           </mat-form-field>
   
           <!-- Company ID -->
-          <mat-form-field appearance="fill" class="w-full mb-6">
+          <!-- <mat-form-field appearance="fill" class="w-full mb-6">
             <mat-icon matPrefix class="mr-2 text-gray-500">business</mat-icon>
-            <mat-label>Company ID</mat-label>
-            <input formControlName="companyId" matInput type="number" placeholder="Enter company ID" />
+            <mat-label>Company Name</mat-label>
+            <mat-select [(value)]="selectCompany">
+             <mat-option [value]="null">No Company</mat-option> 
+
+              @for (company of companys$ | async; track company.id) {
+              <mat-option [value]="company.id"> {{company.companyName}}</mat-option>  
+              }
+            </mat-select>
+
+          </mat-form-field> -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Company Name</mat-label>
+            <mat-select formControlName="companyId">
+              <mat-option [value]="null">No Company</mat-option>
+              <mat-option *ngFor="let company of companys$ | async" [value]="company.id">
+                {{ company.companyName }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
-  
+          
+         
+          
           <!-- Latitude -->
           <mat-form-field appearance="fill" class="w-full mb-6">
             <mat-icon matPrefix class="mr-2 text-gray-500">location_on</mat-icon>
@@ -129,5 +147,12 @@
       </mat-card-content>
     </mat-card>
     <!-- {{form.value | json}} -->
+   
+    <!-- <mat-select [(value)]="selectCompany">
+      @for (company of companys$ | async; track company.id) {
+      <mat-option [value]="company.id"> {{company.companyName}}</mat-option>
+       
+      }
+    </mat-select> -->
   </div>
   

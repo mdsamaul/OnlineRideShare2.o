@@ -79,7 +79,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       // Call the API to create the company
       // debugger
       this.companyFormSubscription = this.authServices
-        .CreateCompany(this.form.value)
+        .createCompany(this.form.value)
         .subscribe({
           next: (response) => {
             this.toastr.success('Added Company Successfully');
@@ -113,7 +113,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       // Call the API to create the company
       // debugger
 
-      this.authServices.EditCompany(this.id, this.form.value).subscribe({
+      this.authServices.editCompany(this.id, this.form.value).subscribe({
         next: (value) => {
           console.log('Edit', Response);
           this.router.navigateByUrl('/company');

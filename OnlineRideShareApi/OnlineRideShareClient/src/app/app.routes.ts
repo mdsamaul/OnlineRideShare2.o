@@ -16,6 +16,9 @@ import { CompanyComponent } from './pages/company/company.component';
 import { CompanyFormComponent } from './components/company-form/company-form.component';
 import { DriverComponent } from './pages/driver/driver.component';
 import { DriverFormComponent } from './components/driver-form/driver-form.component';
+import { VehicleComponent } from './pages/vehicle/vehicle.component';
+import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
+import { VehicleTypeFormComponent } from './components/vehicle-type-form/vehicle-type-form.component';
 
 export const routes: Routes = [
     {path:'', component:HomeComponent},
@@ -52,6 +55,11 @@ export const routes: Routes = [
    {path:'driver', component:DriverComponent, canActivate:[authGuard]},
    //driver form
    {path:'driver/form',component:DriverFormComponent, canActivate:[authGuard]},
-   {path:'driver/:id',component:DriverFormComponent, canActivate:[authGuard]}
+   {path:'driver/:id',component:DriverFormComponent, canActivate:[authGuard]},
+   //vehicle type
+   {path:'vehicle', component:VehicleComponent, canActivate:[authGuard]},
+   {path:'vehicle-type/form', component:VehicleTypeFormComponent, canActivate:[authGuard]},
+   {path:'vehicle-type/:id', component:VehicleTypeFormComponent, canActivate:[authGuard]},
+
 
 ];

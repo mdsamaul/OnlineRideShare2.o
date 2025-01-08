@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, CreateComputedOptions, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -19,9 +19,12 @@ import {
   RouterModule,
 } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DriverCreateRequest } from '../../interfaces/driver-create-request';
+import { CompanyCreateRequest } from '../../interfaces/company-create-request';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-driver-form',
@@ -37,7 +40,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     RouterModule,
     RouterLink,
     MatCheckboxModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule
   ],
   templateUrl: './driver-form.component.html',
   styleUrl: './driver-form.component.css',
@@ -49,6 +53,8 @@ export class DriverFormComponent implements OnInit, OnDestroy {
   form!: FormGroup;
   driverFormSubscription!: Subscription;
   paramsSubscription!: Subscription;
+  companys$! : Observable<CompanyCreateRequest[]>;
+  selectCompany:string=';'
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -72,12 +78,15 @@ export class DriverFormComponent implements OnInit, OnDestroy {
         );
         return;
       }
+      const formData = this.form.value;
+      console.log("formData ",formData);
       this.driverFormSubscription = this.authService
-        .createDriver(this.form.value)
+        .createDriver(formData)
         .subscribe({
           next: (response) => {
             this.toastrService.success(response.message);
             console.log(response);
+    
             this.router.navigateByUrl('/driver');
           },
           error: (err) => {
@@ -105,13 +114,18 @@ export class DriverFormComponent implements OnInit, OnDestroy {
       });
     }
   }
+  
   ngOnInit(): void {
+        
+    console.log("select company form driver form ",this.selectCompany);
+    
+
     this.paramsSubscription = this.activatedRouter.params.subscribe({
       next: (response) => {
         console.log("edit driver",response['id']);
         this.driverId = response['id'];
         if (!this.driverId) return;
-        this.authService.driverGetById(this.driverId).subscribe({
+        this.authService.getDriverById(this.driverId).subscribe({
           next: (response) => {
             console.log('get by id driver ', response);
             this.form.patchValue(response);
@@ -140,5 +154,12 @@ export class DriverFormComponent implements OnInit, OnDestroy {
       driverLongitude: [null], 
       isAvailable: [true], 
     });
+    this.getCompant()
+    
   }
+
+  private getCompant():void{
+    this.companys$= this.authService.getCompany();
+  }
+
 }

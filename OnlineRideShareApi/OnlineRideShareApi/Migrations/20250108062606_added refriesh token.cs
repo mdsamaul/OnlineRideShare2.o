@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineRideShareApi.Migrations
 {
     /// <inheritdoc />
-    public partial class addedAll : Migration
+    public partial class addedrefrieshtoken : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,7 @@ namespace OnlineRideShareApi.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefrieshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -72,6 +72,26 @@ namespace OnlineRideShareApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Companies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VehicleTypes",
+                columns: table => new
+                {
+                    VehicleTypeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VehicleTypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PerKmFare = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VehicleTypes", x => x.VehicleTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -277,6 +297,9 @@ namespace OnlineRideShareApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Drivers");
+
+            migrationBuilder.DropTable(
+                name: "VehicleTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

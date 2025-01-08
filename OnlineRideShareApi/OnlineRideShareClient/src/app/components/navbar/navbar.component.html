@@ -62,70 +62,72 @@
     </mat-toolbar>
   
     <!-- Sidenav Container -->
-    <mat-drawer-container class="h-screen" style="scrollbar-width: none;">
-      <!-- Sidenav -->
-      <mat-drawer #drawer mode="side" style="scrollbar-width: none;"  class="bg-red-900 text-whitem pt-20">
-        <div class="p-4 w-56" style="scrollbar-width: none;">
-          <div>
-            <div class="flex justify-center items-center w-full animate-ping relative -z-10" style="scrollbar-width: none;">
-              <h2 class="font-bold mb-4 border rounded-full w-32 h-32 text-center flex justify-center items-center text-6xl">s</h2>
+   
+      <mat-drawer-container  class="h-screen" style="scrollbar-width: none;">
+        <!-- Sidenav -->
+        <mat-drawer #drawer mode="side" style="scrollbar-width: none;"  class="bg-red-900 text-whitem pt-20">
+          <div class="p-4 w-56" style="scrollbar-width: none;">
+            
+            <div>
+              <div class="flex justify-center items-center w-full animate-ping relative -z-10" style="scrollbar-width: none;">
+                <h2 class="font-bold mb-4 border rounded-full w-32 h-32 text-center flex justify-center items-center text-6xl">s</h2>
+               </div>
+               <div class="flex justify-center items-center w-full absolute top-20 p-4 z-20" style="scrollbar-width: none;">
+                <h2 class="font-bold mb-4 border rounded-full w-32 h-32 text-center flex justify-center items-center text-6xl" style="
+                margin-right: 30px;
+                border-right-width: 1px;
+            ">s</h2>
+               </div>
              </div>
-             <div class="flex justify-center items-center w-full absolute top-20 p-4 z-20" style="scrollbar-width: none;">
-              <h2 class="font-bold mb-4 border rounded-full w-32 h-32 text-center flex justify-center items-center text-6xl" style="
-              margin-right: 30px;
-              border-right-width: 1px;
-          ">s</h2>
-             </div>
-           </div>
-          <ul class="space-y-3">
-            <li>
-              <a routerLink="/" class="flex items-center justify-between  gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-                <mat-icon>home</mat-icon>
-                <span>Home</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/company" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-                <mat-icon>business</mat-icon>
-                <span>Company</span>
-              </a>
-            </li>
-            <li>
-                <a routerLink="/driver" 
-                   class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105">
-                  <mat-icon>airline_seat_recline_normal</mat-icon>
-                  <span>Driver</span>
+            <ul class="space-y-3">
+              <li>
+                <a routerLink="/" class="flex items-center justify-between  gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                  <mat-icon>home</mat-icon>
+                  <span>Home</span>
                 </a>
               </li>
               <li>
-                <a routerLink="/bookings" 
-                   class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-                  <mat-icon>book_online</mat-icon>
-                  <span>Bookings</span>
+                <a routerLink="/company" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                  <mat-icon>business</mat-icon>
+                  <span>Company</span>
                 </a>
               </li>
-              
-            <li>
-              <a routerLink="/profile" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-                <mat-icon>person</mat-icon>
-                <span>Profile</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/about" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-                <mat-icon>info</mat-icon>
-                <span>About</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </mat-drawer>
-  
-      <!-- <mat-drawer-content>
-        <div class="p-6">
-          <h1 class="text-2xl font-bold mb-4">Welcome to Online Ride Share!</h1>
-          <p class="text-gray-600">Select a menu option to get started.</p>
-        </div>
-      </mat-drawer-content> -->
-    </mat-drawer-container>
- 
+              <li>
+                  <a routerLink="/driver" 
+                     class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105">
+                    <mat-icon>airline_seat_recline_normal</mat-icon>
+                    <span>Driver</span>
+                  </a>
+                </li>
+                <li>
+                  <a  [routerLink]="['/vehicle']"
+                     class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                    <mat-icon>book_online</mat-icon>
+                    <span>Vehicle</span>
+                </a>
+                </li>
+                
+              <li>
+                <a routerLink="/profile" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                  <mat-icon>person</mat-icon>
+                  <span>Profile</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/about" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                  <mat-icon>info</mat-icon>
+                  <span>About</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </mat-drawer>
+    
+        <!-- <mat-drawer-content>
+          <div class="p-6">
+            <h1 class="text-2xl font-bold mb-4">Welcome to Online Ride Share!</h1>
+            <p class="text-gray-600">Select a menu option to get started.</p>
+          </div>
+        </mat-drawer-content> -->
+      </mat-drawer-container>
+     

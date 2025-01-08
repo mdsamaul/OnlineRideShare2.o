@@ -21,7 +21,7 @@ export class DriverComponent implements OnInit{
 
   deleteDriver(id:number){
     console.log(id);
-    this.authService.driverDelete(id).subscribe({
+    this.authService.deleteDriver(id).subscribe({
       next:(response)=>{
         this.toastrService.success(response.message);
         this.getDriver();

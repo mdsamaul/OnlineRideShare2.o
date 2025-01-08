@@ -12,5 +12,6 @@ namespace OnlineRideShareApi.Data
         }    
         public DbSet<Company> Companies { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+        public DbSet<VehicleType> VehicleTypes { get; set; }
     }
 }

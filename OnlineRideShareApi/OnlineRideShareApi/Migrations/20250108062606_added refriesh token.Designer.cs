@@ -12,8 +12,8 @@ using OnlineRideShareApi.Data;
 namespace OnlineRideShareApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250106162006_addedAll")]
-    partial class addedAll
+    [Migration("20250108062606_added refriesh token")]
+    partial class addedrefrieshtoken
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -206,7 +206,7 @@ namespace OnlineRideShareApi.Migrations
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("RefrieshTokenExpiryTime")
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
@@ -338,6 +338,44 @@ namespace OnlineRideShareApi.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Drivers");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.VehicleType", b =>
+                {
+                    b.Property<int>("VehicleTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleTypeId"));
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("PerKmFare")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VehicleTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("VehicleTypeId");
+
+                    b.ToTable("VehicleTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
