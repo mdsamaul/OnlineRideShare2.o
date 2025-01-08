@@ -1,4 +1,4 @@
-<div class="overflow-x-auto m-16 border">
+<div *ngIf="isAdmin" class="overflow-x-auto m-16 border">
   <div class="flex justify-around items-center">
     <div></div>
     <h1 class="text-4xl font-bold py-4 text-center">All Companies</h1>
@@ -32,4 +32,55 @@
       </tr>
     </tbody>
   </table>
+</div>
+<!-- not admin  -->
+<div *ngIf="!isAdmin" class="flex justify-around items-center pt-5">
+  <div></div>
+  <h1 class="text-4xl font-bold py-4 text-center"></h1>
+  <a [routerLink]="['/company/form']" class="px-3 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md">Add Company</a>
+</div>
+<div *ngIf="!isAdmin" class="vehicle-container mx-auto max-w-full px-4 py-8">
+  <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Company Information</h2>
+
+  <div class="flex flex-wrap gap-8 justify-center">
+    <div *ngFor="let company of newCompanies$" class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+      <mat-card class="shadow-lg rounded-lg overflow-hidden bg-white transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl">
+        <mat-card-header class="bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 text-white">
+          <mat-card-title class="text-xl font-semibold">Company Details</mat-card-title>
+        </mat-card-header>
+        
+        <mat-card-content class="p-6 text-gray-700">
+          <div class="py-3 border-b border-gray-200">
+            <p><strong>ID:</strong> {{ company.id }}</p>
+          </div>
+          <div class="py-3 border-b border-gray-200">
+            <p><strong>Company Name:</strong> {{ company.companyName }}</p>
+          </div>
+          <div class="py-3 border-b border-gray-200">
+            <p><strong>Address:</strong> {{ company.address }}</p>
+          </div>
+          <div class="py-3 border-b border-gray-200">
+            <p><strong>Email:</strong> {{ company.companyEmail }}</p>
+          </div>
+          <div class="py-3">
+            <p><strong>Phone:</strong> {{ company.companyPhoneNumber }}</p>
+          </div>
+        </mat-card-content>
+  
+        <mat-card-actions class="justify-between py-4 px-6">
+          <!-- Edit Button -->
+          <button [routerLink]="['/company/', company.id]" mat-button color="accent" 
+            class="text-white bg-blue-500 hover:bg-blue-600 transition duration-200 ease-in-out py-2 px-4 rounded-lg w-full sm:w-auto">
+            Edit
+          </button>
+          
+          <!-- Delete Button -->
+          <button (click)="deleteCompany(company.id)" mat-button color="warn" 
+            class="text-white bg-red-500 hover:bg-red-600 transition duration-200 ease-in-out py-2 px-4 rounded-lg w-full sm:w-auto mt-2 sm:mt-0">
+            Delete
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
 </div>

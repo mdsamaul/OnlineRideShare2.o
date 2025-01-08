@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineRideShareApi.Data;
 using OnlineRideShareApi.Dtos;
 using OnlineRideShareApi.Models;
+using System.Security.Claims;
 
 namespace OnlineRideShareApi.Controllers
 {
@@ -78,10 +79,12 @@ namespace OnlineRideShareApi.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateDriver(Driver driver)
         {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            driver.UserId = currentUserId;
             driver.SetCreateInfo();
             await _context.AddAsync(driver);
             var result = await _context.SaveChangesAsync();
@@ -130,6 +133,29 @@ namespace OnlineRideShareApi.Controllers
                 IsSuccess = false,
                 Message = "Unable to deleted Driver"
             });
+        }
+        [HttpGet("details")]
+        public async Task<ActionResult<Driver>> DriverDetails()
+        {
+            var currentDriverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(currentDriverId is null)
+            {
+                return NotFound(new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message="User not autherticate"
+                });
+            }
+            var driver =await _context.Drivers.Where(dr => dr.UserId == currentDriverId).FirstOrDefaultAsync();
+            if (driver is null)
+            {
+                return NotFound(new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "driver not found"
+                });
+            }
+            return Ok(driver);
         }
     }
 }

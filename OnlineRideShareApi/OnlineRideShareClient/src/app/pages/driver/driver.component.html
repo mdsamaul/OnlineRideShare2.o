@@ -1,4 +1,4 @@
-<div class="overflow-x-auto m-16 border">
+<div *ngIf="isAdmin$" class="overflow-x-auto m-16 border">
     <div class="flex justify-around items-center">
       <div></div>
       <h1 class="text-4xl font-bold py-4 text-center">All Driver</h1>
@@ -53,5 +53,115 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  <div *ngIf="!isAdmin$" class="min-h-screen bg-gray-100 flex flex-col items-center py-12">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center w-full max-w-7xl px-4 mb-8">
+      <!-- Title -->
+      <h1 *ngIf="wonDrivers$.length > 0" class="text-4xl font-extrabold text-gray-800">Driver Details</h1>
+      <div *ngIf="wonDrivers$.length === 0" class="flex-grow text-center">
+        <h1 class="text-4xl font-bold text-gray-600">No Drivers Found</h1>
+      </div>
+      <!-- Add Driver Button -->
+      <a *ngIf="wonDrivers$.length === 0" 
+        [routerLink]="['/driver/form']" 
+        class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow-md transition-all duration-300"
+      >
+        Add Driver
+      </a>
+    </div>
+  
+    <!-- Card Container -->
+    <div *ngIf="wonDrivers$.length > 0" class="w-full max-w-7xl  gap-8 px-4">
+      <!-- Loop through drivers -->
+      <div *ngFor="let driver of wonDrivers$" class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:-translate-y-2">
+        <!-- Driver Info -->
+        <div class="text-center mb-6">
+          <img 
+            [src]="driver.driverImage || 'https://via.placeholder.com/150'" 
+            alt="Driver Image" 
+            class="w-32 h-32 border border-gray-300 rounded-full mx-auto mb-4 object-cover shadow-md"
+          >
+          <h2 class="text-2xl font-semibold text-gray-800">{{ driver.driverName }}</h2>
+          <p class="text-sm text-gray-600">{{ driver.phoneNumber }}</p>
+          <p class="text-sm text-blue-500">
+            <a href="mailto:{{ driver.email }}">{{ driver.email }}</a>
+          </p>
+        </div>
+        <!-- Driver Details -->
+        <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-xl mx-auto">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Driver Details</h2>
+          <div class="grid grid-cols-2 gap-y-4 gap-x-6">
+            <!-- Driving License -->
+            <div class="flex items-center text-gray-700">
+              <span class="material-icons text-blue-500 mr-2">badge</span>
+              <p class="font-bold">Driving License:</p>
+            </div>
+            <div class="text-sm text-gray-700">
+              {{ driver.drivingLicenseNo }}
+            </div>
+        
+            <!-- NID -->
+            <div class="flex items-center text-gray-700">
+              <span class="material-icons text-green-500 mr-2">account_circle</span>
+              <p class="font-bold">NID:</p>
+            </div>
+            <div class="text-sm text-gray-700">
+              {{ driver.driverNid }}
+            </div>
+        
+            <!-- Company -->
+            <div class="flex items-center text-gray-700">
+              <span class="material-icons text-yellow-500 mr-2">business</span>
+              <p class="font-bold">Company:</p>
+            </div>
+            <div class="text-sm text-gray-700">
+              {{ driver.companyId }}
+            </div>
+        
+            <!-- Latitude -->
+            <div class="flex items-center text-gray-700">
+              <span class="material-icons text-red-500 mr-2">location_on</span>
+              <p class="font-bold">Latitude:</p>
+            </div>
+            <div class="text-sm text-gray-700">
+              {{ driver.driverLatitude }}
+            </div>
+        
+            <!-- Longitude -->
+            <div class="flex items-center text-gray-700">
+              <span class="material-icons text-purple-500 mr-2">map</span>
+              <p class="font-bold">Longitude:</p>
+            </div>
+            <div class="text-sm text-gray-700">
+              {{ driver.driverLongitude }}
+            </div>
+          </div>
+        </div>
+        
+        
+        <!-- Availability -->
+        <div class="mt-4 text-center">
+          <mat-slide-toggle [checked]="driver.isAvailable" disabled color="primary">
+            {{ driver.isAvailable ? 'Available' : 'Not Available' }}
+          </mat-slide-toggle>
+        </div>
+        <!-- Actions -->
+        <div class="mt-6 flex justify-around">
+          <a 
+            [routerLink]="['/driver/', driver.driverId]" 
+            class="px-4 py-2 text-sm text-white bg-yellow-500 hover:bg-yellow-600 rounded-md shadow-md transition-all duration-300"
+          >
+            Edit
+          </a>
+          <button 
+            (click)="deleteDriver(driver.driverId)" 
+            class="px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-md shadow-md transition-all duration-300"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
   

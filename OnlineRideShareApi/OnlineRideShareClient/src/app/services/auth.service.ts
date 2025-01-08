@@ -412,7 +412,10 @@ export class AuthService {
         }),
         map((response: AuthResponse | null) => {
           if (response?.isSuccess) {
-            localStorage.setItem(this.userKey, JSON.stringify(response));
+            if (typeof window !== 'undefined' && window.localStorage) {
+              localStorage.setItem(this.userKey, JSON.stringify(response));
+            }
+            
           }
           return response;
         })
@@ -537,7 +540,14 @@ export class AuthService {
         return of([]);
       }));
   }
+  //company details 
+detailsCompany(): Observable<CompanyCreateRequest[]>{
+  return this.http.get<CompanyCreateRequest[]>(`${this.apiUrl}company/details`)
+}
 
+// getVehicleTypeDetails(): Observable<VehicleType[]> {
+//   return this.http.get<VehicleType[]>(`${this.apiUrl}vehicletype/details`);
+// }
   createCompany(data: CompanyCreateRequest): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}company`, data)
@@ -579,7 +589,10 @@ export class AuthService {
   getDrivers(): Observable<DriverCreateRequest[]> {
     return this.http.get<DriverCreateRequest[]>(`${this.apiUrl}driver`);
   }
-
+//driver details
+detailsDriver (): Observable<DriverCreateRequest[]>{
+  return this.http.get<DriverCreateRequest[]>(`${this.apiUrl}driver/details`);
+}
   createDriver(data: DriverCreateRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}driver`, data);
   }

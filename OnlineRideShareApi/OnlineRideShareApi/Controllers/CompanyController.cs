@@ -6,6 +6,7 @@ using NuGet.Common;
 using OnlineRideShareApi.Data;
 using OnlineRideShareApi.Dtos;
 using OnlineRideShareApi.Models;
+using System.Security.Claims;
 
 namespace OnlineRideShareApi.Controllers
 {
@@ -30,10 +31,13 @@ namespace OnlineRideShareApi.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateCompany(Company company)
         {
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            company.UserId = userId;
             company.SetCreateInfo();
             await _context.AddAsync(company);
             var result = await _context.SaveChangesAsync();
@@ -124,6 +128,29 @@ namespace OnlineRideShareApi.Controllers
                 IsSuccess=false,
                 Message= "Unable to Company"
             });
-        } 
+        }
+        [HttpGet("details")]
+        public async Task<ActionResult<Company>> CompanyDetails()
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId is null)
+            {
+                return NotFound(new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "uaser not auththenticate"
+                });
+            }
+            var company = _context.Companies.Where(cu => cu.UserId == currentUserId);
+            if (company is null)
+            {
+                return NotFound(new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "no company found this user"
+                });
+            }
+            return Ok(company);
+        }
     }
 }

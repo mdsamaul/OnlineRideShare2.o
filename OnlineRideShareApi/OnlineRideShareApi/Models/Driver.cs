@@ -11,6 +11,7 @@ namespace OnlineRideShareApi.Models
         public string? DriverName { get; set; }
         [Required]
         public string PhoneNumber { get; set; } = string.Empty;
+        public string? UserId { get; set; } = string.Empty;
         [EmailAddress]
         public string? Email { get; set; }
         [Required]

@@ -13,6 +13,7 @@ namespace OnlineRideShareApi.Models
         [EmailAddress]
         public string CompanyEmail { get; set;} = string.Empty;
         public required string CompanyPhoneNumber { get; set; }
+        public string? UserId { get; set; } = string.Empty;
         //public virtual ICollection<Bank>? Banks { get; set; }
         public virtual ICollection<Driver>? Drivers { get; set; }
 

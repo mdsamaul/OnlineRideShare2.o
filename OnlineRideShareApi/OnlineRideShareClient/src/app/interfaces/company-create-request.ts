@@ -4,5 +4,6 @@ export interface CompanyCreateRequest{
     address:string;
     companyEmail:string;
     companyPhoneNumber:string;
+    userId:string;
 }
 

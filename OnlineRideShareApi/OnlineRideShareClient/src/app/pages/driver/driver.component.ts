@@ -6,6 +6,7 @@ import { DriverCreateRequest } from '../../interfaces/driver-create-request';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatSlideToggle  } from '@angular/material/slide-toggle'
+import { response } from 'express';
 
 @Component({
   selector: 'app-driver',
@@ -18,6 +19,8 @@ export class DriverComponent implements OnInit{
  authService = inject(AuthService);
  toastrService = inject(ToastrService);
   drivers$!:Observable<DriverCreateRequest[]>;
+  wonDrivers$:DriverCreateRequest[]=[];
+  isAdmin$= false;
 
   deleteDriver(id:number){
     console.log(id);
@@ -25,6 +28,7 @@ export class DriverComponent implements OnInit{
       next:(response)=>{
         this.toastrService.success(response.message);
         this.getDriver();
+        location.reload();
       },
       error:(err)=>{
         this.toastrService.error(err.error.message);
@@ -32,10 +36,26 @@ export class DriverComponent implements OnInit{
     })
   }
   ngOnInit(): void {
+    const user = this.authService.getUserDetail();
+    console.log("driver ",user);
+    if(user?.roles=='Admin'){
+      this.isAdmin$=true;
+    }else{
+      console.log("un sub : ",this.authService.detailsDriver());
+      this.authService.detailsDriver().subscribe({
+        next:(response)=>{
+         console.log(response);
+         this.wonDrivers$ = Array.isArray(response) ? response : [response];
+         console.log(this.wonDrivers$);
+        }
+      })
+    }
+   
     this.getDriver();
   }
 
   private getDriver(): void{
     this.drivers$= this.authService.getDrivers();
   }
+  
 }

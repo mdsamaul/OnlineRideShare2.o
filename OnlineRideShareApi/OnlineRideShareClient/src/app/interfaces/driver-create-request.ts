@@ -11,4 +11,5 @@ export interface DriverCreateRequest{
   driverLatitude: number;
   driverLongitude: number;
   isAvailable: boolean;
+  userId:string;
 }

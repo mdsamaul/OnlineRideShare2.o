@@ -494,6 +494,35 @@
         }
       }
     },
+    "/api/Company/details": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Driver": {
       "get": {
         "tags": [
@@ -654,6 +683,35 @@
               "format": "int32"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Driver"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Driver"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Driver"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Driver/details": {
+      "get": {
+        "tags": [
+          "Driver"
         ],
         "responses": {
           "200": {
@@ -1148,6 +1206,10 @@
             "type": "string",
             "nullable": true
           },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
           "drivers": {
             "type": "array",
             "items": {
@@ -1210,6 +1272,10 @@
           "phoneNumber": {
             "minLength": 1,
             "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
           },
           "email": {
             "type": "string",

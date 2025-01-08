@@ -275,6 +275,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "OnlineRideShareApi.Controllers.CompanyController",
+    "Method": "CompanyDetails",
+    "RelativePath": "api/Company/details",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "OnlineRideShareApi.Models.Company",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "OnlineRideShareApi.Controllers.DriverController",
     "Method": "GetDrivers",
     "RelativePath": "api/Driver",
@@ -371,6 +391,26 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": [
+      {
+        "Type": "OnlineRideShareApi.Models.Driver",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "OnlineRideShareApi.Controllers.DriverController",
+    "Method": "DriverDetails",
+    "RelativePath": "api/Driver/details",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": [
       {
         "Type": "OnlineRideShareApi.Models.Driver",

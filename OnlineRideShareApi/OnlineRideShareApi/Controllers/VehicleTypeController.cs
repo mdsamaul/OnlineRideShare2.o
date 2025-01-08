@@ -159,14 +159,14 @@ namespace OnlineRideShareApi.Controllers
                     Message = "No vehicle type found for this user"
                 });
             }
-
-            return Ok(new VehicleTypeDto
-            {
-                VehicleTypeId=vehicleType.VehicleTypeId,
-                PerKmFare=vehicleType.PerKmFare,
-                UserId=currentUserId,
-                VehicleTypeName=vehicleType.VehicleTypeName,
-            });
+            return Ok(vehicleType);
+            //return Ok(new VehicleTypeDto
+            //{
+            //    VehicleTypeId=vehicleType.VehicleTypeId,
+            //    PerKmFare=vehicleType.PerKmFare,
+            //    UserId=currentUserId,
+            //    VehicleTypeName=vehicleType.VehicleTypeName,
+            //});
         }
 
     }
