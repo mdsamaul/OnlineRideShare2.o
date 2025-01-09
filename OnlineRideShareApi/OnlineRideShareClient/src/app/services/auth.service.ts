@@ -392,6 +392,8 @@ import { VehicleType } from '../interfaces/vehicle-type';
 import { RegisterRequest } from '../interfaces/RegisterRequest';
 import { ResetPasswordRequest } from '../interfaces/ResetPasswordRequest';
 import { jwtDecode } from 'jwt-decode';
+import { VehicleDetails } from '../interfaces/vehicle-details';
+import { DriverVehicle } from '../interfaces/driver-vehicle';
 
 @Injectable({
   providedIn: 'root',
@@ -634,4 +636,63 @@ detailsDriver (): Observable<DriverCreateRequest[]>{
   getVehicleTypeDetails(): Observable<VehicleType[]> {
     return this.http.get<VehicleType[]>(`${this.apiUrl}vehicletype/details`);
   }
+
+  //vehicle
+  //get vehicle
+  getAllVehicle():Observable<VehicleDetails[]>{
+    return this.http.get<VehicleDetails[]>(`${this.apiUrl}Vehicle`)
+  }
+  //post vehicle
+  createVehicle(data: VehicleDetails): Observable<AuthResponse>{
+    return this.http.post<AuthResponse>(`${this.apiUrl}Vehicle`,data)
+  }
+  
+  //edit vehicel
+  editVehicle(id:number, data: VehicleDetails):Observable<AuthResponse>{
+    return this.http.put<AuthResponse>(`${this.apiUrl}Vehicle/${id}`, data)
+  }
+
+  //get by id
+
+  getByIdVehicle(id:number):Observable<AuthResponse>{
+    return this.http.get<AuthResponse>(`${this.apiUrl}Vehicle/${id}`)
+  }
+  //delete vehicle
+  deleteVehicle(id:number):Observable<AuthResponse>{
+    return this.http.delete<AuthResponse>(`${this.apiUrl}Vehicle/${id}`)
+  }
+
+  //get details vehicle
+  getVehicleDetails():Observable<VehicleDetails[]>{
+    return this.http.get<VehicleDetails[]>(`${this.apiUrl}Vehicle/details`)
+  }
+
+  //driver vehicle
+getAllDriverVehicle(): Observable<DriverVehicle[]>{
+ return this.http.get<DriverVehicle[]>(`${this.apiUrl}DriverVehicles`)
+}
+
+//driver vehicle post
+createDriverVehicle(data: DriverVehicle):Observable<AuthResponse>{
+  return this.http.post<AuthResponse>(`${this.apiUrl}DriverVehicles`, data)
+}
+
+//driver vehicle id
+getDriverVehicleId(id:number):Observable<AuthResponse>{
+  return this.http.get<AuthResponse>(`${this.apiUrl}DriverVehicles/${id}`);
+}
+
+//edit driver vehicle 
+editDriverVehicle(id:number, data:DriverVehicle):Observable<AuthResponse>{
+  return this.http.put<AuthResponse>(`${this.apiUrl}DriverVehicles/${id}`, data)
+}
+
+//delete driver vehcile
+deleteDriverVehicle(id:number):Observable<AuthResponse>{
+  return this.http.delete<AuthResponse>(`${this.apiUrl}DriverVehicles/${id}`);
+}
+//details driver vehicle
+detailsDriverVehicle():Observable<AuthResponse>{
+  return this.http.get<AuthResponse>(`${this.apiUrl}DriverVehicles`)
+}
 }

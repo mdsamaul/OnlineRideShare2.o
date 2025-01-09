@@ -6,11 +6,12 @@ import { Router, RouterLink } from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { ToastrService } from 'ngx-toastr';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-vehicle-won-type',
   standalone: true,
-  imports: [RouterLink, CommonModule, MatCardModule],
+  imports: [RouterLink, CommonModule, MatCardModule, MatIconModule],
   templateUrl: './vehicle-won-type.component.html',
   styleUrls: ['./vehicle-won-type.component.css'],
 })

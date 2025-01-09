@@ -146,7 +146,7 @@ namespace OnlineRideShareApi.Controllers
                     Message="User not autherticate"
                 });
             }
-            var driver =await _context.Drivers.Where(dr => dr.UserId == currentDriverId).FirstOrDefaultAsync();
+            var driver =await _context.Drivers.Where(dr => dr.UserId == currentDriverId).ToListAsync();
             if (driver is null)
             {
                 return NotFound(new AuthResponseDto

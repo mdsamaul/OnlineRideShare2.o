@@ -1,0 +1,55 @@
+<div class="container w-screen h-screen flex justify-center items-center  p-8">
+    <mat-card class="w-96">
+      <mat-card-header>
+        <mat-card-title class="text-xl font-semibold py-4 w-full mx-auto text-center">Driver and Vehicle Form</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+          <div class="mb-4">          
+
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Driver ID</mat-label>
+                <!-- <input matInput formControlName="vehicleTypeId" type="number" placeholder="Enter Vehicle Type ID" /> -->
+                 <mat-select formControlName="driverId">
+                  <mat-option *ngFor="let driver of allDriver$ |async " [value]="driver.driverId">
+                    {{driver.driverName}}
+                  </mat-option>
+                 </mat-select>
+                 <mat-error *ngIf="vehicleForm.get('driverId')?.hasError('required')">
+                    Driver ID is required
+                  </mat-error>
+              </mat-form-field>
+          </div>
+  
+          <div class="mb-4">
+            <!-- <mat-form-field appearance="fill" class="w-full">
+              <mat-label>Vehicle ID</mat-label>
+              <input matInput formControlName="vehicleId" type="number" placeholder="Enter Vehicle ID" />
+              <mat-error *ngIf="vehicleForm.get('vehicleId')?.hasError('required')">
+                Vehicle ID is required
+              </mat-error>
+            </mat-form-field> -->
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Driver ID</mat-label>
+                <!-- <input matInput formControlName="vehicleTypeId" type="number" placeholder="Enter Vehicle Type ID" /> -->
+                 <mat-select formControlName="vehicleId">
+                  <mat-option *ngFor="let vehicle of allVehicle$ |async " [value]="vehicle.vehicleId">
+                    {{vehicle.vehicleBrand}}
+                  </mat-option>
+                 </mat-select>
+                 <mat-error *ngIf="vehicleForm.get('vehicleId')?.hasError('required')">
+                    Vehicle ID is required
+                  </mat-error>
+              </mat-form-field>
+          </div>
+  
+          <div class="flex justify-center">
+            <button mat-raised-button color="primary" type="submit" [disabled]="vehicleForm.invalid">
+              Submit
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

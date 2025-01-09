@@ -1,0 +1,228 @@
+<div class="container mx-auto max-w-4xl mt-10">
+    <mat-card class="p-6 shadow-lg">
+      <mat-card-header>
+        <mat-card-title class="text-2xl font-semibold text-gray-800">
+          {{ isEdit ? 'Edit Vehicle Details' : 'Add Vehicle Details' }}
+        </mat-card-title>
+        <mat-card-subtitle class="text-sm text-gray-600">
+          Please fill in the vehicle details below
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+          <!-- Vehicle ID -->
+          <!-- <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Vehicle ID</mat-label>
+            <input matInput formControlName="vehicleId" type="number" placeholder="Enter Vehicle ID" />
+          </mat-form-field> -->
+  
+          <!-- User ID -->
+          <!-- <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>User ID</mat-label>
+            <input matInput formControlName="userId" type="text" placeholder="Enter User ID" />
+          </mat-form-field> -->
+  
+          <!-- Vehicle Brand -->
+          <div *ngIf="vehicleForm.controls['vehicleBrand'].errors && vehicleForm.controls['vehicleBrand'].touched">
+            <span class="text-red-500">
+                Vehicle Brand is required.
+            </span>
+          </div>
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Vehicle Brand</mat-label>
+            <input matInput formControlName="vehicleBrand" type="text" placeholder="Enter Vehicle Brand" />
+          </mat-form-field>
+  
+          <div *ngIf="vehicleForm.controls['vehicleModel'].errors && vehicleForm.controls['vehicleModel'].touched">
+            <span class="text-red-500">
+                Vehicle Model is required.
+            </span>
+          </div>
+          <!-- Vehicle Model -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Vehicle Model</mat-label>
+            <input matInput formControlName="vehicleModel" type="text" placeholder="Enter Vehicle Model" />
+          </mat-form-field>
+          <div *ngIf="vehicleForm.controls['vehicleCapacity'].errors && vehicleForm.controls['vehicleCapacity'].touched">
+            <span class="text-red-500">
+                Vehicle Capacity is required.
+            </span>
+          </div>
+          <!-- Vehicle Capacity -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Vehicle Capacity</mat-label>
+            <input matInput formControlName="vehicleCapacity" type="text" placeholder="Enter Vehicle Capacity" />
+          </mat-form-field>
+          <div *ngIf="vehicleForm.controls['vehicleRegistrationNo'].errors && vehicleForm.controls['vehicleRegistrationNo'].touched">
+            <span class="text-red-500">
+                vehicle Registration No is required.
+            </span>
+          </div>
+          <!-- Vehicle Registration Number -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Vehicle Registration Number</mat-label>
+            <input matInput formControlName="vehicleRegistrationNo" type="text" placeholder="Enter Registration Number" />
+          </mat-form-field>
+          <div *ngIf="vehicleForm.controls['vehicleChassisNo'].errors && vehicleForm.controls['vehicleChassisNo'].touched">
+            <span class="text-red-500">
+                vehicle Chassis No is required.
+            </span>
+          </div>
+          <!-- Vehicle Chassis Number -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Vehicle Chassis Number</mat-label>
+            <input matInput formControlName="vehicleChassisNo" type="text" placeholder="Enter Chassis Number" />
+          </mat-form-field>
+          <div *ngIf="vehicleForm.controls['vehicleLicence'].errors && vehicleForm.controls['vehicleLicence'].touched">
+            <span class="text-red-500">
+                vehicle Licence No is required.
+            </span>
+          </div>
+          <!-- Vehicle License -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Vehicle License</mat-label>
+            <input matInput formControlName="vehicleLicence" type="text" placeholder="Enter License Number" />
+          </mat-form-field>
+  
+          <!-- Fitness Certificate Number -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Fitness Certificate Number</mat-label>
+            <input matInput formControlName="fitnessCertificateNo" type="text" placeholder="Enter Fitness Certificate Number" />
+          </mat-form-field>
+  
+          <!-- Insurance Policy Number -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Insurance Policy Number</mat-label>
+            <input matInput formControlName="insurancePolicyNo" type="text" placeholder="Enter Insurance Policy Number" />
+          </mat-form-field>
+  
+          <!-- Fitness Expiry Date -->
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Fitness Expiry Date</mat-label>
+            <input matInput [matDatepicker]="fitnessExpiryDate" formControlName="fitnessExpiryDate" placeholder="Choose a date" />
+            <mat-datepicker-toggle matSuffix [for]="fitnessExpiryDate"></mat-datepicker-toggle>
+            <mat-datepicker #fitnessExpiryDate></mat-datepicker>
+          </mat-form-field>
+  
+          <!-- Insurance Expiry Date -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Insurance Expiry Date</mat-label>
+            <input matInput [matDatepicker]="InsuranceExpiryDate" formControlName="insuranceExpiryDate" placeholder="Select Insurance Expiry Date" />
+            <mat-datepicker-toggle matSuffix [for]="InsuranceExpiryDate"></mat-datepicker-toggle>
+            <mat-datepicker #InsuranceExpiryDate></mat-datepicker>
+          </mat-form-field>
+  
+          <!-- Registration Validity Date -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Registration Validity Date</mat-label>
+            <input matInput [matDatepicker]="registrationValidityDate" formControlName="registrationValidityDate" placeholder="Select Insurance Expiry Date" />
+            <mat-datepicker-toggle matSuffix [for]="registrationValidityDate"></mat-datepicker-toggle>
+            <mat-datepicker #registrationValidityDate></mat-datepicker>  
+        </mat-form-field>
+  
+          <!-- Last Maintenance Date -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Last Maintenance Date</mat-label>
+             <input matInput [matDatepicker]="lastMaintenanceDate" formControlName="lastMaintenanceDate" placeholder="Select Insurance Expiry Date" />
+            <mat-datepicker-toggle matSuffix [for]="lastMaintenanceDate"></mat-datepicker-toggle>
+            <mat-datepicker #lastMaintenanceDate></mat-datepicker>  
+        </mat-form-field>
+  
+          <!-- Fuel Type -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Fuel Type</mat-label>
+            <input matInput formControlName="fuelType" type="text" placeholder="Enter Fuel Type" />
+          </mat-form-field>
+  
+          <!-- Odometer Reading -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Odometer Reading</mat-label>
+            <input matInput formControlName="odometerReading" type="number" placeholder="Enter Odometer Reading" />
+          </mat-form-field>
+  
+          <!-- Vehicle Color -->
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-label>Vehicle Color</mat-label>
+            <input matInput formControlName="vehicleColor" type="text" placeholder="Enter Vehicle Color" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Engine Number</mat-label>
+            <input matInput formControlName="engineNumber" placeholder="Enter Engine Number" />
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Owner Name</mat-label>
+            <input matInput formControlName="ownerName" placeholder="Enter Owner Name" />
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Vehicle Age</mat-label>
+            <input matInput formControlName="vehicleAge"  type="number" placeholder="Enter Vehicle Age" />
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Last Service Mileage</mat-label>
+            <input matInput formControlName="lastServiceMileage" type="number" placeholder="Enter Last Service Mileage" />
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Vehicle Status</mat-label>
+            <input matInput formControlName="vehicleStatus" placeholder="Enter Vehicle Status" />
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Vehicle Color Code</mat-label>
+            <input matInput formControlName="vehicleColorCode" placeholder="Enter Vehicle Color Code" />
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Insurance Provider</mat-label>
+            <input matInput formControlName="insuranceProvider" placeholder="Enter Insurance Provider" />
+          </mat-form-field>         
+          <div *ngIf="vehicleForm.controls['vehicleModelYear'].errors && vehicleForm.controls['vehicleModelYear'].touched">
+            <span class="text-red-500">
+              Vehicle Model Year is invalid. Please enter a value between 1900 and 2100.
+            </span>
+          </div>
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Vehicle Model Year</mat-label>
+            <input matInput formControlName="vehicleModelYear" type="number" placeholder="Enter Vehicle Model Year" min="1900" max="2100" />
+          </mat-form-field>
+          
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Available For Booking</mat-label>
+            <mat-select formControlName="isAvailableForBooking">
+              <mat-option [value]="true">Yes</mat-option>
+              <mat-option [value]="false">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Vehicle Type</mat-label>
+            <!-- <input matInput formControlName="vehicleTypeId" type="number" placeholder="Enter Vehicle Type ID" /> -->
+             <mat-select formControlName="vehicleTypeId">
+              <mat-option *ngFor="let vehicleType of vehicleType$ " [value]="vehicleType.vehicleTypeId">
+                {{vehicleType.vehicleTypeName}}
+              </mat-option>
+             </mat-select>
+          </mat-form-field>
+          
+  
+          <!-- Submit and Cancel Buttons -->
+          <div class="flex justify-end gap-5 mt-4">
+            <a [routerLink]="['/vehicle']" mat-raised-button type="button" color="accent" class="px-6 py-2 text-white">
+              Cancel
+            </a>            
+            <button mat-raised-button type="submit"  [disabled]="vehicleForm.invalid" class="px-6 py-2 bg-blue-500 text-white">
+              {{ isEdit ? 'Edit' : 'Add' }} Vehicle
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- {{vehicleType$ | json}} -->

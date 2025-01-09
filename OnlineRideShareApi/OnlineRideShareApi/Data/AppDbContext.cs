@@ -10,8 +10,10 @@ namespace OnlineRideShareApi.Data
         {
             
         }    
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<Driver> Drivers { get; set; }
-        public DbSet<VehicleType> VehicleTypes { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<Driver> Drivers { get; set; }
+        public virtual DbSet<VehicleType> VehicleTypes { get; set; }
+        public virtual DbSet<Vehicle> Vehicles { get; set; }
+        public virtual DbSet<DriverVehicle> DriverVehicles { get; set; }
     }
 }

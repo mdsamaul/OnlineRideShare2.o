@@ -2,7 +2,7 @@
   <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Available Vehicle Types</h2>
   
   <!-- Check if there are vehicle types -->
-  <div *ngIf="wonVehicleType$.length === 0" class="text-center mb-8">
+  <div  class="text-center mb-8">
     <a [routerLink]="['/vehicle-type/form']" 
        class="px-6 py-3 text-white bg-blue-500 hover:bg-blue-600 rounded-lg shadow-md transition duration-200 ease-in-out">
       Add Vehicle Type
@@ -27,16 +27,25 @@
         </mat-card-content>
   
         <mat-card-actions class="justify-end gap-4 py-4">
-          <a [routerLink]="['/vehicle-type/', vehicle.vehicleTypeId]" 
-             mat-button color="accent" 
-             class="text-blue-500 hover:text-blue-600 transition duration-200 ease-in-out">
-            Edit
-          </a>
-          <button (click)="deleteVehicleType(vehicle.vehicleTypeId)" 
-                  mat-button color="warn" 
-                  class="text-red-500 hover:text-red-600 transition duration-200 ease-in-out">
-            Delete
-          </button>
+          <div class="flex space-x-4">
+            <!-- Edit Button -->
+            <a [routerLink]="['/vehicle-type/', vehicle.vehicleTypeId]" 
+               mat-button color="accent" 
+               class="flex items-center text-blue-600 hover:text-red-50 hover:bg-red-600 transition duration-300 ease-in-out 
+               hover:scale-105 hover:shadow-lg px-4 py-2 rounded-md">
+              <mat-icon class="mr-2">edit</mat-icon> Edit
+            </a>
+          
+            <!-- Delete Button -->
+            <button (click)="deleteVehicleType(vehicle.vehicleTypeId)" 
+                    mat-raised-button color="warn" 
+                    class="flex items-center text-red-600 hover:text-red-50 hover:bg-red-600 transition duration-300 ease-in-out 
+                           hover:scale-105 hover:shadow-lg px-4 py-2 rounded-md">
+              <mat-icon class="mr-2">delete</mat-icon> Delete
+            </button>
+          </div>
+          
+
         </mat-card-actions>
       </mat-card>
     </div>

@@ -1,20 +1,65 @@
-<div class="h-screen flex items-center uppercase">
-    <div class="flex mx-auto justify-center items-center w-1/2 text-center shadow-md border rounded-md bg-slate-50 p-2 ">
-        <div>
-            <h1 class="font-bold text-2xl">Account Detail</h1>
-        <div *ngIf="accountDetail$ |async as user">
-           
-            <div class="text-center">
-                <div class="rounded-full bg-blue-500 my-4 text-4xl w-16 h-16 inline-flex items-center justify-center font-bold text-white">
-                     <mat-icon>person</mat-icon>
-                </div>
-                <hr>
-                <div>
-                    {{user.fullName[0] | uppercase}}
-                </div>
+<div class="h-screen flex items-center justify-center bg-gray-100">
+    <div class="w-full sm:w-11/12 md:w-1/2 lg:w-1/3 xl:w-1/4 p-6 shadow-lg rounded-lg bg-white">
+      <h1 class="font-semibold text-2xl mb-4 text-gray-800 text-center">Account Detail</h1>
+  
+      <div *ngIf="accountDetail$ | async as user">
+        <!-- Profile Section -->
+        <div class="flex flex-col items-center">
+          <div class="rounded-full bg-blue-500 my-4 text-4xl w-20 h-20 flex items-center justify-center font-bold text-white">
+            <mat-icon>person</mat-icon>
+          </div>
+  
+          <div class="w-full">
+            <hr class="my-4 border-gray-300">
+            
+            <!-- Full Name -->
+            <div class="flex justify-between mb-4 text-gray-700">
+              <strong class="text-lg">Full Name:</strong>
+              <span>{{ user.fullName }}</span>
             </div>
+            
+            <!-- Email -->
+            <div class="flex justify-between mb-4 text-gray-700">
+              <strong class="text-lg">Email:</strong>
+              <span>{{ user.email }}</span>
+            </div>
+            
+            <!-- Phone Number -->
+            <div class="flex justify-between mb-4 text-gray-700">
+              <strong class="text-lg">Phone Number:</strong>
+              <span>{{ user.phoneNumber }}</span>
+            </div>
+            
+            <!-- Role -->
+            <div class="flex justify-between mb-4 text-gray-700">
+              <strong class="text-lg">Role:</strong>
+              <span>{{ user.roles }}</span>
+            </div>
+  
+            <!-- Two Factor Authentication -->
+            <div class="flex justify-between mb-4 text-gray-700">
+              <strong class="text-lg">Two Factor Enabled:</strong>
+              <span [ngClass]="{ 'text-green-500': user.twoFacotrEnabled, 'text-red-500': !user.twoFacotrEnabled }">
+                {{ user.twoFacotrEnabled ? 'Yes' : 'No' }}
+              </span>
+            </div>
+  
+            <!-- Phone Number Confirmation -->
+            <div class="flex justify-between mb-4 text-gray-700">
+              <strong class="text-lg">Phone Number Confirmed:</strong>
+              <span [ngClass]="{ 'text-green-500': user.phoneNumberConfirmed, 'text-red-500': !user.phoneNumberConfirmed }">
+                {{ user.phoneNumberConfirmed ? 'Yes' : 'No' }}
+              </span>
+            </div>
+  
+            <!-- Access Failed Count -->
+            <div class="flex justify-between text-gray-700">
+              <strong class="text-lg">Access Failed Count:</strong>
+              <span>{{ user.accessFailedCount }}</span>
+            </div>
+          </div>
         </div>
-       
-        </div>
+      </div>
     </div>
-</div>
+  </div>
+  

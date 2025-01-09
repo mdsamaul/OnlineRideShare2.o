@@ -30,28 +30,29 @@
           </mat-form-field>
           
           <!-- Email -->
-          <mat-form-field appearance="fill" class="w-full mb-6">
-            <mat-icon matPrefix class="mr-2 text-gray-500">email</mat-icon>
-            <mat-label>Company Email</mat-label>
-            <input formControlName="companyEmail"  matInput type="email" placeholder="Enter company email" />
-          </mat-form-field>
           @if (form.controls['companyEmail'].errors && form.controls['companyEmail'].touched) {
             <span class="text-red-500">
                 Email is required
             </span>
           }
-  
+          <mat-form-field appearance="fill" class="w-full mb-6">
+            <mat-icon matPrefix class="mr-2 text-gray-500">email</mat-icon>
+            <mat-label>Company Email</mat-label>
+            <input formControlName="companyEmail"  matInput type="email" placeholder="Enter company email" />
+          </mat-form-field>
+         
+          @if (form.controls['companyPhoneNumber'].errors && form.controls['companyPhoneNumber'].touched) {
+            <span class="text-red-500">
+                Phone Number is required
+            </span>
+          }
           <!-- Phone Number -->
           <mat-form-field appearance="fill" class="w-full mb-6">
             <mat-icon matPrefix class="mr-2 text-gray-500">phone</mat-icon>
             <mat-label>Phone Number</mat-label>
             <input formControlName="companyPhoneNumber"  matInput type="text" placeholder="Enter phone number" />
           </mat-form-field>          
-          @if (form.controls['companyPhoneNumber'].errors && form.controls['companyPhoneNumber'].touched) {
-            <span class="text-red-500">
-                Phone Number is required
-            </span>
-          }
+         
           <!-- Submit Button -->
           <div class="flex justify-end gap-5 mt-4">
             <a [routerLink]="['/company']" mat-raised-button type="button" color="accent" class="px-6 py-2 text-white">

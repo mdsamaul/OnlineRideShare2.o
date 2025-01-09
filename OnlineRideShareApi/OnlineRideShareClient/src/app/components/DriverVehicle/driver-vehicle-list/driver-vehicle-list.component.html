@@ -1,0 +1,51 @@
+<div class="overflow-x-auto m-16">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-4xl font-bold text-gray-800">Vehicle Assignment Table</h1>
+      <a [routerLink]="['/driver-vehicle-form']" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md">Add New Entry</a>
+    </div>
+  
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+      <thead class="bg-gray-100 border-b">
+        <tr>
+          <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">s/l</th>
+          <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Driver Name</th>
+          <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Vehicle Name</th>
+          <!-- <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">User ID</th> -->
+          <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Loop through each record -->
+        <tr *ngFor="let item of driverVehicel$ | async let i = index" class="border-b hover:bg-gray-50">
+            <!-- {{item | json}} -->
+          <td class="px-6 py-4 text-center text-sm text-gray-700">{{ i+1 }}</td>
+          <td class="px-6 py-4 text-center text-sm text-gray-700">
+            <ng-container *ngFor="let d of allDrivcer$">
+                <td *ngIf="d.driverId === item.driverId" class="px-6 py-4 text-center text-sm text-gray-700">
+                  {{ d.driverName }}
+                </td>
+              </ng-container>  
+           
+          </td>
+          <td class="px-6 py-4 text-center text-sm text-gray-700">
+            <ng-container *ngFor="let v of allVehicle$">
+                <td *ngIf="v.vehicleId === item.vehicleId" class="px-6 py-4 text-center text-sm text-gray-700">
+                  {{ v.vehicleBrand }}
+                </td>
+              </ng-container>   
+          </td>
+          <!-- <td class="px-6 py-4 text-center text-sm text-gray-700">{{ item.userId }}</td> -->
+          <td class="px-6 py-4 text-center w-full flex justify-center items-center gap-3">          
+            <a [routerLink]="['/driver-vehicle-form/', item.driverVehicleId]" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md">Edit</a>
+            <button (click)="deleteItem(item.driverVehicleId)" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md">Delete</button> 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- {{allDrivcer$| json}} -->
+<!-- <h1>mon</h1> -->
+  <!-- {{allVehicle$ | json}} -->
+
+  <!-- <h1>driver vehicle</h1> -->
+  <!-- {{driverVehicel$ | json}} -->

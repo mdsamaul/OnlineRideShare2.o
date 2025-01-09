@@ -137,19 +137,9 @@ namespace OnlineRideShareApi.Controllers
                     Message = "User is not authenticated"
                 });
             }
-    //        if (string.IsNullOrEmpty(currentUserId))
-    //{
-    //    return Unauthorized(new AuthResponseDto
-    //    {
-    //        IsSuccess = false,
-    //        Message = "User is not authenticated"
-    //    });
-    //}
-
-            // ইউজারের জন্য VehicleType খোঁজা
             var vehicleType = await _context.VehicleTypes
-                                            .Where(vt => vt.UserId == currentUserId) // ইউজারের সাথে সম্পর্কিত VehicleType
-                                            .FirstOrDefaultAsync();
+                                            .Where(vt => vt.UserId == currentUserId)
+                                            .ToListAsync();
 
             if (vehicleType is null)
             {

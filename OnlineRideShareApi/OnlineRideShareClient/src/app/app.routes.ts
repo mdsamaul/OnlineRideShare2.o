@@ -19,6 +19,10 @@ import { DriverFormComponent } from './components/driver-form/driver-form.compon
 import { VehicleComponent } from './pages/vehicle/vehicle.component';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
 import { VehicleTypeFormComponent } from './components/vehicle-type-form/vehicle-type-form.component';
+import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
+import { VehicleListFormComponent } from './components/vehicle-list-form/vehicle-list-form.component';
+import { DriverVehicleComponent } from './pages/driver-vehicle/driver-vehicle.component';
+import { DriverVehicleFormComponent } from './components/DriverVehicle/driver-vehicle-form/driver-vehicle-form.component';
 
 export const routes: Routes = [
     {path:'', component:HomeComponent},
@@ -58,8 +62,15 @@ export const routes: Routes = [
    {path:'driver/:id',component:DriverFormComponent, canActivate:[authGuard]},
    //vehicle type
    {path:'vehicle', component:VehicleComponent, canActivate:[authGuard]},
+   {path:'vehicle-list/form', component:VehicleListFormComponent, canActivate:[authGuard]},
+   {path:'vehicle-list/:id', component:VehicleListFormComponent, canActivate:[authGuard]},
    {path:'vehicle-type/form', component:VehicleTypeFormComponent, canActivate:[authGuard]},
    {path:'vehicle-type/:id', component:VehicleTypeFormComponent, canActivate:[authGuard]},
 
+
+   //driver vehicle 
+   {path:'driver-vehicle', component:DriverVehicleComponent,canActivate:[authGuard]},
+   {path:'driver-vehicle-form', component:DriverVehicleFormComponent, canActivate:[authGuard]},
+   {path:'driver-vehicle-form/:id', component:DriverVehicleFormComponent, canActivate:[authGuard]},
 
 ];
