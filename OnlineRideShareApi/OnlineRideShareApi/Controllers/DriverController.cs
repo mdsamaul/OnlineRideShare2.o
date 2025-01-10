@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineRideShareApi.Data;
 using OnlineRideShareApi.Dtos;
 using OnlineRideShareApi.Models;
+using OnlineRideShareApi.Service;
 using System.Security.Claims;
 
 namespace OnlineRideShareApi.Controllers
@@ -13,10 +14,12 @@ namespace OnlineRideShareApi.Controllers
     public class DriverController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly GeoCodingService _geoCodingService;
 
-        public DriverController(AppDbContext context)
+        public DriverController(AppDbContext context, GeoCodingService geoCodingService)
         {
             _context = context;
+            _geoCodingService = geoCodingService;
         }
         [HttpGet]
         public async Task<IEnumerable<Driver>> GetDrivers()
@@ -89,13 +92,7 @@ namespace OnlineRideShareApi.Controllers
             await _context.AddAsync(driver);
             var result = await _context.SaveChangesAsync();
             if (result > 0)
-            {
-                //return Ok(new AuthResponseDto
-                //{
-                //    IsSuccess = true,
-                //    Message = "Account Created Sucessfully!"
-                //});
-                //return Ok("Companey Create successfully");
+            {               
                 return Ok(new AuthResponseDto
                 {
                     IsSuccess = true,
@@ -157,5 +154,65 @@ namespace OnlineRideShareApi.Controllers
             }
             return Ok(driver);
         }
+        // PATCH: api/Driver/5/SetStatus
+        [HttpPatch("{id:int}/SetStatus")]
+        public async Task<ActionResult> SetDriverStatus(int id, [FromQuery] bool isAvailable)
+        {
+            var driver = await _context.Drivers.FindAsync(id);
+            if (driver == null) return NotFound();
+
+            driver.IsAvailable = isAvailable;
+            driver.SetUpdateInfo();
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = $"Driver status updated to {(isAvailable ? "Online" : "Offline")}.",
+                driver
+            });
+        }
+       
+        [HttpGet("nearbyDrivers")]
+        public async Task<ActionResult> GetNearbyDrivers([FromQuery] string customerLocation)
+        {
+            try
+            {
+                var (customerLat, customerLon) = await _geoCodingService.GetCoordinatesFromAddressAsync(customerLocation);
+                   var drivers = await _context.Drivers
+                    .Where(driver => driver.IsAvailable == true)  
+                    .ToListAsync();
+                var nearbyDrivers = drivers.Select(driver =>
+                {
+                    var distance = CalculateDistance(customerLat, customerLon, driver.DriverLatitude, driver.DriverLongitude);
+                    return new { driver, distance }; 
+                })
+                .Where(driverWithDistance => driverWithDistance.distance <= 5)
+                .OrderBy(driverWithDistance => driverWithDistance.distance) 
+                .Select(driverWithDistance => driverWithDistance.driver) 
+                .ToList();
+
+                return Ok(nearbyDrivers);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Error: " + ex.Message });
+            }
+        }
+        private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
+        {
+            const double EarthRadius = 6371;
+            var dLat = DegreesToRadians(lat2 - lat1);
+            var dLon = DegreesToRadians(lon2 - lon1);
+            var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                    Math.Cos(DegreesToRadians(lat1)) * Math.Cos(DegreesToRadians(lat2)) *
+                    Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            return EarthRadius * c; 
+        }
+        private double DegreesToRadians(double degrees)
+        {
+            return degrees * (Math.PI / 180);
+        }
     }
 }
+

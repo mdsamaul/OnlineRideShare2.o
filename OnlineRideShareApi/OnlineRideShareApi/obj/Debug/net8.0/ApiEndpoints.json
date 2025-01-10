@@ -405,6 +405,27 @@
   },
   {
     "ContainingType": "OnlineRideShareApi.Controllers.DriverController",
+    "Method": "SetDriverStatus",
+    "RelativePath": "api/Driver/{id}/SetStatus",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "isAvailable",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OnlineRideShareApi.Controllers.DriverController",
     "Method": "DriverDetails",
     "RelativePath": "api/Driver/details",
     "HttpMethod": "GET",
@@ -422,6 +443,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "OnlineRideShareApi.Controllers.DriverController",
+    "Method": "GetNearbyDrivers",
+    "RelativePath": "api/Driver/nearbyDrivers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerLocation",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnlineRideShareApi.Controllers.DriverVehiclesController",

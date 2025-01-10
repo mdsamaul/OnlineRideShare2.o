@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineRideShareApi.Migrations
 {
     /// <inheritdoc />
-    public partial class addedrefrieshtoken : Migration
+    public partial class driverVehicle : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,6 +63,7 @@ namespace OnlineRideShareApi.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CompanyEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CompanyPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -208,6 +209,7 @@ namespace OnlineRideShareApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DriverName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DrivingLicenseNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DriverNid = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -230,6 +232,87 @@ namespace OnlineRideShareApi.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Vehicles",
+                columns: table => new
+                {
+                    VehicleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VehicleBrand = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleModel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleCapacity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleRegistrationNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleChassisNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleLicence = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FitnessCertificateNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InsurancePolicyNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FitnessExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    InsuranceExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RegistrationValidityDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastMaintenanceDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FuelType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OdometerReading = table.Column<int>(type: "int", nullable: true),
+                    VehicleColor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EngineNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VehicleAge = table.Column<int>(type: "int", nullable: true),
+                    LastServiceMileage = table.Column<int>(type: "int", nullable: true),
+                    VehicleStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VehicleColorCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InsuranceProvider = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VehicleModelYear = table.Column<int>(type: "int", nullable: true),
+                    IsAvailableForBooking = table.Column<bool>(type: "bit", nullable: true),
+                    VehicleTypeId = table.Column<int>(type: "int", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vehicles", x => x.VehicleId);
+                    table.ForeignKey(
+                        name: "FK_Vehicles_VehicleTypes_VehicleTypeId",
+                        column: x => x.VehicleTypeId,
+                        principalTable: "VehicleTypes",
+                        principalColumn: "VehicleTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DriverVehicles",
+                columns: table => new
+                {
+                    DriverVehicleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DriverId = table.Column<int>(type: "int", nullable: false),
+                    VehicleId = table.Column<int>(type: "int", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DriverVehicles", x => x.DriverVehicleId);
+                    table.ForeignKey(
+                        name: "FK_DriverVehicles_Drivers_DriverId",
+                        column: x => x.DriverId,
+                        principalTable: "Drivers",
+                        principalColumn: "DriverId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DriverVehicles_Vehicles_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicles",
+                        principalColumn: "VehicleId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -275,6 +358,21 @@ namespace OnlineRideShareApi.Migrations
                 name: "IX_Drivers_CompanyId",
                 table: "Drivers",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverVehicles_DriverId",
+                table: "DriverVehicles",
+                column: "DriverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverVehicles_VehicleId",
+                table: "DriverVehicles",
+                column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_VehicleTypeId",
+                table: "Vehicles",
+                column: "VehicleTypeId");
         }
 
         /// <inheritdoc />
@@ -296,10 +394,7 @@ namespace OnlineRideShareApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Drivers");
-
-            migrationBuilder.DropTable(
-                name: "VehicleTypes");
+                name: "DriverVehicles");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -308,7 +403,16 @@ namespace OnlineRideShareApi.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Drivers");
+
+            migrationBuilder.DropTable(
+                name: "Vehicles");
+
+            migrationBuilder.DropTable(
                 name: "Companies");
+
+            migrationBuilder.DropTable(
+                name: "VehicleTypes");
         }
     }
 }

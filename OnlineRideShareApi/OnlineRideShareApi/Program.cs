@@ -6,11 +6,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OnlineRideShareApi.Data;
 using OnlineRideShareApi.Models;
+using OnlineRideShareApi.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var JWTSetting = builder.Configuration.GetSection("JWTSetting");
-
+builder.Services.AddScoped<GeoCodingService>();
 // Add services to the container.
 //builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite("Data Source=auth.db"));
 var cString = builder.Configuration.GetConnectionString("appCon");

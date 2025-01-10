@@ -15,6 +15,7 @@
         <!-- Table Body -->
         <tbody class="divide-y divide-gray-200">
           @for (item of allUser$ | async; track item.id) {
+            
             <tr class="hover:bg-gray-100">
               <td class="px-6 py-4 text-gray-600 border-b">{{item.fullName}}</td>
               <td class="px-6 py-4 text-gray-600 border-b">{{item.email}}</td>

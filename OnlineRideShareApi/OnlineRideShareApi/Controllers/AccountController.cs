@@ -442,18 +442,54 @@ namespace OnlineRideShareApi.Controllers
         }
 
 
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<UserDetailDto>>> GetUsers()
+        //{
+
+        //    var users = await _userManager.Users.AsNoTracking().ToListAsync();
+        //    return Ok(users);
+        //}
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDetailDto>>> GetUsers()
         {
-            var users = await _userManager.Users.Select(u => new UserDetailDto
+            // Fetch users without tracking changes for performance
+            var users = await _userManager.Users.AsNoTracking().ToListAsync();
+
+            // Prepare a list to hold the user details with roles
+            var userDetails = new List<UserDetailDto>();
+
+            // Iterate over the users to fetch their roles
+            foreach (var user in users)
             {
-                Id = u.Id,
-                Email = u.Email,
-                FullName = u.FullName,
-                Roles = _userManager.GetRolesAsync(u).Result.ToArray()
-            }).ToListAsync();
-            return Ok(users);
+                var roles = await _userManager.GetRolesAsync(user); // Get the roles for each user
+
+                // Create the DTO and assign values including roles
+                var userDetail = new UserDetailDto
+                {
+                    Id = user.Id,
+                    FullName = user.FullName, // Assuming you have a FullName property
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    TwoFacotrEnabled = user.TwoFactorEnabled,
+                    PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                    AccessFailedCount = user.AccessFailedCount,
+                    Roles = roles.ToArray() // Convert List<string> to string[] and assign to Roles
+                };
+
+                userDetails.Add(userDetail);
+            }
+
+            // Return the user details with roles
+            return Ok(userDetails);
         }
+
+
+
+
+
+
+
 
 
     }

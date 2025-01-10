@@ -14,6 +14,11 @@ export class UsersComponent implements  OnInit{
 authService = inject(AuthService);
 allUser$= this.authService.getAll();
 ngOnInit(): void {
-  console.log("asmaul",this.authService.getAll());
+  // console.log("asmaul",this.authService.getAll().subscribe({}));
+  this.authService.getAll().subscribe({
+    next:(res)=>{
+      console.log(res);
+    }
+  })
 }
 }

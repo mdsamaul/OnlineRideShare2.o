@@ -440,6 +440,8 @@ export class AuthService {
   getAll = (): Observable<UserDetail[]> =>
     this.http.get<UserDetail[]>(`${this.apiUrl}account`);
 
+
+ 
   forgotPassword(email: string): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}account/forgot-password`, { email })

@@ -146,6 +146,16 @@
             {{ driver.isAvailable ? 'Available' : 'Not Available' }}
           </mat-slide-toggle>
         </div>
+
+        <div class="mt-4 text-center">
+          <mat-slide-toggle 
+            [(ngModel)]="driver.isAvailable" 
+            color="primary" 
+            (change)="toggleAvailability()">
+            {{ driver.isAvailable ? 'Go Offline' : 'Go Online' }}
+          </mat-slide-toggle>
+        </div>
+        
         <!-- Actions -->
         <div class="mt-6 flex justify-around">
           <a 

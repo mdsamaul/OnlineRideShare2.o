@@ -50,7 +50,7 @@ createRole(role: RoleCreateRequest){
 deleteRole(id:string){
 this.roleService.delete(id).subscribe({
   next:(response)=>{
-    // this.roles$= this.roleService.getRoles();
+    this.roles$= this.roleService.getRoles();
     this.snackBar.open('Role Deleted Successfully', 'close',{
       duration:3000
     })
@@ -67,7 +67,7 @@ this.roleService.delete(id).subscribe({
 assignRole(){
   this.roleService.assignRole(this.selectedUser, this.selectedRole).subscribe({
     next:(response)=>{
-      // this.roles$= this.roleService.getRoles();
+      this.roles$= this.roleService.getRoles();
       this.snackBar.open('Role Assign Successfully', 'close',{
         duration:3000
       })

@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 import { DriverCreateRequest } from '../../interfaces/driver-create-request';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatSlideToggle  } from '@angular/material/slide-toggle'
+import { MatSlideToggle, MatSlideToggleModule  } from '@angular/material/slide-toggle'
 import { response } from 'express';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-driver',
   standalone: true,
-  imports: [RouterModule, CommonModule,MatSlideToggle ],
+  imports: [RouterModule, CommonModule,MatSlideToggle ,MatSlideToggleModule, FormsModule],
   templateUrl: './driver.component.html',
   styleUrl: './driver.component.css'
 })
@@ -53,9 +54,14 @@ export class DriverComponent implements OnInit{
    
     this.getDriver();
   }
-
+  driver = {
+    isAvailable: false
+  };
   private getDriver(): void{
     this.drivers$= this.authService.getDrivers();
   }
-  
+  toggleAvailability() {
+    this.driver.isAvailable = !this.driver.isAvailable;
+    console.log(`Driver is now ${this.driver.isAvailable ? 'Online' : 'Offline'}`);
+  }
 }
