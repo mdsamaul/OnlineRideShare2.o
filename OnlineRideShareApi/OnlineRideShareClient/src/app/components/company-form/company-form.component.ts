@@ -114,7 +114,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       // debugger
 
       this.authServices.editCompany(this.id, this.form.value).subscribe({
-        next: (value) => {
+        next: (response) => {
           console.log('Edit', Response);
           this.router.navigateByUrl('/company');
           this.toastr.success('Edit Successfully');

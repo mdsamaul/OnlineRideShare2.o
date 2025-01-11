@@ -1,0 +1,118 @@
+<div  class="container mx-auto p-8 bg-white shadow-xl rounded-xl">
+    <h2 class="text-3xl font-semibold mb-6 text-center text-blue-600">
+      Customer Form
+    </h2>
+    <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Customer Name -->
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Customer Name</mat-label>
+          <input matInput placeholder="Enter Customer Name" formControlName="customerName" class="focus:ring-2 focus:ring-blue-500" />
+          <mat-error *ngIf="customerForm.get('customerName')?.hasError('required')">
+            Customer Name is required
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- Phone Number -->
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Phone Number</mat-label>
+          <input matInput placeholder="Enter Phone Number" formControlName="customerPhoneNumber" class="focus:ring-2 focus:ring-blue-500" />
+          <mat-error *ngIf="customerForm.get('customerPhoneNumber')?.hasError('required')">
+            Phone Number is required
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- Email -->
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" placeholder="Enter Email" formControlName="customerEmail" class="focus:ring-2 focus:ring-blue-500" />
+          <mat-error *ngIf="customerForm.get('customerEmail')?.hasError('email')">
+            Invalid email format
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- NID -->
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>NID</mat-label>
+          <input matInput placeholder="Enter NID" formControlName="customerNID" class="focus:ring-2 focus:ring-blue-500" />
+          <mat-error *ngIf="customerForm.get('customerNID')?.hasError('required')">
+            NID is required
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- Latitude (Auto-detected) -->
+        <!-- <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Latitude</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="Auto-detected Latitude"
+            formControlName="customerLatitude"
+            
+            class="focus:ring-2 focus:ring-blue-500"
+          />
+        </mat-form-field> -->
+  
+        <!-- Longitude (Auto-detected) -->
+        <!-- <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Longitude</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="Auto-detected Longitude"
+            formControlName="customerLongitude"
+            
+            class="focus:ring-2 focus:ring-blue-500"
+          />
+        </mat-form-field> -->
+  
+        
+  
+        <!-- //images -->
+        <!-- <div class="flex flex-col items-center">
+            <label for="file-upload" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-lg transition duration-200">
+              Upload Image
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              class="hidden"
+              (change)="onFileSelected($event)"
+              formControlName="customerImage"
+            />
+            <p class="mt-2 text-sm text-gray-500">Click to upload an image</p>
+          </div>          -->
+            <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Image</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="cutomer"
+            formControlName="customerImage"
+            
+            class="focus:ring-2 focus:ring-blue-500"
+          />
+        </mat-form-field>
+                    
+      </div>
+      <div class="flex justify-end gap-6">
+       
+              <button
+              [routerLink]="['/customer']"
+              class="px-3 py-1 text-white bg-red-500 hover:bg-red-600 rounded-md"
+            >
+              cancle
+            </button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="customerForm.invalid"
+          class="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 focus:outline-none"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+
+  

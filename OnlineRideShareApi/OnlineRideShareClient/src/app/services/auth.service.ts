@@ -394,6 +394,7 @@ import { ResetPasswordRequest } from '../interfaces/ResetPasswordRequest';
 import { jwtDecode } from 'jwt-decode';
 import { VehicleDetails } from '../interfaces/vehicle-details';
 import { DriverVehicle } from '../interfaces/driver-vehicle';
+import { Customer } from '../interfaces/customer-response';
 
 @Injectable({
   providedIn: 'root',
@@ -613,6 +614,13 @@ detailsDriver (): Observable<DriverCreateRequest[]>{
     return this.http.put<AuthResponse>(`${this.apiUrl}driver/${id}`, data);
   }
 
+  //driver status online or offline
+
+setDriverStatus(id:number, isAvailable:boolean):Observable<AuthResponse>{
+   const url = `${this.apiUrl}driver/${id}/SetStatus`;
+   return this.http.patch<AuthResponse>(url, null,  { params: { isAvailable: isAvailable } });
+}
+
   // Vehicle Type methods
   getVehicleType(): Observable<VehicleType[]> {
     return this.http.get<VehicleType[]>(`${this.apiUrl}vehicletype`);
@@ -696,5 +704,39 @@ deleteDriverVehicle(id:number):Observable<AuthResponse>{
 //details driver vehicle
 detailsDriverVehicle():Observable<AuthResponse>{
   return this.http.get<AuthResponse>(`${this.apiUrl}DriverVehicles`)
+}
+
+//customer
+
+getAllCustomer():Observable<Customer[]>{
+  return this.http.get<Customer[]>(`${this.apiUrl}Cusomer`);
+}
+//get specif user 
+detaislCustomer():Observable<Customer[]>{
+  return this.http.get<Customer[]>(`${this.apiUrl}Cusomer/details`)
+}
+
+//create customer
+createCustomer(data : Customer):Observable<AuthResponse>{
+  return this.http.post<AuthResponse>(`${this.apiUrl}Cusomer`, data)
+}
+
+//edit customer
+editCustomer(id:number, data:Customer):Observable<AuthResponse>{
+  return this.http.put<AuthResponse>(`${this.apiUrl}Cusomer/${id}`,data)
+}
+//get by id customer
+getIdByCustomer(id: number):Observable<AuthResponse>{
+  return this.http.get<AuthResponse>(`${this.apiUrl}Cusomer/${id}`)
+}
+
+//delete 
+deleteCustomer(id: number):Observable<AuthResponse>{
+  return this.http.delete<AuthResponse>(`${this.apiUrl}Cusomer/${id}`)
+}
+//customer er current location 
+sendLocationToApi(latitude:number, longitude:number):Observable<AuthResponse>{
+  const url = `${this.apiUrl}Cusomer/update-location`;
+  return this.http.post<AuthResponse>(url,{latitude:latitude, longitude:longitude});
 }
 }

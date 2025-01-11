@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineRideShareApi.Data;
 
@@ -11,9 +12,11 @@ using OnlineRideShareApi.Data;
 namespace OnlineRideShareApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250111063214_added to customer model and controller")]
+    partial class addedtocustomermodelandcontroller
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,10 +300,10 @@ namespace OnlineRideShareApi.Migrations
                     b.Property<string>("CustomerImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("CustomerLatitude")
+                    b.Property<float>("CustomerLatitude")
                         .HasColumnType("real");
 
-                    b.Property<float?>("CustomerLongitude")
+                    b.Property<float>("CustomerLongitude")
                         .HasColumnType("real");
 
                     b.Property<string>("CustomerNID")

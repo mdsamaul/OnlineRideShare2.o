@@ -22,6 +22,7 @@ export class DriverComponent implements OnInit{
   drivers$!:Observable<DriverCreateRequest[]>;
   wonDrivers$:DriverCreateRequest[]=[];
   isAdmin$= false;
+isAvailable =false;
 
   deleteDriver(id:number){
     console.log(id);
@@ -45,9 +46,9 @@ export class DriverComponent implements OnInit{
       console.log("un sub : ",this.authService.detailsDriver());
       this.authService.detailsDriver().subscribe({
         next:(response)=>{
-         console.log(response);
+          this.isAvailable= response[0].isAvailable;
+          // console.log("this driver : ", response[0].isAvailable);
          this.wonDrivers$ = Array.isArray(response) ? response : [response];
-         console.log(this.wonDrivers$);
         }
       })
     }
@@ -60,8 +61,25 @@ export class DriverComponent implements OnInit{
   private getDriver(): void{
     this.drivers$= this.authService.getDrivers();
   }
-  toggleAvailability() {
-    this.driver.isAvailable = !this.driver.isAvailable;
-    console.log(`Driver is now ${this.driver.isAvailable ? 'Online' : 'Offline'}`);
+  toggleAvailability(id:number) {
+
+    console.log(this.isAvailable)
+    if(this.isAvailable){
+      this.isAvailable=false;
+    }else{
+      this.isAvailable=true
+    }
+    console.log(this.isAvailable)
+    // let isAvailable = !this.driver.isAvailable;
+    console.log(`Driver is now ${this.isAvailable ? 'Online' : 'Offline'}`);
+    // console.log(this.authService.setDriverStatus(1,false));
+    this.authService.setDriverStatus(id, this.isAvailable).subscribe({
+      next:(res)=>{
+        this.toastrService.success(res.message);
+      },error:(err)=>{
+        this.toastrService.error(err.error.message);
+      }
+    })
+    // console.log("won : ", id)
   }
 }

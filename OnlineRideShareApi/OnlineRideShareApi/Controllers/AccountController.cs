@@ -33,7 +33,6 @@ namespace OnlineRideShareApi.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
-
         }
 
         // api/account/register

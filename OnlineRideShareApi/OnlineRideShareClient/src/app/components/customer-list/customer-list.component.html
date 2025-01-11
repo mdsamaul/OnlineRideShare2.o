@@ -1,0 +1,106 @@
+<div class="m-16 border">
+    <div class="flex justify-around items-center">
+      <div>
+        <mat-icon class="animate-pulse text-blue-600">person</mat-icon>
+      </div>
+      <h1 class="text-4xl font-bold py-4 text-center">Customer</h1>
+      <a *ngIf="!isAdmin$ && detailCustomer$.length==0"
+        [routerLink]="['/customer-list/form']"
+        class="px-3 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md"
+      >
+        Add Customer
+      </a>
+    </div>
+    <div *ngIf="isAdmin$" class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+        <thead class="bg-gray-100 border-b">
+          <tr>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">SL</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Customer Name</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Phone Number</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Email</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">NID</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Latitude</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Longitude</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Image</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of allCustomer$ | async; let i = index" class="border-b hover:bg-gray-50">
+            <td class="px-6 py-4 text-center text-sm text-gray-700">{{ i + 1 }}</td>
+            <td class="px-6 py-4 text-center text-sm text-gray-700">{{ customer.customerName }}</td>
+            <td class="px-6 py-4 text-center text-sm text-gray-700">{{ customer.customerPhoneNumber }}</td>
+            <td class="px-6 py-4 text-center text-sm text-gray-700">{{ customer.customerEmail }}</td>
+            <td class="px-6 py-4 text-center text-sm text-gray-700">{{ customer.customerNID }}</td>
+            <td class="px-6 py-4 text-center text-sm text-gray-700">{{ customer.customerLatitude }}</td>
+            <td class="px-6 py-4 text-center text-sm text-gray-700">{{ customer.customerLongitude }}</td>
+            <td class="px-6 py-4 text-center text-sm text-gray-700">
+              <img
+                *ngIf="customer.customerImage"
+                [src]="customer.customerImage"
+                alt="Customer Image"
+                class="w-10 h-10 rounded-full object-cover mx-auto"
+              />
+            </td>
+            <td class="px-6 py-4 flex gap-4 justify-center items-center">
+              <a
+                [routerLink]="['/customer-list/', customer.customerId]"
+                class="px-3 py-1 text-white bg-yellow-500 hover:bg-yellow-600 rounded-md"
+              >
+                Edit
+              </a>
+              <button
+                (click)="deleteCustomer(customer.customerId)"
+                class="px-3 py-1 text-white bg-red-500 hover:bg-red-600 rounded-md"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="!isAdmin$" class=" grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto flex justify-center items-center p-10 gap-6">
+        <!-- Customer Card -->
+        <div *ngFor="let customer of detailCustomer$" class="bg-white p-4 rounded-lg shadow-lg border">
+          <div class="flex justify-between items-center mb-4">
+            <mat-icon class="animate-pulse text-blue-600">person</mat-icon>
+            <h2 class="text-xl font-semibold text-gray-800">{{ customer.customerName }}</h2>
+          </div>
+          
+          <div class="text-center">
+            <!-- Customer Image -->
+            <img
+              *ngIf="customer.customerImage"
+              [src]="customer.customerImage"
+              alt="Customer Image"
+              class="w-20 h-20 rounded-full border border-red-100 shadow-lg object-cover mx-auto"
+            />
+          </div>
+          
+          <div class="mt-4">
+            <p><strong>Phone:</strong> {{ customer.customerPhoneNumber }}</p>
+            <p><strong>Email:</strong> {{ customer.customerEmail }}</p>
+            <p><strong>NID:</strong> {{ customer.customerNID }}</p>
+            <p><strong>Location:</strong> Latitude: {{ customer.customerLatitude }} | Longitude: {{ customer.customerLongitude }}</p>
+          </div>
+      
+          <div class="flex justify-between mt-4">
+            <!-- Action Buttons -->
+            <a
+              [routerLink]="['/customer-list/', customer.customerId]"
+              class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+            >
+              Edit
+            </a>
+            <button
+              (click)="deleteCustomer(customer.customerId)"
+              class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>      
+  </div>

@@ -141,17 +141,17 @@
         
         
         <!-- Availability -->
-        <div class="mt-4 text-center">
+        <!-- <div class="mt-4 text-center">
           <mat-slide-toggle [checked]="driver.isAvailable" disabled color="primary">
             {{ driver.isAvailable ? 'Available' : 'Not Available' }}
           </mat-slide-toggle>
-        </div>
+        </div> -->
 
         <div class="mt-4 text-center">
           <mat-slide-toggle 
             [(ngModel)]="driver.isAvailable" 
             color="primary" 
-            (change)="toggleAvailability()">
+            (change)="toggleAvailability(driver.driverId)">
             {{ driver.isAvailable ? 'Go Offline' : 'Go Online' }}
           </mat-slide-toggle>
         </div>

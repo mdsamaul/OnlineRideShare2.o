@@ -23,6 +23,9 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
 import { VehicleListFormComponent } from './components/vehicle-list-form/vehicle-list-form.component';
 import { DriverVehicleComponent } from './pages/driver-vehicle/driver-vehicle.component';
 import { DriverVehicleFormComponent } from './components/DriverVehicle/driver-vehicle-form/driver-vehicle-form.component';
+import { CustomerComponent } from './pages/customer/customer.component';
+import { CustomerFormComponent } from './components/customer-form/customer-form.component';
+import { CustomerGetLocatioinComponent } from './components/customer-get-locatioin/customer-get-locatioin.component';
 
 export const routes: Routes = [
     {path:'', component:HomeComponent},
@@ -72,5 +75,12 @@ export const routes: Routes = [
    {path:'driver-vehicle', component:DriverVehicleComponent,canActivate:[authGuard]},
    {path:'driver-vehicle-form', component:DriverVehicleFormComponent, canActivate:[authGuard]},
    {path:'driver-vehicle-form/:id', component:DriverVehicleFormComponent, canActivate:[authGuard]},
+
+   //customer
+   {path:'customer', component:CustomerComponent, canActivate:[authGuard]},
+   //customer form
+   {path:'customer-list/form',component:CustomerFormComponent,canActivate:[authGuard]},
+   {path:'customer-list/:id', component:CustomerFormComponent, canActivate:[authGuard]},
+   {path:'set/location', component:CustomerGetLocatioinComponent, canActivate:[authGuard],}
 
 ];
