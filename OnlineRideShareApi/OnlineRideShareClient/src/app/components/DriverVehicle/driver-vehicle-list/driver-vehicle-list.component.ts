@@ -20,7 +20,8 @@ export class DriverVehicleListComponent implements OnInit {
   authService = inject(AuthService);
   allDrivcer$!:DriverCreateRequest[];
   allVehicle$!:VehicleDetails[];
-  driverVehicel$!: Observable<DriverVehicle[]>;
+  driverVehicel$! : DriverVehicle[];
+  isAdmin=false;
 constructor(
   private toastrService :ToastrService,
   private router: Router
@@ -31,7 +32,8 @@ this.authService.deleteDriverVehicle(id).subscribe({
     console.log(res);
     this.toastrService.success(res.message);
     this.router.navigateByUrl('driver-vehicle');
-    this.driverVehicel$= this.authService.getAllDriverVehicle();
+    // this.driverVehicel$ = this.authService.getAllDriverVehicle();
+    location.reload();
   },
   error:(err)=>{
     this.toastrService.error(err.error.message);
@@ -45,18 +47,51 @@ this.authService.deleteDriverVehicle(id).subscribe({
     // this.authService.getAllDriverVehicle().subscribe({
 
     // })
-    this.driverVehicel$= this.authService.getAllDriverVehicle()
-    this.authService.detailsDriver().subscribe({
-      next: (res) => {
-        console.log('driver ', res);
-        this.allDrivcer$=res;
-      },
-    });
-    this.authService.getVehicleDetails().subscribe({
-      next: (res) => {
-        console.log('Vehicle Details ', res);
-        this.allVehicle$=res;
-      },
-    });
+    // console.log("get user details : ",this.authService.getUserDetail());
+    if(this.authService.getUserDetail()?.roles== 'Admin'){
+      this.isAdmin=true;
+    }
+    // this.driverVehicel$= 
+   
+    // console.log("driver vehicle : ",this.driverVehicel$)
+    if(this.isAdmin){
+      this.authService.getAllDriverVehicle().subscribe({
+        next:(res)=>{
+          // console.log("res : ",res);
+          this.driverVehicel$=res;
+        }
+      })
+      this.authService.getDrivers().subscribe({
+        next:(res)=>{
+          this.allDrivcer$= res;
+        }
+      })
+      this.authService.getAllVehicle().subscribe({
+        next:(res)=>{
+          this.allVehicle$=res;
+        }
+      })
+    }else{
+      this.authService.detailsDriver().subscribe({
+        next: (res) => {
+          // console.log('driver ', res);
+          this.allDrivcer$=res;
+        },
+      });
+      this.authService.getVehicleDetails().subscribe({
+        next: (res) => {
+          // console.log('Vehicle Details ', res);
+          this.allVehicle$=res;
+        },
+      });
+      this.authService.detailsDriverVehicle().subscribe({
+        next:(res)=>{
+          console.log('driver detsila : ',res);
+          this.driverVehicel$=res;
+        }
+      })
+    }
+   
+    
   }
 }

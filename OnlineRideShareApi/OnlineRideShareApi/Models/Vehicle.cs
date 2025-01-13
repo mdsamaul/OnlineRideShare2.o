@@ -35,6 +35,6 @@ namespace OnlineRideShareApi.Models
         [ForeignKey("VehicleType")]
         public int VehicleTypeId { get; set; }
         public virtual VehicleType? VehicleTypes { get; set; }
-        //public virtual ICollection<DriverVehicle>? DriverVehicles { get; set; }
+        public virtual ICollection<DriverVehicle>? DriverVehicles { get; set; }
     }
 }

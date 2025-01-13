@@ -12,8 +12,8 @@ using OnlineRideShareApi.Data;
 namespace OnlineRideShareApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250111063214_added to customer model and controller")]
-    partial class addedtocustomermodelandcontroller
+    [Migration("20250113054725_aded refer driver")]
+    partial class adedreferdriver
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -300,10 +300,10 @@ namespace OnlineRideShareApi.Migrations
                     b.Property<string>("CustomerImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("CustomerLatitude")
+                    b.Property<float?>("CustomerLatitude")
                         .HasColumnType("real");
 
-                    b.Property<float>("CustomerLongitude")
+                    b.Property<float?>("CustomerLongitude")
                         .HasColumnType("real");
 
                     b.Property<string>("CustomerNID")
@@ -512,6 +512,9 @@ namespace OnlineRideShareApi.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("RideBookId");
 
                     b.HasIndex("CustomerId");
@@ -519,6 +522,47 @@ namespace OnlineRideShareApi.Migrations
                     b.HasIndex("DriverVehicleId");
 
                     b.ToTable("RideBooks");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.RideRequest", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DestinationLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReferredDriverId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SourceLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RequestId");
+
+                    b.ToTable("RideRequests");
                 });
 
             modelBuilder.Entity("OnlineRideShareApi.Models.Vehicle", b =>
@@ -737,13 +781,13 @@ namespace OnlineRideShareApi.Migrations
             modelBuilder.Entity("OnlineRideShareApi.Models.DriverVehicle", b =>
                 {
                     b.HasOne("OnlineRideShareApi.Models.Driver", "Driver")
-                        .WithMany()
+                        .WithMany("DriverVehicles")
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OnlineRideShareApi.Models.Vehicle", "Vehicle")
-                        .WithMany()
+                        .WithMany("DriverVehicles")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -762,7 +806,7 @@ namespace OnlineRideShareApi.Migrations
                         .IsRequired();
 
                     b.HasOne("OnlineRideShareApi.Models.DriverVehicle", "DriverVehicles")
-                        .WithMany()
+                        .WithMany("RideBooks")
                         .HasForeignKey("DriverVehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -773,7 +817,7 @@ namespace OnlineRideShareApi.Migrations
             modelBuilder.Entity("OnlineRideShareApi.Models.Vehicle", b =>
                 {
                     b.HasOne("OnlineRideShareApi.Models.VehicleType", "VehicleTypes")
-                        .WithMany()
+                        .WithMany("Vehicles")
                         .HasForeignKey("VehicleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -789,6 +833,26 @@ namespace OnlineRideShareApi.Migrations
             modelBuilder.Entity("OnlineRideShareApi.Models.Customer", b =>
                 {
                     b.Navigation("RideBooks");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.Driver", b =>
+                {
+                    b.Navigation("DriverVehicles");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.DriverVehicle", b =>
+                {
+                    b.Navigation("RideBooks");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.Vehicle", b =>
+                {
+                    b.Navigation("DriverVehicles");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.VehicleType", b =>
+                {
+                    b.Navigation("Vehicles");
                 });
 #pragma warning restore 612, 618
         }

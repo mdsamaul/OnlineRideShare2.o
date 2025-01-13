@@ -16,12 +16,12 @@
       </thead>
       <tbody>
         <!-- Loop through each record -->
-        <tr *ngFor="let item of driverVehicel$ | async let i = index" class="border-b hover:bg-gray-50">
-            <!-- {{item | json}} -->
+        <ng-container *ngFor="let item of driverVehicel$ ; let i = index">
+          <tr *ngIf="item.driverVehicleId !== null" class="border-b hover:bg-gray-50">     <!-- {{item.driverId| json}} -->
           <td class="px-6 py-4 text-center text-sm text-gray-700">{{ i+1 }}</td>
           <td class="px-6 py-4 text-center text-sm text-gray-700">
             <ng-container *ngFor="let d of allDrivcer$">
-                <td *ngIf="d.driverId === item.driverId" class="px-6 py-4 text-center text-sm text-gray-700">
+                <td *ngIf="d.driverId === item.driverId && d.driverId != null" class="px-6 py-4 text-center text-sm text-gray-700">
                   {{ d.driverName }}
                 </td>
               </ng-container>  
@@ -40,12 +40,16 @@
             <button (click)="deleteItem(item.driverVehicleId)" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md">Delete</button> 
           </td>
         </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>
-  <!-- {{allDrivcer$| json}} -->
-<!-- <h1>mon</h1> -->
-  <!-- {{allVehicle$ | json}} -->
+ <!-- {{allDrivcer$| json}} -->
+   <!--
+<h1>mon</h1>
+  {{allVehicle$ | json}}
 
-  <!-- <h1>driver vehicle</h1> -->
-  <!-- {{driverVehicel$ | json}} -->
+  <h1>driver vehicle</h1>
+  {{driverVehicel$ | json}}
+  <h1>get derver vehile </h1>
+  {{driverVehicel$ | json}} -->

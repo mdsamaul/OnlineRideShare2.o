@@ -12,6 +12,6 @@ namespace OnlineRideShareApi.Models
         public string? UserId { get; set; }
         public decimal PerKmFare { get; set; }
         //public virtual ICollection<FareDetail>? FareDetails { get; set; }
-        //public virtual ICollection<Vehicle>? Vehicles { get; set; }
+        public virtual ICollection<Vehicle>? Vehicles { get; set; }
     }
 }

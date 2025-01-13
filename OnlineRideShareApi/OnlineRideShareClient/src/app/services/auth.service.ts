@@ -702,8 +702,8 @@ deleteDriverVehicle(id:number):Observable<AuthResponse>{
   return this.http.delete<AuthResponse>(`${this.apiUrl}DriverVehicles/${id}`);
 }
 //details driver vehicle
-detailsDriverVehicle():Observable<AuthResponse>{
-  return this.http.get<AuthResponse>(`${this.apiUrl}DriverVehicles`)
+detailsDriverVehicle():Observable<DriverVehicle[]>{
+  return this.http.get<DriverVehicle[]>(`${this.apiUrl}DriverVehicles/details`)
 }
 
 //customer

@@ -14,6 +14,6 @@ namespace OnlineRideShareApi.Models
         [ForeignKey("Vehicle")]
         public int VehicleId { get; set; }
         public virtual Vehicle? Vehicle { get; set; }
-        //public virtual ICollection<RideBook>? RideBooks { get; set; }
+        public virtual ICollection<RideBook>? RideBooks { get; set; }
     }
 }

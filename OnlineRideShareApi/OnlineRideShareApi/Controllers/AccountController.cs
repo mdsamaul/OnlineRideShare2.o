@@ -170,10 +170,6 @@ namespace OnlineRideShareApi.Controllers
                 RefreshToken = newRefreshToken,
                 Message = "Refreshed token successfully"
             });
-
-
-
-
         }
 
         private ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
@@ -185,8 +181,6 @@ namespace OnlineRideShareApi.Controllers
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JwtSetting").GetSection("securityKey").Value!)),
                 ValidateLifetime = false
-
-
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -285,9 +279,6 @@ namespace OnlineRideShareApi.Controllers
                 });
             }
         }
-
-
-
         [AllowAnonymous]
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
@@ -353,9 +344,6 @@ namespace OnlineRideShareApi.Controllers
                 Message = result.Errors.FirstOrDefault()!.Description
             });
         }
-
-
-
         private string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
@@ -363,8 +351,6 @@ namespace OnlineRideShareApi.Controllers
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
-
-
         private string GenerateToken(AppUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -406,9 +392,7 @@ namespace OnlineRideShareApi.Controllers
 
             return tokenHandler.WriteToken(token);
 
-
         }
-
         //api/account/detail
         [HttpGet("detail")]
         public async Task<ActionResult<UserDetailDto>> GetUserDetail()
@@ -439,7 +423,6 @@ namespace OnlineRideShareApi.Controllers
             });
 
         }
-
 
         //[HttpGet]
         //public async Task<ActionResult<IEnumerable<UserDetailDto>>> GetUsers()
@@ -482,14 +465,6 @@ namespace OnlineRideShareApi.Controllers
             // Return the user details with roles
             return Ok(userDetails);
         }
-
-
-
-
-
-
-
-
 
     }
 

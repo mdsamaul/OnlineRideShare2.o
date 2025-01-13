@@ -27,6 +27,6 @@ namespace OnlineRideShareApi.Models
         [Range(-180, 180)]
         public float DriverLongitude { get; set; }
         public bool IsAvailable { get; set; }
-        //public virtual ICollection<DriverVehicle>? DriverVehicles { get; set; }
+        public virtual ICollection<DriverVehicle>? DriverVehicles { get; set; }
     }
 }

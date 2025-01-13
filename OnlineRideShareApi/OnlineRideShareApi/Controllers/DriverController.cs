@@ -213,6 +213,40 @@ namespace OnlineRideShareApi.Controllers
         {
             return degrees * (Math.PI / 180);
         }
+
+        [HttpPost("update-location")]
+        public async Task<IActionResult> UpdateDriverLocation([FromBody] LocationDto locationDto)
+        {
+            var DriverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var driver = await _context.Drivers.FirstAsync(c => c.UserId == DriverId);
+            if (driver is null)
+            {
+                return NotFound(new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "driver not found"
+                });
+            }
+            driver.DriverLatitude = locationDto.Latitude;
+            driver.DriverLongitude = locationDto.Longitude;
+            driver.SetUpdateInfo();
+            _context.Drivers.Update(driver);
+            var result = await _context.SaveChangesAsync();
+            if (result > 0)
+            {
+                return Ok(new AuthResponseDto
+                {
+                    IsSuccess = true,
+                    Message = "Location updated successfully"
+                });
+            }
+            return BadRequest(new AuthResponseDto
+            {
+                IsSuccess = false,
+                Message = "Failed to update location"
+            });
+        }
+
     }
 }
 

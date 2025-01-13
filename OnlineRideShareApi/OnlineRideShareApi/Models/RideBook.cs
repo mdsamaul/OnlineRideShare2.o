@@ -26,6 +26,8 @@ namespace OnlineRideShareApi.Models
         public string? DriverRating { get; set; }
         public string? CustomerRating { get; set; }
         public float DistanceInMeters { get; set; }
+        public string? UserId { get; set; } = string.Empty;
+
         //public virtual ICollection<RideTrack>? RideTracks { get; set; }
     }
 }

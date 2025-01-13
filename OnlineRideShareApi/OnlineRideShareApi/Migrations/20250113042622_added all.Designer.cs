@@ -12,8 +12,8 @@ using OnlineRideShareApi.Data;
 namespace OnlineRideShareApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250109154825_driverVehicle")]
-    partial class driverVehicle
+    [Migration("20250113042622_added all")]
+    partial class addedall
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -279,6 +279,61 @@ namespace OnlineRideShareApi.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("OnlineRideShareApi.Models.Customer", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("CustomerLatitude")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("CustomerLongitude")
+                        .HasColumnType("real");
+
+                    b.Property<string>("CustomerNID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerPhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CustomerId");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("OnlineRideShareApi.Models.Driver", b =>
                 {
                     b.Property<int>("DriverId")
@@ -386,6 +441,125 @@ namespace OnlineRideShareApi.Migrations
                     b.HasIndex("VehicleId");
 
                     b.ToTable("DriverVehicles");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.RideBook", b =>
+                {
+                    b.Property<int>("RideBookId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RideBookId"));
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CustomerRating")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("DestinationLatitude")
+                        .HasColumnType("real");
+
+                    b.Property<float>("DestinationLongitude")
+                        .HasColumnType("real");
+
+                    b.Property<float>("DistanceInMeters")
+                        .HasColumnType("real");
+
+                    b.Property<string>("DriverRating")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DriverVehicleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReferenceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferencePhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("SourceLatitude")
+                        .HasColumnType("real");
+
+                    b.Property<float>("SourceLongitude")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalFare")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RideBookId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("DriverVehicleId");
+
+                    b.ToTable("RideBooks");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.RideRequest", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DestinationLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SourceLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RequestId");
+
+                    b.ToTable("RideRequests");
                 });
 
             modelBuilder.Entity("OnlineRideShareApi.Models.Vehicle", b =>
@@ -604,13 +778,13 @@ namespace OnlineRideShareApi.Migrations
             modelBuilder.Entity("OnlineRideShareApi.Models.DriverVehicle", b =>
                 {
                     b.HasOne("OnlineRideShareApi.Models.Driver", "Driver")
-                        .WithMany()
+                        .WithMany("DriverVehicles")
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OnlineRideShareApi.Models.Vehicle", "Vehicle")
-                        .WithMany()
+                        .WithMany("DriverVehicles")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -620,10 +794,27 @@ namespace OnlineRideShareApi.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("OnlineRideShareApi.Models.RideBook", b =>
+                {
+                    b.HasOne("OnlineRideShareApi.Models.Customer", null)
+                        .WithMany("RideBooks")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineRideShareApi.Models.DriverVehicle", "DriverVehicles")
+                        .WithMany("RideBooks")
+                        .HasForeignKey("DriverVehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DriverVehicles");
+                });
+
             modelBuilder.Entity("OnlineRideShareApi.Models.Vehicle", b =>
                 {
                     b.HasOne("OnlineRideShareApi.Models.VehicleType", "VehicleTypes")
-                        .WithMany()
+                        .WithMany("Vehicles")
                         .HasForeignKey("VehicleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -634,6 +825,31 @@ namespace OnlineRideShareApi.Migrations
             modelBuilder.Entity("OnlineRideShareApi.Models.Company", b =>
                 {
                     b.Navigation("Drivers");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.Customer", b =>
+                {
+                    b.Navigation("RideBooks");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.Driver", b =>
+                {
+                    b.Navigation("DriverVehicles");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.DriverVehicle", b =>
+                {
+                    b.Navigation("RideBooks");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.Vehicle", b =>
+                {
+                    b.Navigation("DriverVehicles");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.VehicleType", b =>
+                {
+                    b.Navigation("Vehicles");
                 });
 #pragma warning restore 612, 618
         }
