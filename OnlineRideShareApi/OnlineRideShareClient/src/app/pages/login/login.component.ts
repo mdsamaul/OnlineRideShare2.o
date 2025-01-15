@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import{MatInputModule} from '@angular/material/input'
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar'
 import { MatRippleModule } from '@angular/material/core';
@@ -22,8 +22,11 @@ hide=true;
 form!: FormGroup;
 fb= inject(FormBuilder);
 
-constructor(private toastrService: ToastrService){}
-
+constructor(
+  private toastrService: ToastrService,
+  private activerRouter : ActivatedRoute,
+){}
+returnUrl:string='/';
 login(){
   this.authService.login(this.form.value).subscribe({  
     
@@ -34,7 +37,7 @@ login(){
         duration:5000,
         horizontalPosition:'center'
       })
-      this.router.navigate(['/']);
+      this.router.navigateByUrl(this.returnUrl);
     },
     error:(error)=>{
       this.toastrService.error(error.error.message!);
@@ -51,8 +54,8 @@ ngOnInit(): void {
  {
   email:['',[Validators.required, Validators.email]],
   password:['', Validators.required]
- }
- )
+ });
+this.returnUrl= this.activerRouter.snapshot.queryParams['returnUrl']||'/';
 }
 
 

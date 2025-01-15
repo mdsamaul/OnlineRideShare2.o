@@ -45,25 +45,47 @@ namespace OnlineRideShareApi.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized("User is not authorized.");
+            }
+
             rideBook.UserId = userId;
             rideBook.SetCreateInfo();
+
             await _context.RideBooks.AddAsync(rideBook);
             var result = await _context.SaveChangesAsync();
+
             if (result > 0)
             {
+                var driverVehicle = await _context.DriverVehicles.FindAsync(rideBook.DriverVehicleId);
+                if (driverVehicle != null)
+                {
+                    var driver = await _context.Drivers.FirstOrDefaultAsync(d => d.DriverId == driverVehicle.DriverId);
+                    if (driver != null)
+                    {
+                        driver.IsAvailable = false;
+                        _context.Drivers.Update(driver);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
                 return Ok(new AuthResponseDto
                 {
                     IsSuccess = true,
-                    Message = "Ride book create Success.",
+                    Message = "Ride book create Success."
                 });
             }
+
             return BadRequest(new AuthResponseDto
             {
                 IsSuccess = false,
-                Message = "ridebook Create field"
+                Message = "Ridebook creation failed."
             });
         }
+
 
         [HttpGet("nearbyDrivers")]
         public async Task<ActionResult> GetNearbyDrivers([FromQuery] string sourceLocation, string destinationLocation)
@@ -116,7 +138,7 @@ namespace OnlineRideShareApi.Controllers
                         DriverId = driverId,
                         VehicleId = vehicleDetail?.VehicleId,
                         Distance = driverWithDistance.Distance,
-                        FarePerKm = totalFare + 50
+                        totalFare = totalFare + 50
                     };
                 }).ToList();
 
@@ -144,26 +166,47 @@ namespace OnlineRideShareApi.Controllers
         {
             return degrees * (Math.PI / 180);
         }
-       
+
         [HttpPost("createRequest")]
         public async Task<ActionResult> CreateRideRequest([FromBody] RideRequestDto rideRequestDto)
         {
+            // Validate the authenticated user
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
+            if (string.IsNullOrEmpty(userId))
                 return Unauthorized(new { Message = "Unauthorized user" });
 
-            if (rideRequestDto.DriverId == null)
+            // Validate the input
+            if (rideRequestDto == null || rideRequestDto.DriverId == null)
                 return BadRequest(new { Message = "DriverId is required to create a ride request." });
+
+            // Retrieve the user
             var user = await _context.Users.FindAsync(userId);
-           
+            if (user == null)
+                return NotFound(new { Message = "User not found." });
+
+            // Retrieve or create the customer
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.UserId == userId);
             if (customer == null)
-                return NotFound(new { Message = "Customer not found." });
+            {
+                customer = new Customer
+                {
+                    UserId = userId,
+                    CustomerPhoneNumber = user.PhoneNumber ?? "N/A",
+                    CustomerEmail = user.Email ?? "N/A",
+                    CustomerNID = "", 
+                };
+                customer.SetCreateInfo();
+                _context.Customers.Add(customer);
+                await _context.SaveChangesAsync();
+            }
+
+            // Validate driver availability
             var selectedDriver = await _context.Drivers
                 .FirstOrDefaultAsync(d => d.DriverId == rideRequestDto.DriverId && d.IsAvailable);
             if (selectedDriver == null)
                 return BadRequest(new { Message = "Selected driver is not available." });
 
+            // Create the ride request
             var newRequest = new RideRequest
             {
                 UserId = userId,
@@ -177,36 +220,52 @@ namespace OnlineRideShareApi.Controllers
             await _context.RideRequests.AddAsync(newRequest);
             var result = await _context.SaveChangesAsync();
 
+            // Return the response based on the result
             if (result > 0)
             {
-                return Ok(new { Message = "Ride request created successfully.", RequestId = newRequest.RequestId });
+                return Ok(new
+                {
+                    Message = "Ride request created successfully.",
+                    RequestId = newRequest.RequestId
+                });
             }
+
             return BadRequest(new { Message = "Failed to create ride request." });
         }
 
-
-
-        //get request from a customer 
         [HttpGet("getRequest/{requestId}")]
         public async Task<ActionResult> GetRideRequest(int requestId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
                 return Unauthorized(new { Message = "Unauthorized user" });
-            var requestDriver = await _context.RideRequests.FindAsync(requestId);
-            var driver = _context.Drivers.Find(requestDriver.DriverId);
 
-            var rideRequest = await _context.RideRequests
-                .FirstOrDefaultAsync(r => r.RequestId == requestId && r.DriverId == driver.DriverId);
-            var d = rideRequest;
+            var rideRequest = await _context.RideRequests.FindAsync(requestId);
+
             if (rideRequest == null)
-                return NotFound(new { Message = "Request not found or you are not authorized to view this request." });
+                return NotFound(new { Message = "Request not found." });
+            var driver = await _context.Drivers.FirstOrDefaultAsync(did => did.DriverId == rideRequest.DriverId);
+            var customer = await _context.Customers.FirstOrDefaultAsync(cid => cid.CustomerId == rideRequest.CustomerId && rideRequest.UserId == userId);
+       
+            bool isCustomer = customer != null && customer.UserId == userId;
+            bool isDriver = driver != null && driver.UserId == userId;
 
-            return Ok(rideRequest);
+            if (!isCustomer && !isDriver)
+                return Unauthorized(new { Message = "You are not authorized to view this request." });
+
+            return Ok(new
+            {
+                RequestId = rideRequest.RequestId,
+                CustomerId = rideRequest.CustomerId,
+                DriverId = rideRequest.DriverId,
+                RequestStatus = rideRequest.RequestStatus,
+                CreatedAt = rideRequest.CreatedAt,
+                UpdatedAt = rideRequest.UpdatedAt
+            });
         }
 
         //accep driver speecific
-        [HttpPost("acceptRequest/{requestId}")]
+        [HttpPut("acceptRequest/{requestId}")]
         public async Task<ActionResult> AcceptRideRequest(int requestId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -234,7 +293,6 @@ namespace OnlineRideShareApi.Controllers
 
             return Ok(new { Message = "Request accepted successfully." });
         }
-
         //cancle request
         [HttpPost("cancelRequest/{requestId}")]
         public async Task<ActionResult> CancelRideRequest(int requestId)
@@ -244,16 +302,18 @@ namespace OnlineRideShareApi.Controllers
                 return Unauthorized(new { Message = "Unauthorized user" });
 
             var rideRequest = await _context.RideRequests.FindAsync(requestId);
+
             if (rideRequest == null)
                 return NotFound(new { Message = "Request not found." });
-          
-            var driver = await _context.Drivers.FirstOrDefaultAsync(d => d.UserId == userId);
-            if (driver == null)
-                return Unauthorized(new { Message = "You are not authorized to accept this request." });
-          
-            if (rideRequest.DriverId != driver.DriverId)
-                return Unauthorized(new { Message = "You are not authorized to cancel this request." });
+            var driver = await _context.Drivers.FirstOrDefaultAsync(did => did.DriverId == rideRequest.DriverId);
+            var customer = await _context.Customers.FirstOrDefaultAsync(cid => cid.CustomerId == rideRequest.CustomerId && rideRequest.UserId == userId);
 
+            bool isCustomer = customer != null && customer.UserId == userId;
+            bool isDriver = driver != null && driver.UserId == userId;
+
+            if (!isCustomer && !isDriver)
+                return Unauthorized(new { Message = "You are not authorized to view this request." });
+                  
             if (rideRequest.RequestStatus != "Pending")
                 return BadRequest(new { Message = "This request has already been processed." });
 
@@ -264,6 +324,7 @@ namespace OnlineRideShareApi.Controllers
 
             return Ok(new { Message = "Request cancelled successfully." });
         }
+
 
         //get driver info 
         [HttpGet("getDriverContact/{requestId}")]
@@ -286,8 +347,6 @@ namespace OnlineRideShareApi.Controllers
 
             return Ok(driver);
         }
-
-
 
         //confirm request from customer
         [HttpPost("confirmRequest/{requestId}")]

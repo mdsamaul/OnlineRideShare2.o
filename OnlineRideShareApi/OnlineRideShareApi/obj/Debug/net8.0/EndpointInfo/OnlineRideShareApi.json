@@ -1468,7 +1468,7 @@
       }
     },
     "/api/RideBook/acceptRequest/{requestId}": {
-      "post": {
+      "put": {
         "tags": [
           "RideBook"
         ],

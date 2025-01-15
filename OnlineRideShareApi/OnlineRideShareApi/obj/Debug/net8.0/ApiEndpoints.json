@@ -832,7 +832,7 @@
     "ContainingType": "OnlineRideShareApi.Controllers.RideBookController",
     "Method": "AcceptRideRequest",
     "RelativePath": "api/RideBook/acceptRequest/{requestId}",
-    "HttpMethod": "POST",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [

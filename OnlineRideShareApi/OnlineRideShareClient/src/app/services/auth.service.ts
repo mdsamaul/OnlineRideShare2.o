@@ -395,6 +395,7 @@ import { jwtDecode } from 'jwt-decode';
 import { VehicleDetails } from '../interfaces/vehicle-details';
 import { DriverVehicle } from '../interfaces/driver-vehicle';
 import { Customer } from '../interfaces/customer-response';
+import { createRequest } from '../interfaces/create-request';
 
 @Injectable({
   providedIn: 'root',
@@ -738,5 +739,40 @@ deleteCustomer(id: number):Observable<AuthResponse>{
 sendLocationToApi(latitude:number, longitude:number):Observable<AuthResponse>{
   const url = `${this.apiUrl}Cusomer/update-location`;
   return this.http.post<AuthResponse>(url,{latitude:latitude, longitude:longitude});
+}
+
+
+///ride share search
+
+
+nearbyDriverSearchSourceCustomerLocation(sourceLocation: string, destinationLocation: string): Observable<AuthResponse[]> {
+  return this.http.get<AuthResponse[]>(
+    `${this.apiUrl}RideBook/nearbyDrivers?sourceLocation=${encodeURIComponent(sourceLocation)}&destinationLocation=${encodeURIComponent(destinationLocation)}`
+  );
+}
+///RideBook/createRequest
+createRequest(data:createRequest):Observable<AuthResponse>{
+  return this.http.post<AuthResponse>(`${this.apiUrl}RideBook/createRequest`, data);
+}
+
+//accecpt or cancle request from driver
+// getDriverResponse(id:number,status:string):Observable<AuthResponse>{
+//   return this.http.post<AuthResponse>(`${this.apiUrl}RideBook/manageRequest/${id}`, status)
+// }
+
+//getRequestRidebook
+getRequest(id:number):Observable<AuthResponse>{
+  return this.http.get<AuthResponse>(`${this.apiUrl}RideBook/getRequest/${id}`)
+}
+
+getDriverResponse(id: number, status: string): Observable<AuthResponse> {
+  const headers = { 'Content-Type': 'application/json' }; // Ensure Content-Type is JSON
+  const body = JSON.stringify(status); // Convert status to JSON string
+  return this.http.post<AuthResponse>(`${this.apiUrl}RideBook/manageRequest/${id}`, body, { headers });
+}
+
+//cancle ridebook request
+cancelRidebookRequest(id:number, requestId:number):Observable<AuthResponse>{
+  return this.http.post<AuthResponse>(`${this.apiUrl}RideBook/cancelRequest/${id}`, requestId)
 }
 }

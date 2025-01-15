@@ -3,4 +3,7 @@ export interface AuthResponse {
   isSuccess: true;  
   message: string;
   refreshToken:string;
+  status:string;
+  requestId:number;
+  requestStatus:string;
 }

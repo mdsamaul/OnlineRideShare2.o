@@ -26,6 +26,8 @@ import { DriverVehicleFormComponent } from './components/DriverVehicle/driver-ve
 import { CustomerComponent } from './pages/customer/customer.component';
 import { CustomerFormComponent } from './components/customer-form/customer-form.component';
 import { CustomerGetLocatioinComponent } from './components/customer-get-locatioin/customer-get-locatioin.component';
+import { SearchVehicleListComponent } from './components/search-vehicle-list/search-vehicle-list.component';
+import { CreateRidebookRequestComponent } from './components/create-ridebook-request/create-ridebook-request.component';
 
 export const routes: Routes = [
     {path:'', component:HomeComponent},
@@ -81,6 +83,14 @@ export const routes: Routes = [
    //customer form
    {path:'customer-list/form',component:CustomerFormComponent,canActivate:[authGuard]},
    {path:'customer-list/:id', component:CustomerFormComponent, canActivate:[authGuard]},
-   {path:'set/location', component:CustomerGetLocatioinComponent, canActivate:[authGuard],}
+   {path:'set/location', component:CustomerGetLocatioinComponent, canActivate:[authGuard],},
+
+
+   //search vehicle 
+   {path:'search-vehicle-list', component:SearchVehicleListComponent},
+
+   //redebook request 
+   {path:'create-ridebook-request', component:CreateRidebookRequestComponent, canActivate:[authGuard]}
+
 
 ];

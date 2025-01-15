@@ -1,0 +1,10 @@
+/* carousel.component.css */
+.carousel-item {
+    min-width: 100%;
+  }
+  
+  .carousel-inner {
+    display: flex;
+    transition: transform 1s ease-in-out;
+  }
+  

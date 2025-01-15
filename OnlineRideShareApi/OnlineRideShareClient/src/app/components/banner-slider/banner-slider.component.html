@@ -1,0 +1,11 @@
+<!-- carousel.component.html -->
+<div class="relative" *ngIf="images.length > 0">
+    <div class="w-full h-64 overflow-hidden">
+      <div class="flex transition-transform duration-1000" [ngStyle]="{ 'transform': 'translateX(' + translateX + 'px)' }">
+        <div *ngFor="let image of images" class="w-full h-full">
+          <img [src]="image" class="w-full h-full object-cover" alt="Slider image">
+        </div>
+      </div>
+    </div>
+  </div>
+  
