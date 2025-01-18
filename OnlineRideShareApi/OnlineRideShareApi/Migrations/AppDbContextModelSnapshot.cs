@@ -461,11 +461,9 @@ namespace OnlineRideShareApi.Migrations
                     b.Property<string>("CustomerRating")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("DestinationLatitude")
-                        .HasColumnType("real");
-
-                    b.Property<float>("DestinationLongitude")
-                        .HasColumnType("real");
+                    b.Property<string>("DestinationLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("DistanceInMeters")
                         .HasColumnType("real");
@@ -491,11 +489,9 @@ namespace OnlineRideShareApi.Migrations
                     b.Property<string>("ReferencePhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("SourceLatitude")
-                        .HasColumnType("real");
-
-                    b.Property<float>("SourceLongitude")
-                        .HasColumnType("real");
+                    b.Property<string>("SourceLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");

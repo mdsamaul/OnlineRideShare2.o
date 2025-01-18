@@ -27,70 +27,159 @@ import { CustomerComponent } from './pages/customer/customer.component';
 import { CustomerFormComponent } from './components/customer-form/customer-form.component';
 import { CustomerGetLocatioinComponent } from './components/customer-get-locatioin/customer-get-locatioin.component';
 import { SearchVehicleListComponent } from './components/search-vehicle-list/search-vehicle-list.component';
-import { CreateRidebookRequestComponent } from './components/create-ridebook-request/create-ridebook-request.component';
+import { RequestDriverResponseComponent } from './components/request-driver-response/request-driver-response.component';
+import { RequestDriverDetailsComponent } from './components/request-driver-details/request-driver-details.component';
+import { RequestCustomerDetailsComponent } from './components/request-customer-details/request-customer-details.component';
+import { RideTrackComponent } from './pages/ride-track/ride-track.component';
 
 export const routes: Routes = [
-    {path:'', component:HomeComponent},
-   { path:'login', component: LoginComponent},
-   {path:'register', component:RegisterComponent},
-   {path:'account/:[id]', component:AccountComponent,
-    canActivate:[authGuard]
-   },
-   {path:'user', component:UsersComponent,
-    canActivate:[roleGuard],
-    data:{
-        roles:['Admin']
-    }
-   },
-  
-   {path:'role', component:RoleComponent,
-    canActivate:[roleGuard],data:{
-        roles:['Admin']
-    }
-   },
-   {path:'forget-password', component:ForgetPasswordComponent},
-   {path:'reset-password', component:ResetPasswordComponent},
-   {path:'change-password', component:ChangePasswordComponent, canActivate:[authGuard]},
-     {
-    path:'company', component:CompanyComponent,
-    canActivate:[authGuard],
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  {
+    path: 'account/:[id]',
+    component: AccountComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'user',
+    component: UsersComponent,
+    canActivate: [roleGuard],
+    data: {
+      roles: ['Admin'],
+    },
+  },
+
+  {
+    path: 'role',
+    component: RoleComponent,
+    canActivate: [roleGuard],
+    data: {
+      roles: ['Admin'],
+    },
+  },
+  { path: 'forget-password', component: ForgetPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  {
+    path: 'change-password',
+    component: ChangePasswordComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'company',
+    component: CompanyComponent,
+    canActivate: [authGuard],
     // data:{
     //     roles:['User']
     // }
-   },
-   {path:'company/form', component:CompanyFormComponent , canActivate:[authGuard] },
-   {path:'company/:id', component:CompanyFormComponent , canActivate:[authGuard] },
-   //driver
-   {path:'driver', component:DriverComponent, canActivate:[authGuard]},
-   //driver form
-   {path:'driver/form',component:DriverFormComponent, canActivate:[authGuard]},
-   {path:'driver/:id',component:DriverFormComponent, canActivate:[authGuard]},
-   //vehicle type
-   {path:'vehicle', component:VehicleComponent, canActivate:[authGuard]},
-   {path:'vehicle-list/form', component:VehicleListFormComponent, canActivate:[authGuard]},
-   {path:'vehicle-list/:id', component:VehicleListFormComponent, canActivate:[authGuard]},
-   {path:'vehicle-type/form', component:VehicleTypeFormComponent, canActivate:[authGuard]},
-   {path:'vehicle-type/:id', component:VehicleTypeFormComponent, canActivate:[authGuard]},
+  },
+  {
+    path: 'company/form',
+    component: CompanyFormComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'company/:id',
+    component: CompanyFormComponent,
+    canActivate: [authGuard],
+  },
+  //driver
+  { path: 'driver', component: DriverComponent, canActivate: [authGuard] },
+  //driver form
+  {
+    path: 'driver/form',
+    component: DriverFormComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'driver/:id',
+    component: DriverFormComponent,
+    canActivate: [authGuard],
+  },
+  //vehicle type
+  { path: 'vehicle', component: VehicleComponent, canActivate: [authGuard] },
+  {
+    path: 'vehicle-list/form',
+    component: VehicleListFormComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'vehicle-list/:id',
+    component: VehicleListFormComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'vehicle-type/form',
+    component: VehicleTypeFormComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'vehicle-type/:id',
+    component: VehicleTypeFormComponent,
+    canActivate: [authGuard],
+  },
 
+  //driver vehicle
+  {
+    path: 'driver-vehicle',
+    component: DriverVehicleComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'driver-vehicle-form',
+    component: DriverVehicleFormComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'driver-vehicle-form/:id',
+    component: DriverVehicleFormComponent,
+    canActivate: [authGuard],
+  },
 
-   //driver vehicle 
-   {path:'driver-vehicle', component:DriverVehicleComponent,canActivate:[authGuard]},
-   {path:'driver-vehicle-form', component:DriverVehicleFormComponent, canActivate:[authGuard]},
-   {path:'driver-vehicle-form/:id', component:DriverVehicleFormComponent, canActivate:[authGuard]},
+  //customer
+  { path: 'customer', component: CustomerComponent, canActivate: [authGuard] },
+  //customer form
+  {
+    path: 'customer-list/form',
+    component: CustomerFormComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'customer-list/:id',
+    component: CustomerFormComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'set/location',
+    component: CustomerGetLocatioinComponent,
+    canActivate: [authGuard],
+  },
 
-   //customer
-   {path:'customer', component:CustomerComponent, canActivate:[authGuard]},
-   //customer form
-   {path:'customer-list/form',component:CustomerFormComponent,canActivate:[authGuard]},
-   {path:'customer-list/:id', component:CustomerFormComponent, canActivate:[authGuard]},
-   {path:'set/location', component:CustomerGetLocatioinComponent, canActivate:[authGuard],},
+  //search vehicle
+  { path: 'search-vehicle-list', component: SearchVehicleListComponent },
 
-
-   //search vehicle 
-   {path:'search-vehicle-list', component:SearchVehicleListComponent},
-
-   //redebook request 
-   {path:'create-ridebook-request', component:CreateRidebookRequestComponent, canActivate:[authGuard]}
-
-
+  //redebook request
+  {
+    path: 'request-driver-response',
+    component: RequestDriverResponseComponent,
+    canActivate: [roleGuard],
+    data: {
+      roles: ['Driver', 'Admin'],
+    },
+  },
+  {
+    path: 'request-driver-details/:requestId',
+    component: RequestDriverDetailsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'request-customer-details',
+    component: RequestCustomerDetailsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'ride-track',
+    component: RideTrackComponent,
+    canActivate: [authGuard],
+  },
 ];

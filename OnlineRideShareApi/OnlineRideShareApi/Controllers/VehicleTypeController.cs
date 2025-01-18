@@ -115,18 +115,11 @@ namespace OnlineRideShareApi.Controllers
                 Message = "delete failed"
             });
         }
-        //[HttpGet("details")]
-        //public async Task<ActionResult<VehicleType>> getVehicleTypeDetails()
-        //{
-        //    var currenVehicleTypeDetails = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    var user = currenVehicleTypeDetails;
-        //    return Ok();
-        //}
+       
 
         [HttpGet("details")]
         public async Task<ActionResult<VehicleType>> GetVehicleTypeDetails()
         {
-    // JWT থেকে UserId বের করা
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (currentUserId is null)
@@ -149,14 +142,7 @@ namespace OnlineRideShareApi.Controllers
                     Message = "No vehicle type found for this user"
                 });
             }
-            return Ok(vehicleType);
-            //return Ok(new VehicleTypeDto
-            //{
-            //    VehicleTypeId=vehicleType.VehicleTypeId,
-            //    PerKmFare=vehicleType.PerKmFare,
-            //    UserId=currentUserId,
-            //    VehicleTypeName=vehicleType.VehicleTypeName,
-            //});
+            return Ok(vehicleType);          
         }
 
     }

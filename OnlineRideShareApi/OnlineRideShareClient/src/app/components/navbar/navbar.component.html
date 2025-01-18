@@ -85,6 +85,14 @@
                   <span>Home</span>
                 </a>
               </li>
+              <hr>
+              <li>
+                <a routerLink="/request-driver-response" class="flex items-center justify-between  gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                  <mat-icon>motorcycle</mat-icon>
+                  <span>Request a Ride</span>
+                </a>
+              </li>
+              <hr>
               <li *ngIf="userDetail?.roles.includes('Rider') ||userDetail?.roles.includes('Admin')">
                 <a routerLink="/customer" class="flex items-center justify-between  gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                   <mat-icon>supervised_user_circle</mat-icon>

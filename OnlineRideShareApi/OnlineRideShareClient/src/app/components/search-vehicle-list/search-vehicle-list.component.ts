@@ -47,8 +47,12 @@ export class SearchVehicleListComponent implements OnInit {
   authService = inject(AuthService);
   toastrService = inject(ToastrService);
 
-  constructor(private activatorRouter: ActivatedRoute, private router: Router) {}
+  constructor(
+    private activatorRouter: ActivatedRoute, 
+    private router: Router,
+  ) {}
 
+  
   ngOnInit(): void {
     this.initializeForm();
     this.fetchQueryParams();
@@ -139,8 +143,9 @@ export class SearchVehicleListComponent implements OnInit {
           next: (res) => {
             this.requestId= res.requestId;
             console.log('Request created successfully:', res.requestId);
-            this.toastrService.success(res.message);
+            this.toastrService.success("Request created successfully");
             this.checkDriverResponse(res.requestId);
+            
           },
           error: (err) => {
             console.error('Error creating request:', err);
@@ -150,6 +155,7 @@ export class SearchVehicleListComponent implements OnInit {
         });      
     }
   }
+
 
   onSubmit(): void {
     this.isLoading = true;
@@ -177,7 +183,7 @@ export class SearchVehicleListComponent implements OnInit {
             clearInterval(interval);
             console.log('Request successfully processed.');
             this.toastrService.success('Request successfully processed.');
-            this.router.navigateByUrl('/');
+            this.router.navigate(['/request-driver-details', requestId]);
           } else if (response.requestStatus === 'Cancelled') {
             clearInterval(interval);
             this.clickedCardIndex = null;

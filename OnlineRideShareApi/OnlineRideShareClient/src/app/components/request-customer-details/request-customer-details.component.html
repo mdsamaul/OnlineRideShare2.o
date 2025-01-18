@@ -1,0 +1,85 @@
+<section class="flex justify-center items-center w-screen">
+    <div *ngFor="let customer of customers$ " class="w-full p-4">
+      <div *ngIf="requestData.customerId == customer.customerId" class="shadow-xl w-[600px] rounded-xl border border-gray-300 bg-white overflow-hidden">
+        <!-- Driver Profile Header -->
+        <div class="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white text-lg font-semibold p-5 rounded-t-xl">
+          Customer Profile
+        </div>
+  
+        <!-- Driver Details -->
+        <div class="p-5 text-gray-800">
+          <!-- Driver Image -->
+          <div class="w-20 shadow-lg h-20 rounded-full flex mx-auto bg-gray-200">
+            <img 
+              [src]="customer.customerImage"
+              alt="D.Image"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="mb-4">
+            <strong class="font-semibold">Name:</strong> {{ customer.customerName }}
+          </div>
+          <div *ngIf="requestData.requestStatus == 'Referred'" class="mb-4">
+            <strong class="font-semibold">Referd Name:</strong> {{ requestData.referredCustomerName }}
+          </div>
+          <div class="mb-4">
+            <strong class="font-semibold">
+              {{ requestData.requestStatus === 'Referred' ? 'Refed Cutomer Phone Number : '+ requestData.referredCustomerPhone : 'Customer Phone Number : '+ customer.customerPhoneNumber }}
+            </strong>
+            
+          </div>
+          <div class="mb-4">
+            <strong class="font-semibold">Email:</strong> {{ customer.customerEmail }}
+          </div>
+          <div class="mb-4">
+            <strong class="font-semibold">Location:</strong>
+            <span class="text-sm text-gray-600">Lat: {{ customer.customerLatitude }} | Long: {{ customer.customerLongitude }}</span>
+          </div>
+        </div>
+  
+        <!-- Contact Button -->
+        <div class="flex justify-between items-center p-5 bg-gray-100 rounded-b-xl">
+          <button mat-raised-button color="primary" class="w-full text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-lg py-3 shadow-md transition-transform transform hover:scale-105 active:scale-95" (click)="openContactModal()">
+            Contact
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Request Data Display -->
+  <!-- <div *ngIf="requestData" class="p-5 mt-5 border rounded-lg bg-gray-50">
+    <h2 class="text-lg font-semibold">Request Details:</h2>
+    <pre>{{ requestData | json }}</pre>
+  </div> -->
+  
+  <div *ngIf="isMyselfModalOpen" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+    <!-- Modal Content -->
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-8 relative">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800">Ride Booking Confirmation</h2>
+        <button class="text-gray-400 hover:text-gray-600" (click)="closeContactModal()">✕</button>
+      </div>
+  
+      <!-- Modal Body -->
+      <p class="text-gray-600 mb-6 text-sm leading-relaxed">
+        Please confirm the booking for yourself or provide details for referral.
+      </p>
+  
+      <div class="mb-6">
+        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+          Enter Contact Number
+        </label>
+        <input id="phone" type="text" class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm p-3" placeholder="Enter phone number" [(ngModel)]="customerPhone">
+      </div>
+  
+      <!-- Modal Footer -->
+      <div class="flex justify-end space-x-4">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5 py-2 rounded-lg shadow-lg transition" (click)="pickupConfirmed()">Confirm Pickup</button>
+        <button class="bg-gray-300 hover:bg-gray-400 text-gray-700 text-sm px-5 py-2 rounded-lg shadow-lg transition" (click)="closeContactModal()">Close</button>
+      </div>
+    </div>
+  </div>
+  
+<!-- {{rideBook |  json}} -->

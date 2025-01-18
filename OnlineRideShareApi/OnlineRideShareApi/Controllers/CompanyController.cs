@@ -43,12 +43,7 @@ namespace OnlineRideShareApi.Controllers
             var result = await _context.SaveChangesAsync();
             if(result > 0)
             {
-                //return Ok(new AuthResponseDto
-                //{
-                //    IsSuccess = true,
-                //    Message = "Account Created Sucessfully!"
-                //});
-                //return Ok("Companey Create successfully");
+              
                 return Ok(new AuthResponseDto
                 {
                     IsSuccess = true,

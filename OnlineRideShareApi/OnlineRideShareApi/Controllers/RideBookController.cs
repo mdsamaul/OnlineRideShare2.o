@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.EntityFrameworkCore;
 using OnlineRideShareApi.Data;
 using OnlineRideShareApi.Dtos;
@@ -14,10 +15,8 @@ namespace OnlineRideShareApi.Controllers
     [ApiController]
     public class RideBookController : ControllerBase
     {
-        //private static double distance;
         private readonly AppDbContext _context;
         private readonly GeoCodingService _geoCodingService;
-
         public RideBookController(AppDbContext context, GeoCodingService geoCodingService)
         {
             _context = context;
@@ -38,6 +37,7 @@ namespace OnlineRideShareApi.Controllers
             }
             return Ok(ridebookFormDb);
         }
+        
         [HttpPost]
         public async Task<ActionResult> CreateRidebook(RideBook rideBook)
         {
@@ -54,6 +54,17 @@ namespace OnlineRideShareApi.Controllers
 
             rideBook.UserId = userId;
             rideBook.SetCreateInfo();
+            var (sourceLat, sourceLon) = await _geoCodingService.GetCoordinatesFromAddressAsync(rideBook.SourceLocation);
+            var (destinationLat, destinationLon) = await _geoCodingService.GetCoordinatesFromAddressAsync(rideBook.DestinationLocation);
+
+            var distance = CalculateDistance(sourceLat, sourceLon, destinationLat, destinationLon);
+            rideBook.DistanceInMeters = (float)distance;
+            const double baseFare = 50; 
+            var driverVehicleEx = await _context.DriverVehicles.FindAsync(rideBook.DriverVehicleId);
+            var vehicle = await _context.Vehicles.FindAsync(driverVehicleEx.VehicleId);
+            var vehicleType= await _context.VehicleTypes.FindAsync(vehicle.VehicleId);
+            float perKmFare = (float)vehicleType.PerKmFare;
+            rideBook.TotalFare = (decimal)(baseFare + (distance * perKmFare));
 
             await _context.RideBooks.AddAsync(rideBook);
             var result = await _context.SaveChangesAsync();
@@ -75,7 +86,7 @@ namespace OnlineRideShareApi.Controllers
                 return Ok(new AuthResponseDto
                 {
                     IsSuccess = true,
-                    Message = "Ride book create Success."
+                    Message = "Ride book created successfully."
                 });
             }
 
@@ -150,7 +161,6 @@ namespace OnlineRideShareApi.Controllers
             }
         }
 
-
         private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
         {
             const double EarthRadius = 6371;
@@ -170,21 +180,17 @@ namespace OnlineRideShareApi.Controllers
         [HttpPost("createRequest")]
         public async Task<ActionResult> CreateRideRequest([FromBody] RideRequestDto rideRequestDto)
         {
-            // Validate the authenticated user
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized(new { Message = "Unauthorized user" });
 
-            // Validate the input
             if (rideRequestDto == null || rideRequestDto.DriverId == null)
                 return BadRequest(new { Message = "DriverId is required to create a ride request." });
 
-            // Retrieve the user
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
                 return NotFound(new { Message = "User not found." });
 
-            // Retrieve or create the customer
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.UserId == userId);
             if (customer == null)
             {
@@ -200,13 +206,11 @@ namespace OnlineRideShareApi.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            // Validate driver availability
             var selectedDriver = await _context.Drivers
                 .FirstOrDefaultAsync(d => d.DriverId == rideRequestDto.DriverId && d.IsAvailable);
             if (selectedDriver == null)
                 return BadRequest(new { Message = "Selected driver is not available." });
 
-            // Create the ride request
             var newRequest = new RideRequest
             {
                 UserId = userId,
@@ -220,7 +224,6 @@ namespace OnlineRideShareApi.Controllers
             await _context.RideRequests.AddAsync(newRequest);
             var result = await _context.SaveChangesAsync();
 
-            // Return the response based on the result
             if (result > 0)
             {
                 return Ok(new
@@ -253,19 +256,34 @@ namespace OnlineRideShareApi.Controllers
             if (!isCustomer && !isDriver)
                 return Unauthorized(new { Message = "You are not authorized to view this request." });
 
-            return Ok(new
-            {
-                RequestId = rideRequest.RequestId,
-                CustomerId = rideRequest.CustomerId,
-                DriverId = rideRequest.DriverId,
-                RequestStatus = rideRequest.RequestStatus,
-                CreatedAt = rideRequest.CreatedAt,
-                UpdatedAt = rideRequest.UpdatedAt
-            });
+            return Ok(rideRequest);
+        }
+
+        //get request by driver 
+        [HttpGet("ForDriver")]
+        public async Task<ActionResult> GetRideRequestsForDriver()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+            if (userId == null)
+                return Unauthorized(new { Message = "Unauthorized user" });
+
+            var driver = await _context.Drivers.FirstOrDefaultAsync(d => d.UserId == userId);
+
+            if (driver == null)
+                return NotFound(new { Message = "Driver not found." });
+
+            var rideRequests = await _context.RideRequests
+                .Where(r => r.DriverId == driver.DriverId && r.RequestStatus == "Pending")
+                .ToListAsync();
+
+            if (rideRequests.Count == 0)
+                return NotFound(new { Message = "No pending requests found for this driver." });
+
+            return Ok(rideRequests);
         }
 
         //accep driver speecific
-        [HttpPut("acceptRequest/{requestId}")]
+        [HttpPost("acceptRequest/{requestId}")]
         public async Task<ActionResult> AcceptRideRequest(int requestId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -307,7 +325,7 @@ namespace OnlineRideShareApi.Controllers
                 return NotFound(new { Message = "Request not found." });
             var driver = await _context.Drivers.FirstOrDefaultAsync(did => did.DriverId == rideRequest.DriverId);
             var customer = await _context.Customers.FirstOrDefaultAsync(cid => cid.CustomerId == rideRequest.CustomerId && rideRequest.UserId == userId);
-
+  
             bool isCustomer = customer != null && customer.UserId == userId;
             bool isDriver = driver != null && driver.UserId == userId;
 
@@ -325,7 +343,7 @@ namespace OnlineRideShareApi.Controllers
             return Ok(new { Message = "Request cancelled successfully." });
         }
 
-
+        
         //get driver info 
         [HttpGet("getDriverContact/{requestId}")]
         public async Task<ActionResult> GetDriverContact(int requestId)
@@ -523,18 +541,7 @@ namespace OnlineRideShareApi.Controllers
             if (rideRequest.DriverId != driver.DriverId)
                 return Unauthorized(new { Message = "You are not authorized to confirm this pickup." });
 
-            if (rideRequest.RequestStatus == "Referred")
-            {
-                var referredCustomer = await _context.Customers.FirstOrDefaultAsync(u =>
-                    u.CustomerPhoneNumber == rideRequest.ReferredCustomerPhone);
-
-                if (referredCustomer == null)
-                    return NotFound(new { Message = "Referred customer not found." });
-            }
-            else if (rideRequest.RequestStatus == "Pending")
-            {
-                return BadRequest(new { Message = "This request cannot be confirmed." });
-            }
+           
 
             rideRequest.RequestStatus = "Pickup Confirmed";
             rideRequest.UpdatedAt = DateTime.UtcNow;

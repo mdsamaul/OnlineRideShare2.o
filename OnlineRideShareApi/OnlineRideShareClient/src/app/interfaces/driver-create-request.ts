@@ -1,15 +1,21 @@
 export interface DriverCreateRequest{
-  driverId:number;
+   driverId: number;
   driverName: string;
   phoneNumber: string;
+  userId: string;
   email: string;
   drivingLicenseNo: string;
   driverNid: string;
   driverImage: string;
-  companyId: number;
-  company: any; 
+  companyId: number | null;
+  company: string | null;
   driverLatitude: number;
   driverLongitude: number;
   isAvailable: boolean;
-  userId:string;
+  driverVehicles: any | null; 
+  createBy: string;
+  createDate: string;
+  updateBy: string;
+  updateDate: string;
+  isActive: boolean;
 }

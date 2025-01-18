@@ -396,6 +396,9 @@ import { VehicleDetails } from '../interfaces/vehicle-details';
 import { DriverVehicle } from '../interfaces/driver-vehicle';
 import { Customer } from '../interfaces/customer-response';
 import { createRequest } from '../interfaces/create-request';
+import { RideBook } from '../interfaces/ride-book';
+import { ReferCustomer } from '../interfaces/ReferCustomer';
+import { RideBookRequest } from '../interfaces/ridebook-request';
 
 @Injectable({
   providedIn: 'root',
@@ -751,8 +754,8 @@ nearbyDriverSearchSourceCustomerLocation(sourceLocation: string, destinationLoca
   );
 }
 ///RideBook/createRequest
-createRequest(data:createRequest):Observable<AuthResponse>{
-  return this.http.post<AuthResponse>(`${this.apiUrl}RideBook/createRequest`, data);
+createRequest(data:createRequest):Observable<RideBookRequest>{
+  return this.http.post<RideBookRequest>(`${this.apiUrl}RideBook/createRequest`, data);
 }
 
 //accecpt or cancle request from driver
@@ -761,8 +764,8 @@ createRequest(data:createRequest):Observable<AuthResponse>{
 // }
 
 //getRequestRidebook
-getRequest(id:number):Observable<AuthResponse>{
-  return this.http.get<AuthResponse>(`${this.apiUrl}RideBook/getRequest/${id}`)
+getRequest(id:number):Observable<RideBookRequest>{
+  return this.http.get<RideBookRequest>(`${this.apiUrl}RideBook/getRequest/${id}`)
 }
 
 getDriverResponse(id: number, status: string): Observable<AuthResponse> {
@@ -774,5 +777,48 @@ getDriverResponse(id: number, status: string): Observable<AuthResponse> {
 //cancle ridebook request
 cancelRidebookRequest(id:number, requestId:number):Observable<AuthResponse>{
   return this.http.post<AuthResponse>(`${this.apiUrl}RideBook/cancelRequest/${id}`, requestId)
+}
+
+//get RideBook/ForDriver
+getRidebookForDriver():Observable<any[]>{
+  return this.http.get<any[]>(`${this.apiUrl}RideBook/ForDriver`)
+}
+//accept RideBook/acceptRequest/2031
+// Accept RideBook Request
+acceptRideBookRequest(id: number, requestId: number): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}RideBook/acceptRequest/${id}`, { requestId });
+}
+
+// Cancel RideBook Request
+cancelRideBookRequest(id: number, requestId: number): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}RideBook/cancelRequest/${id}`, { requestId });
+}
+///RideBook/getDriverContact/2038
+getDriverContact(requestId: number): Observable<DriverCreateRequest> {
+  return this.http.get<DriverCreateRequest>(`${this.apiUrl}RideBook/getDriverContact/${requestId}`);
+}
+//confirm request form RideBook/confirmRequest/12
+
+customerConfirmRequest(id:number, requestId:number):Observable<any>{
+  return this.http.post<any>(`${this.apiUrl}RideBook/confirmRequest/${id}`, requestId);
+}
+//ridebook 
+createRidebook(data:RideBook):Observable<AuthResponse>{
+  return this.http.post<AuthResponse>(`${this.apiUrl}RideBook`,data);
+}
+
+///RideBook/confirmPickup/23' \
+confirmPickup(id: number, requestId:number):Observable<any>{
+  return this.http.post<any>(`${this.apiUrl}RideBook/confirmPickup/${id}`, requestId);
+}
+
+//RideBook/referCustomer/2065
+referCustomer(id:number, data:ReferCustomer):Observable<ReferCustomer>{
+  return this.http.post<ReferCustomer>(`${this.apiUrl}RideBook/referCustomer/${id}`, data)
+}
+
+// RideBook
+createRideBook(data:RideBook):Observable<AuthResponse>{
+  return this.http.post<AuthResponse>(`${this.apiUrl}RideBook`,data);
 }
 }

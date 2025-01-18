@@ -1467,8 +1467,20 @@
         }
       }
     },
+    "/api/RideBook/ForDriver": {
+      "get": {
+        "tags": [
+          "RideBook"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/RideBook/acceptRequest/{requestId}": {
-      "put": {
+      "post": {
         "tags": [
           "RideBook"
         ],
@@ -2812,21 +2824,13 @@
             "type": "string",
             "nullable": true
           },
-          "sourceLatitude": {
-            "type": "number",
-            "format": "float"
+          "sourceLocation": {
+            "type": "string",
+            "nullable": true
           },
-          "sourceLongitude": {
-            "type": "number",
-            "format": "float"
-          },
-          "destinationLatitude": {
-            "type": "number",
-            "format": "float"
-          },
-          "destinationLongitude": {
-            "type": "number",
-            "format": "float"
+          "destinationLocation": {
+            "type": "string",
+            "nullable": true
           },
           "startTime": {
             "type": "string",

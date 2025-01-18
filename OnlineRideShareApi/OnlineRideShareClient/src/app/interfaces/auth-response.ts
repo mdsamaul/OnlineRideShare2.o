@@ -4,6 +4,4 @@ export interface AuthResponse {
   message: string;
   refreshToken:string;
   status:string;
-  requestId:number;
-  requestStatus:string;
 }

@@ -435,28 +435,24 @@ namespace OnlineRideShareApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDetailDto>>> GetUsers()
         {
-            // Fetch users without tracking changes for performance
             var users = await _userManager.Users.AsNoTracking().ToListAsync();
 
-            // Prepare a list to hold the user details with roles
             var userDetails = new List<UserDetailDto>();
 
-            // Iterate over the users to fetch their roles
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user); // Get the roles for each user
+                var roles = await _userManager.GetRolesAsync(user); 
 
-                // Create the DTO and assign values including roles
                 var userDetail = new UserDetailDto
                 {
                     Id = user.Id,
-                    FullName = user.FullName, // Assuming you have a FullName property
+                    FullName = user.FullName, 
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     TwoFacotrEnabled = user.TwoFactorEnabled,
                     PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                     AccessFailedCount = user.AccessFailedCount,
-                    Roles = roles.ToArray() // Convert List<string> to string[] and assign to Roles
+                    Roles = roles.ToArray() 
                 };
 
                 userDetails.Add(userDetail);

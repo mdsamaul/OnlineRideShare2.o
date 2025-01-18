@@ -15,10 +15,8 @@ namespace OnlineRideShareApi.Models
         public virtual DriverVehicle? DriverVehicles { get; set; }
         public string? ReferenceName { get; set; }
         public string? ReferencePhoneNumber { get; set; }
-        public float SourceLatitude { get; set; }
-        public float SourceLongitude { get; set; }
-        public float DestinationLatitude { get; set; }
-        public float DestinationLongitude { get; set; }
+        public string SourceLocation { get; set; } = string.Empty;
+        public string DestinationLocation { get; set; } = string.Empty;
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public decimal TotalFare { get; set; }

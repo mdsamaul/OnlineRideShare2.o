@@ -47,23 +47,7 @@ namespace OnlineRideShareApi.Controllers
             return BadRequest("Role creation failed.");
 
         }
-        //[AllowAnonymous]
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<RoleResponseDto>>> GetRoles()
-        //{
-
-
-        //    // list of roles with total users in each role 
-
-        //    var roles = await _roleManager.Roles.Select(r => new RoleResponseDto
-        //    {
-        //        Id = r.Id,
-        //        Name = r.Name,
-        //        TotalUsers = _userManager.GetUsersInRoleAsync(r.Name!).Result.Count
-        //    }).ToListAsync();
-
-        //    return Ok(roles);
-        //}
+        
 
         [AllowAnonymous]
         [HttpGet]
