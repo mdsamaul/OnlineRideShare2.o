@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineRideShareApi.Data;
 
@@ -11,9 +12,11 @@ using OnlineRideShareApi.Data;
 namespace OnlineRideShareApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118141716_added ridetrack model and coltroller change type custing")]
+    partial class addedridetrackmodelandcoltrollerchangetypecusting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -461,11 +464,9 @@ namespace OnlineRideShareApi.Migrations
                     b.Property<decimal?>("CustomerRating")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<float?>("DestinationLatitude")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("DestinationLongitude")
-                        .HasColumnType("real");
+                    b.Property<string>("DestinationLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("DistanceInMeters")
                         .HasColumnType("real");
@@ -491,11 +492,9 @@ namespace OnlineRideShareApi.Migrations
                     b.Property<string>("ReferencePhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("SourceLatitude")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("SourceLongitude")
-                        .HasColumnType("real");
+                    b.Property<string>("SourceLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -832,7 +831,7 @@ namespace OnlineRideShareApi.Migrations
 
             modelBuilder.Entity("OnlineRideShareApi.Models.RideBook", b =>
                 {
-                    b.HasOne("OnlineRideShareApi.Models.Customer", "Customers")
+                    b.HasOne("OnlineRideShareApi.Models.Customer", null)
                         .WithMany("RideBooks")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -841,8 +840,6 @@ namespace OnlineRideShareApi.Migrations
                     b.HasOne("OnlineRideShareApi.Models.DriverVehicle", "DriverVehicles")
                         .WithMany("RideBooks")
                         .HasForeignKey("DriverVehicleId");
-
-                    b.Navigation("Customers");
 
                     b.Navigation("DriverVehicles");
                 });

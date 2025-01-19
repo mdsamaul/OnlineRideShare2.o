@@ -399,6 +399,7 @@ import { createRequest } from '../interfaces/create-request';
 import { RideBook } from '../interfaces/ride-book';
 import { ReferCustomer } from '../interfaces/ReferCustomer';
 import { RideBookRequest } from '../interfaces/ridebook-request';
+import { RideTrack } from '../interfaces/RideTrack';
 
 @Injectable({
   providedIn: 'root',
@@ -758,6 +759,10 @@ createRequest(data:createRequest):Observable<RideBookRequest>{
   return this.http.post<RideBookRequest>(`${this.apiUrl}RideBook/createRequest`, data);
 }
 
+//get ridebook for driver 
+getRidebookIf(id:number):Observable<any>{
+  return this.http.get<any>(`${this.apiUrl}RideBook/${id}`);
+}
 //accecpt or cancle request from driver
 // getDriverResponse(id:number,status:string):Observable<AuthResponse>{
 //   return this.http.post<AuthResponse>(`${this.apiUrl}RideBook/manageRequest/${id}`, status)
@@ -818,7 +823,22 @@ referCustomer(id:number, data:ReferCustomer):Observable<ReferCustomer>{
 }
 
 // RideBook
-createRideBook(data:RideBook):Observable<AuthResponse>{
-  return this.http.post<AuthResponse>(`${this.apiUrl}RideBook`,data);
+createRideBook(data:RideBook):Observable<RideBook>{
+  return this.http.post<RideBook>(`${this.apiUrl}RideBook`,data);
 }
+
+
+
+
+//ride track 
+
+getRideTracks(rideBookId: number): Observable<RideTrack[]> {
+  return this.http.get<RideTrack[]>(`${this.apiUrl}RideTrack/${rideBookId}`);
+}
+
+//create track
+createRideTrack(data: RideTrack):Observable<AuthResponse>{
+  return this.http.post<AuthResponse>(`${this.apiUrl}RideTrack`, data)
+}
+
 }

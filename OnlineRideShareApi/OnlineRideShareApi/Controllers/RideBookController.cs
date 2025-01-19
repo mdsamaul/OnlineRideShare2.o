@@ -37,9 +37,9 @@ namespace OnlineRideShareApi.Controllers
             }
             return Ok(ridebookFormDb);
         }
-        
+
         [HttpPost]
-        public async Task<ActionResult> CreateRidebook(RideBook rideBook)
+        public async Task<ActionResult> CreateRidebook(RideBookDto rideBookDto)
         {
             if (!ModelState.IsValid)
             {
@@ -52,25 +52,91 @@ namespace OnlineRideShareApi.Controllers
                 return Unauthorized("User is not authorized.");
             }
 
-            rideBook.UserId = userId;
-            rideBook.SetCreateInfo();
-            var (sourceLat, sourceLon) = await _geoCodingService.GetCoordinatesFromAddressAsync(rideBook.SourceLocation);
-            var (destinationLat, destinationLon) = await _geoCodingService.GetCoordinatesFromAddressAsync(rideBook.DestinationLocation);
+            // RideBookDto to RideBook conversion
+            
 
+            // GeoCoding to get coordinates
+            var (sourceLat, sourceLon) = await _geoCodingService.GetCoordinatesFromAddressAsync(rideBookDto.SourceLocation);
+            if (sourceLat == 0 || sourceLon == 0)
+            {
+                return BadRequest("Invalid source location coordinates.");
+            }
+
+            var (destinationLat, destinationLon) = await _geoCodingService.GetCoordinatesFromAddressAsync(rideBookDto.DestinationLocation);
+            if (destinationLat == 0 || destinationLon == 0)
+            {
+                return BadRequest("Invalid destination location coordinates.");
+            }
+
+            var rideBook = new RideBook
+            {
+                UserId = userId,
+                DriverVehicleId = rideBookDto.DriverVehicleId,
+                ReferenceName = rideBookDto.ReferenceName,
+                ReferencePhoneNumber = rideBookDto.ReferencePhoneNumber,
+                SourceLatitude = (float?)sourceLat,
+                SourceLongitude = (float?)sourceLon,
+                DestinationLatitude = (float?)destinationLat,
+                DestinationLongitude = (float?)destinationLon,
+                StartTime = rideBookDto.StartTime,
+                EndTime = rideBookDto.EndTime,
+                TotalFare = rideBookDto.TotalFare,
+                IsPaid = rideBookDto.IsPaid,
+                DriverRating = rideBookDto.DriverRating,
+                CustomerRating = rideBookDto.CustomerRating,
+                DistanceInMeters = rideBookDto.DistanceInMeters,
+                CustomerId = rideBookDto.CustomerId,
+            };
+
+            // Distance calculation
             var distance = CalculateDistance(sourceLat, sourceLon, destinationLat, destinationLon);
-            rideBook.DistanceInMeters = (float)distance;
-            const double baseFare = 50; 
-            var driverVehicleEx = await _context.DriverVehicles.FindAsync(rideBook.DriverVehicleId);
+            rideBook.DistanceInMeters = (int)(float)distance;
+            
+            const double baseFare = 50;
+            var driverVehicleEx = await _context.DriverVehicles.FindAsync(rideBookDto.DriverVehicleId);
+            if (driverVehicleEx == null)
+            {
+                return NotFound("Driver vehicle not found.");
+            }
+
             var vehicle = await _context.Vehicles.FindAsync(driverVehicleEx.VehicleId);
-            var vehicleType= await _context.VehicleTypes.FindAsync(vehicle.VehicleId);
+            if (vehicle == null)
+            {
+                return NotFound("Vehicle not found.");
+            }
+
+            var vehicleType = await _context.VehicleTypes.FindAsync(vehicle.VehicleId);
+            if (vehicleType == null)
+            {
+                return NotFound("Vehicle type not found.");
+            }
+
             float perKmFare = (float)vehicleType.PerKmFare;
+
+            // Calculate total fare
             rideBook.TotalFare = (decimal)(baseFare + (distance * perKmFare));
 
+           
+            // Add the new RideBook to the context and save
             await _context.RideBooks.AddAsync(rideBook);
             var result = await _context.SaveChangesAsync();
 
             if (result > 0)
             {
+                RideTrack rideTrackObj = new RideTrack
+                {
+                    RideBookId = rideBook.RideBookId,
+                    Distance = (int)(float)distance,
+                    RideTrackLatitude = (float)sourceLat,
+                    RideTrackLongitude = (float)sourceLon,
+                    Timestamp = DateTime.Now
+                };
+                if (rideTrackObj != null)
+                {
+                    await _context.RideTracks.AddAsync(rideTrackObj);
+                    await _context.SaveChangesAsync();
+                }
+                // Update driver availability status
                 var driverVehicle = await _context.DriverVehicles.FindAsync(rideBook.DriverVehicleId);
                 if (driverVehicle != null)
                 {
@@ -83,19 +149,52 @@ namespace OnlineRideShareApi.Controllers
                     }
                 }
 
-                return Ok(new AuthResponseDto
+                // Return the newly created RideBook as a response
+                return Ok(new RideBookDto
                 {
-                    IsSuccess = true,
-                    Message = "Ride book created successfully."
+                    RideBookId = rideBook.RideBookId,
+                    CustomerId = rideBook.CustomerId,
+                    DriverVehicleId = rideBook.DriverVehicleId,
+                    ReferenceName = rideBook.ReferenceName,
+                    ReferencePhoneNumber = rideBook.ReferencePhoneNumber,
+                    SourceLatitude = (float?)sourceLat,
+                    SourceLongitude = (float?)sourceLon,
+                    DestinationLatitude = (float?)destinationLat,
+                    DestinationLongitude = (float?)destinationLon,
+                    StartTime = rideBook.StartTime,
+                    EndTime = rideBook.EndTime,
+                    TotalFare = rideBook.TotalFare,
+                    IsPaid = rideBook.IsPaid,
+                    DriverRating = rideBook.DriverRating,
+                    CustomerRating = rideBook.CustomerRating,
+                    DistanceInMeters = rideBook.DistanceInMeters
                 });
             }
-
             return BadRequest(new AuthResponseDto
             {
                 IsSuccess = false,
                 Message = "Ridebook creation failed."
             });
         }
+
+
+        // Helper method for calculating distance
+        //private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
+        //{
+        //    const double R = 6371; // Radius of the Earth in km
+        //    double dLat = ToRad(lat2 - lat1);
+        //    double dLon = ToRad(lon2 - lon1);
+        //    double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+        //               Math.Cos(ToRad(lat1)) * Math.Cos(ToRad(lat2)) *
+        //               Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+        //    double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        //    return R * c; // Distance in km
+        //}
+
+        //private double ToRad(double value)
+        //{
+        //    return value * Math.PI / 180;
+        //}
 
 
         [HttpGet("nearbyDrivers")]

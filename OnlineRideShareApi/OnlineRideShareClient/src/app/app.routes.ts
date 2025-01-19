@@ -178,7 +178,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'ride-track',
+    path: 'ride-track/:rideBookId',
     component: RideTrackComponent,
     canActivate: [authGuard],
   },

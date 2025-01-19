@@ -18,5 +18,6 @@ namespace OnlineRideShareApi.Data
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<RideBook> RideBooks { get; set; }
         public virtual DbSet<RideRequest> RideRequests { get; set; }
+        public DbSet<RideTrack> RideTracks { get; set; }
     }
 }

@@ -1323,17 +1323,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RideBook"
+                "$ref": "#/components/schemas/RideBookDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/RideBook"
+                "$ref": "#/components/schemas/RideBookDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/RideBook"
+                "$ref": "#/components/schemas/RideBookDto"
               }
             }
           }
@@ -1697,6 +1697,60 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/RideTrack/{rideBookId}": {
+      "get": {
+        "tags": [
+          "RideTrack"
+        ],
+        "parameters": [
+          {
+            "name": "rideBookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/RideTrack": {
+      "post": {
+        "tags": [
+          "RideTrack"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RideTrack"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RideTrack"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RideTrack"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2268,45 +2322,6 @@
           }
         }
       }
-    },
-    "/WeatherForecast": {
-      "get": {
-        "tags": [
-          "WeatherForecast"
-        ],
-        "operationId": "GetWeatherForecast",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -2809,9 +2824,13 @@
             "type": "integer",
             "format": "int32"
           },
+          "customers": {
+            "$ref": "#/components/schemas/Customer"
+          },
           "driverVehicleId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "driverVehicles": {
             "$ref": "#/components/schemas/DriverVehicle"
@@ -2824,12 +2843,24 @@
             "type": "string",
             "nullable": true
           },
-          "sourceLocation": {
-            "type": "string",
+          "sourceLatitude": {
+            "type": "number",
+            "format": "float",
             "nullable": true
           },
-          "destinationLocation": {
-            "type": "string",
+          "sourceLongitude": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "destinationLatitude": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "destinationLongitude": {
+            "type": "number",
+            "format": "float",
             "nullable": true
           },
           "startTime": {
@@ -2848,11 +2879,101 @@
             "type": "boolean"
           },
           "driverRating": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "customerRating": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "distanceInMeters": {
+            "type": "number",
+            "format": "float"
+          },
+          "userId": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RideBookDto": {
+        "type": "object",
+        "properties": {
+          "rideBookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "driverVehicleId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "referenceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "referencePhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "destinationLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceLatitude": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "sourceLongitude": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "destinationLatitude": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "destinationLongitude": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalFare": {
+            "type": "number",
+            "format": "double"
+          },
+          "isPaid": {
+            "type": "boolean"
+          },
+          "driverRating": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "customerRating": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "distanceInMeters": {
@@ -2885,6 +3006,39 @@
           "destinationLocation": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RideTrack": {
+        "type": "object",
+        "properties": {
+          "rideTrackId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rideBookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rideBooks": {
+            "$ref": "#/components/schemas/RideBook"
+          },
+          "rideTrackLatitude": {
+            "type": "number",
+            "format": "float"
+          },
+          "rideTrackLongitude": {
+            "type": "number",
+            "format": "float"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "distance": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -3182,29 +3336,6 @@
             "items": {
               "$ref": "#/components/schemas/Vehicle"
             },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "WeatherForecast": {
-        "type": "object",
-        "properties": {
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "temperatureC": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "temperatureF": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "summary": {
-            "type": "string",
             "nullable": true
           }
         },
