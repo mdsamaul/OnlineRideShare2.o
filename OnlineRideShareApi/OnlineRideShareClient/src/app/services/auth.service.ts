@@ -400,6 +400,7 @@ import { RideBook } from '../interfaces/ride-book';
 import { ReferCustomer } from '../interfaces/ReferCustomer';
 import { RideBookRequest } from '../interfaces/ridebook-request';
 import { RideTrack } from '../interfaces/RideTrack';
+import { AddPaymentInvoiceRequestDto } from '../interfaces/AddPaymentInvoiceRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -639,8 +640,8 @@ setDriverStatus(id:number, isAvailable:boolean):Observable<AuthResponse>{
     return this.http.put<AuthResponse>(`${this.apiUrl}vehicletype/${id}`, data);
   }
 
-  getVehicleTypeById(id: number): Observable<AuthResponse> {
-    return this.http.get<AuthResponse>(`${this.apiUrl}vehicletype/${id}`);
+  getVehicleTypeById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}vehicletype/${id}`);
   }
 
   deleteVehicleType(id: number): Observable<AuthResponse> {
@@ -669,8 +670,8 @@ setDriverStatus(id:number, isAvailable:boolean):Observable<AuthResponse>{
 
   //get by id
 
-  getByIdVehicle(id:number):Observable<AuthResponse>{
-    return this.http.get<AuthResponse>(`${this.apiUrl}Vehicle/${id}`)
+  getByIdVehicle(id:number):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}Vehicle/${id}`)
   }
   //delete vehicle
   deleteVehicle(id:number):Observable<AuthResponse>{
@@ -693,8 +694,8 @@ createDriverVehicle(data: DriverVehicle):Observable<AuthResponse>{
 }
 
 //driver vehicle id
-getDriverVehicleId(id:number):Observable<AuthResponse>{
-  return this.http.get<AuthResponse>(`${this.apiUrl}DriverVehicles/${id}`);
+getDriverVehicleId(id:number):Observable<any>{
+  return this.http.get<any>(`${this.apiUrl}DriverVehicles/${id}`);
 }
 
 //edit driver vehicle 
@@ -760,7 +761,7 @@ createRequest(data:createRequest):Observable<RideBookRequest>{
 }
 
 //get ridebook for driver 
-getRidebookIf(id:number):Observable<any>{
+getRidebookId(id:number):Observable<any>{
   return this.http.get<any>(`${this.apiUrl}RideBook/${id}`);
 }
 //accecpt or cancle request from driver
@@ -807,6 +808,11 @@ getDriverContact(requestId: number): Observable<DriverCreateRequest> {
 customerConfirmRequest(id:number, requestId:number):Observable<any>{
   return this.http.post<any>(`${this.apiUrl}RideBook/confirmRequest/${id}`, requestId);
 }
+
+//get all ride book
+getAllRidebook():Observable<any>{
+  return this.http.get<any>(`${this.apiUrl}RideBook`);
+}
 //ridebook 
 createRidebook(data:RideBook):Observable<AuthResponse>{
   return this.http.post<AuthResponse>(`${this.apiUrl}RideBook`,data);
@@ -840,5 +846,39 @@ getRideTracks(rideBookId: number): Observable<RideTrack[]> {
 createRideTrack(data: RideTrack):Observable<AuthResponse>{
   return this.http.post<AuthResponse>(`${this.apiUrl}RideTrack`, data)
 }
+
+//all invoice
+getAllInvoice():Observable<any>{
+  return this.http.get<any>(`${this.apiUrl}Invoice`)
+}
+
+//invoice get by id
+invoiceGetById(id:number):Observable<any>{
+  return this.http.get<any>(`${this.apiUrl}Invoice/${id}`);
+}
+//get all Payment
+getAllPayment():Observable<any[]>{
+  return this.http.get<any[]>(`${this.apiUrl}Payment`);
+}
+//payment-details/1241'
+
+getPaymentDetails():Observable<any[]>{
+  return this.http.get<any[]>(`${this.apiUrl}Payment/payment-details`);
+}
+
+//get all payment method
+getAllPaymentMethod():Observable<any>{
+  return this.http.get<any>(`${this.apiUrl}PaymentMethod`)
+}
+//PaymentMethod get by id
+getByIdPaymentMethod(id:number):Observable<any>{
+  return this.http.get<any>(`${this.apiUrl}PaymentMethod/${id}`);
+}
+
+//Payment/add-payment-invoice
+createPaymentInvoice(data:AddPaymentInvoiceRequestDto):Observable<AuthResponse>{
+  return this.http.post<AuthResponse>(`${this.apiUrl}Payment/add-payment-invoice`,data);
+}
+
 
 }

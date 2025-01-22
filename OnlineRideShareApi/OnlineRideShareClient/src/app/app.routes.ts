@@ -31,6 +31,7 @@ import { RequestDriverResponseComponent } from './components/request-driver-resp
 import { RequestDriverDetailsComponent } from './components/request-driver-details/request-driver-details.component';
 import { RequestCustomerDetailsComponent } from './components/request-customer-details/request-customer-details.component';
 import { RideTrackComponent } from './pages/ride-track/ride-track.component';
+import { PaymentComponent } from './pages/payment/payment.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -182,4 +183,7 @@ export const routes: Routes = [
     component: RideTrackComponent,
     canActivate: [authGuard],
   },
+  {
+    path:'payment', component:PaymentComponent,canActivate:[authGuard]
+  }
 ];

@@ -15,5 +15,4 @@ namespace OnlineRideShareApi.Models
         public DateTime Timestamp { get; set; }
         public int Distance { get; set; }
     }
-
 }

@@ -22,7 +22,7 @@ namespace OnlineRideShareApi.Models
         public float? CustomerLongitude { get; set; }
         public string? UserId { get; set; } = string.Empty;
         //public virtual ICollection<Chat>? Chats { get; set; }
-        //public virtual ICollection<Invoice>? Invoices { get; set; }
+        public virtual ICollection<Invoice>? Invoices { get; set; }
         public virtual ICollection<RideBook>? RideBooks { get; set; }
     }
 }

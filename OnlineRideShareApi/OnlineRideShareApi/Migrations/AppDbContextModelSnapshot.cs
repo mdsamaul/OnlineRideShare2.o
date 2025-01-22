@@ -440,6 +440,143 @@ namespace OnlineRideShareApi.Migrations
                     b.ToTable("DriverVehicles");
                 });
 
+            modelBuilder.Entity("OnlineRideShareApi.Models.Invoice", b =>
+                {
+                    b.Property<int>("InvoiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Particular")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaymentMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("InvoiceId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.PaymentMethod", b =>
+                {
+                    b.Property<int>("PaymentMethodId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentMethodId"));
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MethodType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentMethodId");
+
+                    b.ToTable("PaymentMethods");
+                });
+
             modelBuilder.Entity("OnlineRideShareApi.Models.RideBook", b =>
                 {
                     b.Property<int>("RideBookId")
@@ -830,6 +967,42 @@ namespace OnlineRideShareApi.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("OnlineRideShareApi.Models.Invoice", b =>
+                {
+                    b.HasOne("OnlineRideShareApi.Models.Customer", "Customer")
+                        .WithMany("Invoices")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineRideShareApi.Models.Driver", "Driver")
+                        .WithMany("Invoices")
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineRideShareApi.Models.PaymentMethod", "PaymentMethod")
+                        .WithMany("Invoices")
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Driver");
+
+                    b.Navigation("PaymentMethod");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.Payment", b =>
+                {
+                    b.HasOne("OnlineRideShareApi.Models.Invoice", "Invoice")
+                        .WithMany("Payments")
+                        .HasForeignKey("InvoiceId");
+
+                    b.Navigation("Invoice");
+                });
+
             modelBuilder.Entity("OnlineRideShareApi.Models.RideBook", b =>
                 {
                     b.HasOne("OnlineRideShareApi.Models.Customer", "Customers")
@@ -850,7 +1023,7 @@ namespace OnlineRideShareApi.Migrations
             modelBuilder.Entity("OnlineRideShareApi.Models.RideTrack", b =>
                 {
                     b.HasOne("OnlineRideShareApi.Models.RideBook", "RideBooks")
-                        .WithMany()
+                        .WithMany("RideTracks")
                         .HasForeignKey("RideBookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -876,17 +1049,36 @@ namespace OnlineRideShareApi.Migrations
 
             modelBuilder.Entity("OnlineRideShareApi.Models.Customer", b =>
                 {
+                    b.Navigation("Invoices");
+
                     b.Navigation("RideBooks");
                 });
 
             modelBuilder.Entity("OnlineRideShareApi.Models.Driver", b =>
                 {
                     b.Navigation("DriverVehicles");
+
+                    b.Navigation("Invoices");
                 });
 
             modelBuilder.Entity("OnlineRideShareApi.Models.DriverVehicle", b =>
                 {
                     b.Navigation("RideBooks");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.Invoice", b =>
+                {
+                    b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.PaymentMethod", b =>
+                {
+                    b.Navigation("Invoices");
+                });
+
+            modelBuilder.Entity("OnlineRideShareApi.Models.RideBook", b =>
+                {
+                    b.Navigation("RideTracks");
                 });
 
             modelBuilder.Entity("OnlineRideShareApi.Models.Vehicle", b =>

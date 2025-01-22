@@ -19,5 +19,8 @@ namespace OnlineRideShareApi.Data
         public virtual DbSet<RideBook> RideBooks { get; set; }
         public virtual DbSet<RideRequest> RideRequests { get; set; }
         public DbSet<RideTrack> RideTracks { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods{ get; set; }
+        public DbSet<Payment> Payments{ get; set; }
+        public DbSet<Invoice> Invoices{ get; set; }
     }
 }

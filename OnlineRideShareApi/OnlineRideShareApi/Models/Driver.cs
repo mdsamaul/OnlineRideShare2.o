@@ -28,5 +28,6 @@ namespace OnlineRideShareApi.Models
         public float DriverLongitude { get; set; }
         public bool IsAvailable { get; set; }
         public virtual ICollection<DriverVehicle>? DriverVehicles { get; set; }
+        public virtual ICollection<Invoice>? Invoices{ get; set; }
     }
 }

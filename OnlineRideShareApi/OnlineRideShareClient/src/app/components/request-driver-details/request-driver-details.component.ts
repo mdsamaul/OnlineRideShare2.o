@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Observable, of } from 'rxjs';
 import { DriverCreateRequest } from '../../interfaces/driver-create-request';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../interfaces/customer-response';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -25,22 +25,27 @@ export class RequestDriverDetailsComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private activatedrouter: ActivatedRoute
+    private activatedrouter: ActivatedRoute,
+    private router : Router,
   ) {}
 
+
   ngOnInit(): void {
-    // Fetching requestId from the route params
     this.activatedrouter.params.subscribe({
       next: (res) => {
-        console.log('Route params:', res['requestId']);
         this.requestId = res['requestId'];
-        this.reDriverDetails(); // Call reDriverDetails after receiving requestId
+        console.log('Request ID:', this.requestId); // Log requestId
+    
+        this.reDriverDetails();
+        this.CheckCustomerConfirm(this.requestId);
       },
       error: (err) => {
         console.error('Error fetching route params:', err);
       },
     });
+    
   }
+  
 
   contactDriver(): void {
     // Logic for contacting the driver
@@ -113,5 +118,33 @@ export class RequestDriverDetailsComponent implements OnInit {
     } else {
       console.log('Form is invalid');
     }
+   
   }
+
+  private CheckCustomerConfirm(requestId: number): void {
+    console.log('Starting CheckCustomerConfirm for Request ID:', requestId);
+    if (!requestId || isNaN(requestId)) {
+      console.error('Invalid Request ID:', requestId);
+      return;
+    }
+  
+    const interval = setInterval(() => {
+      console.log('Checking request status for ID:', requestId); // Log interval execution
+      this.authService.getRequest(requestId).subscribe({
+        next: (res) => {
+          console.log('API Response:', res); // Log API response
+          if (res.requestStatus === 'Pickup Confirmed') {
+            clearInterval(interval);
+            console.log('Pickup Confirmed:', res);
+            this.router.navigateByUrl('/');
+          }
+        },
+        error: (err) => {
+          console.error('Error checking request status:', err);
+          clearInterval(interval);
+        },
+      });
+    }, 3000);
+  }
+  
 }

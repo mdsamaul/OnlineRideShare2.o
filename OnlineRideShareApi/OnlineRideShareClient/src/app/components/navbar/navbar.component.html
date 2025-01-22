@@ -79,12 +79,21 @@
                </div>
              </div>
             <ul class="space-y-3">
+              <hr>
+              <li>
+                <a routerLink="/" class="flex items-center justify-between  gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                  <mat-icon> local_activity</mat-icon>
+                  <span>DeshBord</span>
+                </a>
+              </li>
+              <hr>
               <li>
                 <a routerLink="/" class="flex items-center justify-between  gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                   <mat-icon>home</mat-icon>
                   <span>Home</span>
                 </a>
               </li>
+             <span *ngIf="userDetail?.roles.includes('Driver') || userDetail?.roles.includes('Admin')">
               <hr>
               <li>
                 <a routerLink="/request-driver-response" class="flex items-center justify-between  gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
@@ -93,6 +102,7 @@
                 </a>
               </li>
               <hr>
+             </span>
               <li *ngIf="userDetail?.roles.includes('Rider') ||userDetail?.roles.includes('Admin')">
                 <a routerLink="/customer" class="flex items-center justify-between  gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                   <mat-icon>supervised_user_circle</mat-icon>
@@ -127,13 +137,20 @@
                   <span>Driver Vehicle</span>
                 </a>
               </li>
-              <li>
-                <a routerLink="/about" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-                  <mat-icon>info</mat-icon>
-                  <span>About</span>
-                </a>
-              </li>
+             
             </span>
+            <li>
+              <a routerLink="/payment" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                <mat-icon>info</mat-icon>
+                <span>Payment</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/about" class="flex items-center justify-between gap-2 px-3 py-2 rounded hover:bg-gray-800 hover:text-yellow-50 hover:tracking-tighter transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                <mat-icon>info</mat-icon>
+                <span>About</span>
+              </a>
+            </li>
             </ul>
           </div>
         </mat-drawer>

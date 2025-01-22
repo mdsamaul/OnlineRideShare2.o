@@ -3,7 +3,7 @@
     <div id="map" class="w-full z-0 h-screen"></div>
   
     <!-- Buttons Section -->
-    <div class="fixed bottom-4 left-4 flex space-x-4 z-20">
+    <div class="fixed bottom-4 left-4 flex space-x-4 z-40">
       <button
         (click)="startMovement()"
         class="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
@@ -17,7 +17,23 @@
         Stop
       </button>
     </div>
-  
+    <div class="fixed bottom-4 left-4 right-0 flex space-x-4 z-20 justify-center">
+      <!-- <button
+      (click)="dropNow()"
+      class="px-4 py-2 bg-yellow-500 text-black rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-red-300"
+    >
+     Drop Now
+    </button> -->
+
+    
+<!-- Drop Now Button -->
+<button
+(click)="showModal()"
+class="px-4 py-2 bg-yellow-500 text-black rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-red-300"
+>
+Drop Now
+</button>
+    </div>
     <!-- Total Distance Section -->
     <div
       class="fixed bottom-4 right-4 text-lg font-semibold text-gray-700 bg-white px-4 py-2 rounded-lg shadow-md z-20"
@@ -27,3 +43,62 @@
     </div>
   </div>
   
+
+  <div
+  *ngIf="isShowModal"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+>
+  <div
+    class="bg-white rounded-lg shadow-lg w-96 p-6"
+  >
+    <h2 class="text-lg font-bold mb-4 text-center">
+      Confirm Payment
+    </h2>
+    <p class="text-sm text-gray-600 mb-4 text-center">
+      Please enter the transaction ID and select your mobile banking method.
+    </p>
+    
+    <!-- Input Field for Transaction ID -->
+    <label for="transactionAmount" class="block text-gray-700 font-semibold mb-2">
+      Amount
+    </label>
+  
+
+    <div class="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-700">
+      <span>{{ transactionAmount | currency }}</span>
+    </div>
+   
+    <!-- Mobile Banking Dropdown -->
+    <label for="bankingMethod" class="block text-gray-700 font-semibold mb-2 mt-4">
+     Payment Method:
+    </label>
+    <select
+      id="bankingMethod"
+      [(ngModel)]="selectedBankingMethod"
+      class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+    >
+      <option value="" disabled selected>Select a method</option>
+      <option value="cash">cash</option>
+      <option value="bkash">Bkash</option>
+      <option value="nagad">Nagad</option>
+      <option value="rocket">Rocket</option>
+    </select>
+
+    <!-- Buttons -->
+    <div class="flex justify-end mt-6 space-x-4">
+      <button
+        (click)="closeModal()"
+        class="px-4 py-2 bg-gray-300 rounded-lg text-gray-700 hover:bg-gray-400"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="confirmPayment()"
+        class="px-4 py-2 bg-green-500 rounded-lg text-white hover:bg-green-600"
+      >
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+
