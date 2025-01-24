@@ -209,6 +209,7 @@ export class RideMapComponent implements OnInit {
         return this.authService.getDriverVehicleId(resRidebook.driverVehicleId);
       }),
       switchMap((resDriverVehicle) => {
+        console.log(resDriverVehicle.driverId)
         invoiceData.driverId = resDriverVehicle.driverId;
         return this.authService.getByIdVehicle(resDriverVehicle.vehicleId);
       }),
@@ -230,6 +231,7 @@ export class RideMapComponent implements OnInit {
           next: (response) => {
             console.log('Invoice created successfully:', response);
             // alert('Invoice created successfully!');
+            // this.authService.
             this.router.navigateByUrl('/payment');
           },
           error: (err) => {

@@ -32,6 +32,7 @@ import { RequestDriverDetailsComponent } from './components/request-driver-detai
 import { RequestCustomerDetailsComponent } from './components/request-customer-details/request-customer-details.component';
 import { RideTrackComponent } from './pages/ride-track/ride-track.component';
 import { PaymentComponent } from './pages/payment/payment.component';
+import { DashboardAllListComponent } from './components/dashboard-all-list/dashboard-all-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -185,5 +186,7 @@ export const routes: Routes = [
   },
   {
     path:'payment', component:PaymentComponent,canActivate:[authGuard]
+  },{
+    path:'dashboard', component:DashboardAllListComponent, canActivate:[authGuard]
   }
 ];

@@ -82,7 +82,7 @@
             <td class="p-3 text-sm">1</td>
             <td class="p-3 text-sm">Ride Share</td>
             <span *ngFor="let paymentMethodItem of allPaymentsMethod">
-              <td  class="p-3 text-sm">{{(paymentMethodItem.paymentMethodId == invoice.paymentMethodId)?paymentMethodItem.methodType:"no payment method"}}</td>
+              <td  *ngIf="(paymentMethodItem.paymentMethodId == invoice.paymentMethodId)" class="p-3 text-sm">{{paymentMethodItem.methodType}}</td>
             </span>
            
             <td class="p-3 text-sm">{{(payment.status == 'paid')?"Paid" :"Pandding"}}</td>
