@@ -52,6 +52,13 @@ export class VehicleListFormComponent implements OnInit, OnDestroy {
   router = inject(Router);
   vehicleId: number = 0;
   vehicleType$:VehicleType[]=[];
+
+  
+selectedFile: File | null = null;
+imagePreview: string | ArrayBuffer | null = null;
+existingImageUrl: any | null = null;
+
+
   constructor(private fb: FormBuilder, private activeRouter: ActivatedRoute) {}
 
   onSubmit(): void {
@@ -63,6 +70,7 @@ export class VehicleListFormComponent implements OnInit, OnDestroy {
       const formData = this.vehicleForm.value;
       this.authService.createVehicle(formData).subscribe({
         next: (response) => {
+          this.onUpload();
           console.log('create respn : ', response);
           this.toastrService.success(response.message);
           this.router.navigateByUrl('/vehicle');
@@ -83,6 +91,7 @@ export class VehicleListFormComponent implements OnInit, OnDestroy {
         .editVehicle(this.vehicleId, this.vehicleForm.value)
         .subscribe({
           next: (response) => {
+            this.onUpload();
             this.toastrService.success(response.message);
             this.router.navigateByUrl('/vehicle');
           },
@@ -93,6 +102,65 @@ export class VehicleListFormComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+  
+      // Generate image preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  clearFile(): void {
+    this.selectedFile = null;
+    this.imagePreview = null;
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Reset the file input
+    }
+  }
+  
+  
+  
+  
+    onUpload(): void {
+      if (this.selectedFile) {
+        this.authService.uploadImage(this.selectedFile).subscribe(
+          (response) => {
+            console.log('Upload successful:', response.data.url);
+    
+            this.vehicleForm.patchValue({
+              vehicleImage: response.data.url,
+            });
+    
+            this.authService.editVehicle(this.vehicleId, this.vehicleForm.value).subscribe({
+              next: (response) => {
+                this.toastrService.success(response.message);
+              },
+              error: (err) => {
+                this.toastrService.error(err.message);
+              },
+            });
+          },
+          (error) => {
+            console.error('Upload failed:', error);
+            this.toastrService.error('Image upload failed.');
+          }
+        );
+      } else {
+        console.error('No image selected');
+        this.toastrService.warning('Please select an image before uploading.');
+      }
+    }
+
+
+
   ngOnInit(): void {
     this.paramSubscription = this.activeRouter.params.subscribe({
       next: (response) => {
@@ -101,6 +169,7 @@ export class VehicleListFormComponent implements OnInit, OnDestroy {
         if (!this.vehicleId) return;
         this.authService.getByIdVehicle(this.vehicleId).subscribe({
           next: (response) => {
+            this.existingImageUrl=response.vehicleImage;
             this.vehicleForm.patchValue(response);
             this.isEdit = true;
           },
@@ -116,6 +185,7 @@ export class VehicleListFormComponent implements OnInit, OnDestroy {
 
     this.vehicleForm = this.fb.group({
       vehicleBrand: ['', Validators.required],
+      vehicleImage:'',
       vehicleModel: ['', Validators.required],
       vehicleCapacity: ['', Validators.required],
       vehicleRegistrationNo: ['', Validators.required],

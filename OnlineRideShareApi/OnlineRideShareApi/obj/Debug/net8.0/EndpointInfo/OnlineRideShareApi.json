@@ -1278,6 +1278,38 @@
         }
       }
     },
+    "/api/Image/upload": {
+      "post": {
+        "tags": [
+          "Image"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "image": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Invoice": {
       "get": {
         "tags": [
@@ -1872,6 +1904,26 @@
             "description": "OK"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "RideBook"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/api/RideBook/{id}": {
@@ -1969,6 +2021,44 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/RideBook/getAllRidebookRequest": {
+      "get": {
+        "tags": [
+          "RideBook"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RideRequest"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RideRequest"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RideRequest"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3772,6 +3862,63 @@
         },
         "additionalProperties": false
       },
+      "RideRequest": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "driverId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "sourceLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "destinationLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "requestStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "referredDriverId": {
+            "type": "string",
+            "nullable": true
+          },
+          "referredCustomerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "referredCustomerPhone": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RideRequestDto": {
         "type": "object",
         "properties": {
@@ -3957,6 +4104,10 @@
             "nullable": true
           },
           "vehicleBrand": {
+            "type": "string",
+            "nullable": true
+          },
+          "vehicleImage": {
             "type": "string",
             "nullable": true
           },

@@ -1,0 +1,121 @@
+.animate-bounce {
+    animation: bounce 2s infinite;
+  }
+  
+  .blur-on-hover:hover {
+    filter: blur(4px);
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .counter-box {
+    text-align: center;
+  }
+  
+  .animate-pulse {
+    animation: pulse 1s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  
+
+  .shape {
+    position: absolute;
+    opacity: 0.8;
+  }
+  
+  .shape1 {
+    top: 10%;
+    left: 5%;
+  }
+  
+  .shape2 {
+    bottom: 10%;
+    right: 10%;
+  }
+  
+  .shape3 {
+    top: 20%;
+    right: 20%;
+  }
+  
+  .animate-bounce {
+    animation: bounce 2s infinite;
+  }
+  
+  .relative {
+    position: relative;
+  }
+  .overflow-hidden {
+    overflow: hidden;
+  }
+  .container {
+    max-width: 1200px;
+    padding: 0 1rem;
+    margin: 0 auto;
+  }
+  
+
+  
+   /* Button Styling */
+   .animated-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(90deg, #4f46e5, #3b82f6);
+    border: none;
+    border-radius: 20%;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Hover Effects */
+  .animated-btn:hover {
+    background: linear-gradient(90deg, #3b82f6, #4f46e5);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+  }
+
+  /* Glow Animation */
+  .animated-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: skewX(-45deg);
+    transition: all 0.3s;
+  }
+
+  .animated-btn:hover::before {
+    left: 100%;
+    transition: all 0.5s;
+  }

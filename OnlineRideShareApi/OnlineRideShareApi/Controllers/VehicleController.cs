@@ -72,6 +72,7 @@ namespace OnlineRideShareApi.Controllers
                 });
             }
             vehicleFormDb.VehicleBrand = vehicle.VehicleBrand;
+            vehicleFormDb.VehicleImage= vehicle.VehicleImage;
             vehicleFormDb.VehicleModel = vehicle.VehicleModel;
             vehicleFormDb.VehicleCapacity = vehicle.VehicleCapacity;
             vehicleFormDb.VehicleRegistrationNo = vehicle.VehicleRegistrationNo;

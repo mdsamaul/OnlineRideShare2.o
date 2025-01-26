@@ -1,5 +1,5 @@
-<div class="container mx-auto max-w-2xl mt-10">
-    <mat-card class="p-6 shadow-lg">
+<div class="container  mx-auto mt-10">
+    <mat-card class="p-6  border shadow-lg  ">
       <mat-card-header>
         <mat-card-title class="text-2xl font-semibold text-gray-800">
           {{isEdit ? 'Edit Driver' : 'Add Driver'}}
@@ -10,7 +10,7 @@
       </mat-card-header>
   
       <mat-card-content>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid grid-cols-2 gap-5">
           <!-- Driver Name -->
           <!-- <div *ngIf="form.controls['driverName'].errors && form.controls['driverName'].touched" class="text-red-500">
             Name is required
@@ -85,11 +85,11 @@
           </mat-form-field>
   
           <!-- Driver Image -->
-          <mat-form-field appearance="fill" class="w-full mb-6">
+          <!-- <mat-form-field appearance="fill" class="w-full mb-6">
             <mat-icon matPrefix class="mr-2 text-gray-500">image</mat-icon>
             <mat-label>Driver Image URL</mat-label>
             <input formControlName="driverImage" matInput type="text" placeholder="Enter image URL" />
-          </mat-form-field>
+          </mat-form-field> -->
   
           <!-- Company ID -->
           <!-- <mat-form-field appearance="fill" class="w-full mb-6">
@@ -129,6 +129,62 @@
             <mat-label>Longitude</mat-label>
             <input formControlName="driverLongitude" matInput type="number" placeholder="Enter driver longitude" />
           </mat-form-field>
+
+          <div class="relative w-48 max-w-sm mx-auto space-y-4">
+            <!-- Existing Image Preview -->
+            <div *ngIf="imagePreview || existingImageUrl" class="relative w-full max-w-sm">
+              <img
+                [src]="imagePreview || existingImageUrl"
+                alt="Selected Image"
+                class="object-cover w-48 h-48 border border-gray-300 rounded-lg shadow-md"
+              />
+              <div class="mt-2 text-sm text-gray-600">
+                <p *ngIf="selectedFile"><strong>File:</strong> {{ selectedFile.name }}</p>
+                <p *ngIf="selectedFile"><strong>Size:</strong> {{ (selectedFile.size / 1024).toFixed(2) }} KB</p>
+              </div>
+          
+              <!-- Remove Button -->
+              <button
+                (click)="clearFile()"
+                class="absolute top-2 right-2 px-2 py-1 text-xs text-white bg-red-500 rounded-full hover:bg-red-600"
+              >
+                Remove
+              </button>
+            </div>
+          
+            <!-- Upload Button -->
+            <div>
+              <label
+                for="file-upload"
+                class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-md cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16l4-4m0 0l4-4m-4 4h12M16 12h5m-5 0h5"
+                  />
+                </svg>
+                {{ selectedFile || existingImageUrl ? 'Change Image' : 'Upload Image' }}
+              </label>
+              <input
+                id="file-upload"
+                type="file"
+                (change)="onFileSelected($event)"
+                accept="image/*"
+                class="hidden"
+              />
+            </div>
+          </div>
+    
+    
   
           <!-- Availability -->
           <!-- <mat-checkbox formControlName="isAvailable">Is Available</mat-checkbox> -->
@@ -156,3 +212,8 @@
     </mat-select> -->
   </div>
   
+
+    
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="spinner"></div>
+</div>

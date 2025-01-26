@@ -105,57 +105,111 @@ export class SearchVehicleListComponent implements OnInit {
     }
   }
 
+  // selectDriver(id: number): void {
+  //   if (this.clickedCardIndex === id) {
+  //     this.clickedCardIndex = null; 
+  //     this.authService.cancelRidebookRequest(this.requestId,this.requestId).subscribe({
+  //       next:(res)=>{
+  //         console.log(res);
+  //         this.toastrService.success(res.message);
+  //       },error:(err)=>{
+  //         console.log(err.message);
+  //         this.toastrService.error(err.message);
+  //       }
+  //     })
+  //   } else {
+  //     this.clickedCardIndex = id;
+  //     console.log("false");
+    
+  //       if (!this.authService.isLoggedIn()) {
+  //         this.toastrService.warning("your are first loing");
+  //         this.router.navigate(['/login'], {
+  //           queryParams: { returnUrl: this.router.url },
+  //         });
+  //         return;
+  //       }
+    
+  //       this.selectedDriverId = id;
+  //       this.isRequestSent = true;
+    
+  //       const createRequestValue: createRequest = {
+  //         driverId: id,
+  //         userId: '', 
+  //         sourceLocation: this.pickupLocation,
+  //         destinationLocation: this.dropoffLocation,
+  //       };
+    
+  //       this.authService.createRequest(createRequestValue).subscribe({
+  //         next: (res) => {
+  //           this.requestId= res.requestId;
+  //           console.log('Request created successfully:', res.requestId);
+  //           this.toastrService.success("Request created successfully");
+  //           this.checkDriverResponse(res.requestId);
+            
+  //         },
+  //         error: (err) => {
+  //           console.error('Error creating request:', err);
+  //           this.toastrService.error(err.message);
+  //           this.isRequestSent = false;
+  //         },
+  //       });      
+  //   }
+  // }
+
   selectDriver(id: number): void {
+    // যদি customer একই driver এর ওপর আবার click করে, তাহলে cancel করার অপশন আসবে
     if (this.clickedCardIndex === id) {
-      this.clickedCardIndex = null; 
-      this.authService.cancelRidebookRequest(this.requestId,this.requestId).subscribe({
-        next:(res)=>{
+      // এখানে "Cancel" এ ক্লিক করলে request cancel হবে
+      this.clickedCardIndex = null;
+      this.authService.cancelRidebookRequest(this.requestId, this.requestId).subscribe({
+        next: (res) => {
           console.log(res);
           this.toastrService.success(res.message);
-        },error:(err)=>{
+          this.isRequestSent = false; // request cancel করার পর, isRequestSent false হবে
+          this.requestId = 0; // requestId null করে দিবে
+        },
+        error: (err) => {
           console.log(err.message);
           this.toastrService.error(err.message);
-        }
-      })
+        },
+      });
     } else {
+      // নতুন driver select করার সময় request পাঠানো হবে
       this.clickedCardIndex = id;
-      console.log("false");
-    
-        if (!this.authService.isLoggedIn()) {
-          this.toastrService.warning("your are first loing");
-          this.router.navigate(['/login'], {
-            queryParams: { returnUrl: this.router.url },
-          });
-          return;
-        }
-    
-        this.selectedDriverId = id;
-        this.isRequestSent = true;
-    
-        const createRequestValue: createRequest = {
-          driverId: id,
-          userId: '', 
-          sourceLocation: this.pickupLocation,
-          destinationLocation: this.dropoffLocation,
-        };
-    
-        this.authService.createRequest(createRequestValue).subscribe({
-          next: (res) => {
-            this.requestId= res.requestId;
-            console.log('Request created successfully:', res.requestId);
-            this.toastrService.success("Request created successfully");
-            this.checkDriverResponse(res.requestId);
-            
-          },
-          error: (err) => {
-            console.error('Error creating request:', err);
-            this.toastrService.error(err.message);
-            this.isRequestSent = false;
-          },
-        });      
+      this.selectedDriverId = id;
+  
+      if (!this.authService.isLoggedIn()) {
+        this.toastrService.warning("You must log in first.");
+        this.router.navigate(['/login'], {
+          queryParams: { returnUrl: this.router.url },
+        });
+        return;
+      }
+  
+      const createRequestValue: createRequest = {
+        driverId: id,
+        userId: '', // এখানে userId পাস করুন
+        sourceLocation: this.pickupLocation,
+        destinationLocation: this.dropoffLocation,
+      };
+  
+      this.authService.createRequest(createRequestValue).subscribe({
+        next: (res) => {
+          this.requestId = res.requestId; // নতুন requestId পাবেন
+          console.log('Request created successfully:', res.requestId);
+          this.toastrService.success("Request created successfully");
+          this.isRequestSent = true; // request পাঠানো হলে isRequestSent true হয়ে যাবে
+          this.checkDriverResponse(res.requestId);
+        },
+        error: (err) => {
+          console.error('Error creating request:', err);
+          this.toastrService.error(err.message);
+          this.isRequestSent = false;
+        },
+      });
     }
   }
-
+  
 
   onSubmit(): void {
     this.isLoading = true;

@@ -33,6 +33,7 @@ export class RequestCustomerDetailsComponent implements OnInit {
   isMyselfModalOpen: boolean = false;
   customerPhone: string = '';
   requestData!: RideBookRequest; // New property to hold request data
+  isLoading=false;
   rideBook: RideBook = {
     rideBookId: 0,
     customerId: 0,
@@ -119,9 +120,11 @@ export class RequestCustomerDetailsComponent implements OnInit {
   }
 
   pickupConfirmed(): void {
+    this.isLoading=true;
     if (this.customerPhone) {
       this.authService.getRequest(this.requestData.requestId).subscribe({
         next: (res) => {
+          this.isLoading=true;
           this.customers$.forEach((customer) => {
             if (res.customerId == customer.customerId) {            
 
@@ -136,6 +139,7 @@ export class RequestCustomerDetailsComponent implements OnInit {
                       next: (res) => {
                         console.log(this.rideBook);
                         // debugger;
+                        this.isLoading=true;
                         this.authService.createRideBook(this.rideBook).subscribe({
                           next:(res)=>{
                             console.log(res);

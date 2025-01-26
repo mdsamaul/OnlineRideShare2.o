@@ -47,6 +47,9 @@
     </div>
   </section>
   
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
   
   <div *ngIf="isMyselfModalOpen" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
     <!-- Modal Content -->

@@ -822,6 +822,9 @@ namespace OnlineRideShareApi.Migrations
                     b.Property<string>("VehicleColorCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("VehicleImage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("VehicleLicence")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

@@ -316,7 +316,11 @@ namespace OnlineRideShareApi.Controllers
 
             return BadRequest(new { Message = "Failed to create ride request." });
         }
-
+        [HttpGet("getAllRidebookRequest")]
+        public async Task<IEnumerable<RideRequest>> GetAllRidebookRequest()
+        {
+            return await _context.RideRequests.AsNoTracking().ToListAsync();
+        }
         [HttpGet("getRequest/{requestId}")]
         public async Task<ActionResult> GetRideRequest(int requestId)
         {
@@ -642,6 +646,31 @@ namespace OnlineRideShareApi.Controllers
                 Message = "Pickup confirmed successfully.",
                 CustomerInfo = customerInfo
             });
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> RidebookRequest(int? id)
+        {
+            if(id is null)
+            {
+                return NotFound();
+            }
+            var ridebookRequest = await _context.RideRequests.FindAsync(id);
+            if(ridebookRequest is null)
+            {
+                return NotFound();
+            }
+            _context.RideRequests.Remove(ridebookRequest);
+            var result = await _context.SaveChangesAsync();
+            if(result > 0)
+            {
+                return Ok(new AuthResponseDto
+                {
+                    IsSuccess = true,
+                    Message = "Ride book request delete success fully"
+                });
+            }
+            return NotFound();
         }
 
     }

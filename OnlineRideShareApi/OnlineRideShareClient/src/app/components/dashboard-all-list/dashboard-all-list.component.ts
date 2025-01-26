@@ -1,16 +1,53 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-all-list',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ],
   templateUrl: './dashboard-all-list.component.html',
   styleUrl: './dashboard-all-list.component.css'
 })
-export class DashboardAllListComponent implements AfterViewInit {
-  constructor() {
-    Chart.register(...registerables);
+export class DashboardAllListComponent implements AfterViewInit, OnInit{
+  successRide: number=0;
+  authService = inject(AuthService);
+  constructor(    
+   
+  ) {
+    Chart.register(...registerables)
+  }
+  
+  allDrivers$ : any[]=[];
+  allCustomers$:any[]=[];
+  ngOnInit(): void {
+    if(this.authService.getUserDetail()?.roles == 'Admin'){
+      console.log("admin")
+    }
+   this.authService.getDrivers().subscribe({
+    next:(allDriver)=>{
+      this.allDrivers$=allDriver;
+      allDriver.forEach(driver => {
+        if(this.authService.getUserDetail()?.id == driver.userId){
+          console.log(driver);
+          this.authService.getAllRidebookRequest().subscribe({
+            next:(AllRidebookRequests)=>{
+             console.log(AllRidebookRequests)
+            }
+           })
+        }
+      });
+    
+    
+    }
+   })
+this.authService.getAllCustomer().subscribe({
+  next:(res)=>{
+    console.log(res);
+    this.allCustomers$=res;
+  }
+})
   }
 
   ngAfterViewInit(): void {

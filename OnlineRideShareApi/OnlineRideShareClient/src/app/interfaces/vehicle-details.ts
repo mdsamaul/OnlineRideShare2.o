@@ -1,6 +1,7 @@
 export interface VehicleDetails {
     vehicleId: number;
     userId?: string;
+    vehicleImage?:string;
     vehicleBrand: string;
     vehicleModel: string;
     vehicleCapacity: string;

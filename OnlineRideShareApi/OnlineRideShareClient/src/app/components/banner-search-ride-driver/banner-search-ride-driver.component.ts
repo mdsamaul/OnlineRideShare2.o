@@ -32,10 +32,7 @@ import { RegisterFormComponent } from "../register-form/register-form.component"
     MatSelectModule,
     MatIconModule,
     MatSnackBarModule,
-    AsyncPipe,
-    CommonModule,
-    RegisterComponent,
-    RegisterFormComponent
+    CommonModule
 ],
   templateUrl: './banner-search-ride-driver.component.html',
   styleUrl: './banner-search-ride-driver.component.css'

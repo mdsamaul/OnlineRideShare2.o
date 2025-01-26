@@ -5,18 +5,28 @@
         <button mat-icon-button (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-
       }
      
       <!-- Logo -->
       <a routerLink="/" class="text-white text-xl font-bold"> @if(!isLoggedIn()){<mat-icon class="animate-bounce"> local_car_wash</mat-icon>}  Online Ride Share @if(isLoggedIn()){<mat-icon class="animate-bounce"> local_car_wash</mat-icon>} </a>
       <!-- Spacer -->
       <span class="flex-grow"></span>
+
+      <div class="flex w-full justify-center items-center gap-4">
+      
+       <div>
+        <a mat-button routerLink="/" class="text-white animate-pulse">Home</a>
+        <a mat-button routerLink="/driver-info" class="text-white animate-pulse">Driver</a>
+        <a mat-button routerLink="/rider" class="text-white animate-pulse">Rider</a>
+        <a mat-button routerLink="/about" class="text-white animate-pulse">About</a>
+       </div>  
+      </div>
       <!-- User Section -->
       @if (isLoggedIn()) {
         <div *ngIf="authService.getUserDetail() as userDetail" class="flex items-center gap-4">
           <a [matMenuTriggerFor]="menu" class="flex items-center gap-2 cursor-pointer">
             <!-- User Icon -->
+            
             <div class="bg-red-400 text-white font-bold shadow-md rounded-full w-10 h-10 flex justify-center items-center">
               {{ userDetail?.fullName.charAt(0) }}
             </div>
@@ -52,8 +62,9 @@
             </button>
           </mat-menu>
         </div>
-      }@else {
+      }@else {       
         <!-- Login/Register Section -->
+       
         <div class="flex items-center gap-4">
           <a mat-button routerLink="/login" class="text-white animate-pulse">Login</a>
           <a mat-button routerLink="/register" class="text-white animate-pulse">Register</a>

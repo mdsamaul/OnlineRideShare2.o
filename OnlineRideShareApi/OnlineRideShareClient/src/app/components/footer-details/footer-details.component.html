@@ -1,0 +1,68 @@
+<footer class="bg-gray-200 text-gray-700 relative overflow-hidden">
+    <!-- Background Blur Effect -->
+    <div class="absolute inset-0">
+        <div class="w-64 h-64 bg-blue-500 blur-3xl opacity-30 rounded-full absolute top-10 left-10"></div>
+        <div class="w-72 h-72 bg-pink-500 blur-3xl opacity-30 rounded-full absolute bottom-10 right-10"></div>
+    </div>
+
+    <!-- Widget Area -->
+    <div class="relative z-10 container mx-auto px-4 py-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- About Widget -->
+            <div class="space-y-4">
+                <a href="index.html" class="block">
+                    <img src="assets/images/ors-logo.png" alt="Online ride share" class="w-32 h-20 mx-auto">
+                </a>
+                <p>15/A Bivavila, Agargoan Taltola , Sher-e-Bangla Nagar, Dhaka.</p>
+                <div>
+                    <h3 class="text-lg font-semibold text-white">Toll Free <span class="text-blue-400">Helpline</span></h3>
+                    <a href="tel:+11234567890" class="text-blue-400 hover:underline">(+880) 1981 154 473</a>
+                </div>
+            </div>
+            <!-- Quick Links -->
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a [routerLink]="['/about']" class="hover:text-blue-400">About</a></li>
+                    <li><a href="/" class="hover:text-blue-400">Blog</a></li>
+                    <li><a href="/" class="hover:text-blue-400">FAQ</a></li>
+                    <li><a href="/" class="hover:text-blue-400">Terms</a></li>
+                    <li><a href="/" class="hover:text-blue-400">Privacy</a></li>
+                </ul>
+            </div>
+            <!-- Products -->
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Products</h4>
+                <ul class="space-y-2">
+                    <li><a [routerLink]="['/rider']" class="hover:text-blue-400">Ride</a></li>
+                    <li><a [routerLink]="['/driver']" class="hover:text-blue-400">Drive</a></li>
+                    <li><a href="/" class="hover:text-blue-400">Events</a></li>
+                    <li><a [routerLink]="['/login']" class="hover:text-blue-400">Log In</a></li>
+                </ul>
+            </div>
+            <!-- Call to Action -->
+            <div class="space-y-4">
+                <a [routerLink]="['/singup']" class="block animated-btn text-center bg-blue-500 text-white py-2 rounded-lg shadow-lg hover:bg-blue-600">
+                    Sign Up to Ride
+                </a>
+                <a  [routerLink]="['/driver']" class="block animated-btn text-center bg-blue-500 text-white py-2 rounded-lg shadow-lg hover:bg-blue-600">
+                    Become a Driver
+                </a>
+                <a  [routerLink]="['/rider']" class="block animated-btn text-center bg-blue-500 text-white py-2 rounded-lg shadow-lg hover:bg-blue-600">
+                    Ride on Web
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Footer Bottom -->
+    <div class="relative z-10 bg-gray-900 py-6">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p class="text-sm text-gray-400">© Copyright 2024 by <a href="https://wrapbootstrap.com/user/themeleaf" class="text-blue-400 hover:underline">Online Ride Share</a>. All Rights Reserved.</p>
+            <div class="flex space-x-4">
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>

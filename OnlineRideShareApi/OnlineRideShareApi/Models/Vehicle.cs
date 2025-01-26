@@ -9,6 +9,7 @@ namespace OnlineRideShareApi.Models
         public int VehicleId { get; set; }
         public string? UserId { get; set; } = string.Empty;
         public required string VehicleBrand { get; set; }
+        public string? VehicleImage { get; set; }
         public required string VehicleModel { get; set; }
         public required string VehicleCapacity { get; set; }
         public required string VehicleRegistrationNo { get; set; }

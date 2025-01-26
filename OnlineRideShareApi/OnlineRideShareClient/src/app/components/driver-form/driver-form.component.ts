@@ -55,6 +55,13 @@ export class DriverFormComponent implements OnInit, OnDestroy {
   paramsSubscription!: Subscription;
   companys$! : Observable<CompanyCreateRequest[]>;
   selectCompany:string=';'
+  isLoading = false;
+
+  selectedFile: File | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
+  existingImageUrl: any | null = null;
+  
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -84,10 +91,11 @@ export class DriverFormComponent implements OnInit, OnDestroy {
         .createDriver(formData)
         .subscribe({
           next: (response) => {
+            this.onUpload();
             this.toastrService.success(response.message);
             console.log(response);
-    
-            this.router.navigateByUrl('/driver');
+    this.isLoading=true;
+            // this.router.navigateByUrl('/driver');
           },
           error: (err) => {
             this.toastrService.error(err.message);
@@ -103,8 +111,10 @@ export class DriverFormComponent implements OnInit, OnDestroy {
       }
       this.authService.driverEdit(this.driverId, this.form.value).subscribe({
         next: (value) => {
+          this.onUpload();
           console.log('driver edit : ', Response);
-          this.router.navigateByUrl('/driver');
+          this.isLoading=true;
+          // this.router.navigateByUrl('/driver');
           this.toastrService.success('Edit successfully');
         },
         error: (err) => {
@@ -115,6 +125,68 @@ export class DriverFormComponent implements OnInit, OnDestroy {
     }
   }
   
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+  
+      // Generate image preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  clearFile(): void {
+    this.selectedFile = null;
+    this.imagePreview = null;
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Reset the file input
+    }
+  }
+  
+  
+  
+  
+    onUpload(): void {
+      if (this.selectedFile) {
+        this.authService.uploadImage(this.selectedFile).subscribe(
+          (response) => {
+            console.log('Upload successful:', response.data.url);
+    
+            this.form.patchValue({
+              driverImage: response.data.url,
+            });
+    
+            this.authService.driverEdit(this.driverId, this.form.value).subscribe({
+              next: (response) => {
+                this.toastrService.success(response.message);   
+                this.router.navigateByUrl('/driver');    
+                this.isLoading=false;       
+              },
+              error: (err) => {
+                this.toastrService.error(err.message);
+              },
+            });
+          },
+          (error) => {
+            console.error('Upload failed:', error);
+            this.toastrService.error('Image upload failed.');
+          }
+        );
+      } else {
+        console.error('No image selected');
+        this.toastrService.warning('Please select an image before uploading.');
+      }
+    }
+
+
+
+
   ngOnInit(): void {
         
     console.log("select company form driver form ",this.selectCompany);
@@ -127,9 +199,11 @@ export class DriverFormComponent implements OnInit, OnDestroy {
         if (!this.driverId) return;
         this.authService.getDriverById(this.driverId).subscribe({
           next: (response) => {
-            console.log('get by id driver ', response);
+            console.log('get by id driver ', response.driverImage
+              );
             this.form.patchValue(response);
             this.isEdit = true;
+            this.existingImageUrl=response.driverImage;
           },
           error: (err) => {
             console.log(err);
@@ -147,7 +221,7 @@ export class DriverFormComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       drivingLicenseNo: ['', Validators.required],
       driverNid: ['', Validators.required],
-      driverImage: [''],
+      driverImage: '',
       companyId: [null],
       company: [null],
       driverLatitude: [null],

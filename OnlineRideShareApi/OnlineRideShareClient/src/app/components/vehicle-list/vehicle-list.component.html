@@ -15,6 +15,7 @@
               <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">SL</th>
               <!-- <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Vehicle ID</th> -->
               <!-- <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">User ID</th> -->
+              <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Image</th>
               <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Brand</th>
               <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Model</th>
               <th class="px-6 py-3 text-center text-sm font-medium text-gray-700 uppercase">Capacity</th>
@@ -46,6 +47,9 @@
               <td class="px-6 py-4 text-center text-sm text-gray-700">{{ i + 1 }}</td>
               <!-- <td class="px-6 py-4 text-center text-sm text-gray-700">{{ vehicle.vehicleId }}</td> -->
               <!-- <td class="px-6 py-4 text-center text-sm text-gray-700">{{ vehicle.userId }}</td> -->
+              <td class="px-6 py-4 text-center text-sm text-gray-700">
+                <img src="{{ vehicle.vehicleImage }}" alt="" class="w-10 h-10 rounded-full" >
+              </td>
               <td class="px-6 py-4 text-center text-sm text-gray-700">{{ vehicle.vehicleBrand }}</td>
               <td class="px-6 py-4 text-center text-sm text-gray-700">{{ vehicle.vehicleModel }}</td>
               <td class="px-6 py-4 text-center text-sm text-gray-700">{{ vehicle.vehicleCapacity }}</td>

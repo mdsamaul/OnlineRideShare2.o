@@ -1,14 +1,27 @@
-<div class="h-screen flex items-center justify-center bg-gray-100 mx-4">
+
+
+
+
+<div class="flex w-screen h-screen items-center justify-center bg-gray-100 mx-4">
+  <div class="absolute top-0 right-0 w-72 h-72 bg-green-500 rounded-full blur-3xl animate-pulse opacity-20"></div> 
+  <div class="absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full blur-3xl animate-pulse opacity-20"></div>
     <div class="w-full sm:w-11/12 md:w-1/2 lg:w-1/3 xl:w-1/4 p-6 shadow-lg rounded-lg bg-white">
       <h1 class="font-semibold text-2xl mb-4 text-gray-800 text-center">Account Detail</h1>
   
-      <div *ngIf="accountDetail$ | async as user">
+      <div *ngIf="accountDetail$ | async as user ">
         <!-- Profile Section -->
         <div class="flex flex-col items-center">
-          <div class="rounded-full bg-blue-500 my-4 text-4xl w-20 h-20 flex items-center justify-center font-bold text-white">
-            <mat-icon>person</mat-icon>
+          <div *ngIf="customerAccount$?.customerImage">
+            <div class="rounded-full bg-blue-500 my-4 text-4xl w-20 h-20 flex items-center justify-center font-bold text-white">
+             <img src="{{customerAccount$?.customerImage}}" alt="image"  alt="Example Image" class="w-24 h-24 object-cover rounded-full">
+            </div>
           </div>
-  
+          <div *ngIf="!customerAccount$?.customerImage">
+            <div class="rounded-full bg-blue-500 my-4 text-4xl w-20 h-20 flex items-center justify-center font-bold text-white">
+              <mat-icon>person</mat-icon>
+            </div>
+          </div>
+
           <div class="w-full">
             <hr class="my-4 border-gray-300">
             
@@ -27,7 +40,7 @@
             <!-- Phone Number -->
             <div class="flex justify-between mb-4 text-gray-700">
               <strong class="text-lg">Phone Number:</strong>
-              <span>{{ user.phoneNumber }}</span>
+              <span>{{ user.phoneNumber || customerAccount$.customerPhoneNumber}}</span>
             </div>
             
             <!-- Role -->
@@ -62,4 +75,3 @@
       </div>
     </div>
   </div>
-  

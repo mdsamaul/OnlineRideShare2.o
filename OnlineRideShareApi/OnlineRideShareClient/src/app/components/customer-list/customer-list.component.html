@@ -1,8 +1,16 @@
-<div class="m-16 border">
+
+
+<div class="w-screen h-screen flex justify-center items-center relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-72 h-72 bg-blue-500 rounded-full blur-3xl animate-pulse opacity-10"></div>
+  <!-- <div class="absolute top-0 right-0 w-72 h-72 bg-green-500 rounded-full blur-3xl animate-pulse opacity-20"></div> -->
+  <!-- <div class="absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full blur-3xl animate-pulse opacity-20"></div> -->
+  <div class="absolute bottom-0 right-0 w-72 h-72 bg-red-500 rounded-full blur-3xl animate-pulse opacity-10"></div>
+  <div class="m-16 border bg-slate-200 rounded-md">
+    
     <div class="flex justify-around items-center">
-      <div>
+      <!-- <div>
         <mat-icon class="animate-pulse text-blue-600">person</mat-icon>
-      </div>
+      </div> -->
       <h1 class="text-4xl font-bold py-4 text-center">Customer</h1>
       <a *ngIf="!isAdmin$ && detailCustomer$.length==0"
         [routerLink]="['/customer-list/form']"
@@ -61,9 +69,11 @@
         </tbody>
       </table>
     </div>
-    <div *ngIf="!isAdmin$" class=" grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto flex justify-center items-center p-10 gap-6">
+    <div *ngIf="!isAdmin$" class="relative z-30 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto flex justify-center items-center p-10 gap-6">
+    
         <!-- Customer Card -->
-        <div *ngFor="let customer of detailCustomer$" class="bg-white p-4 rounded-lg shadow-lg border">
+        <div *ngFor="let customer of detailCustomer$" class="bg-slate-300 p-4 rounded-lg shadow-lg  border z-30  border-white ">
+          <div class="bg-yellow-50 w-full h-full absolute -z-10 top-0 bottom-0 opacity-20 left-0 right-0 border border-white"></div>
           <div class="flex justify-between items-center mb-4">
             <mat-icon class="animate-pulse text-blue-600">person</mat-icon>
             <h2 class="text-xl font-semibold text-gray-800">{{ customer.customerName }}</h2>
@@ -104,3 +114,4 @@
         </div>
       </div>      
   </div>
+</div>

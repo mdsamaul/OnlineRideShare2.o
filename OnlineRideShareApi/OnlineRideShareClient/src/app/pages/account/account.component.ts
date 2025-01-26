@@ -14,10 +14,29 @@ export class AccountComponent implements OnInit{
  
   authService = inject(AuthService);
   accountDetail$ = this.authService.getDetail();
- 
+ customerAccount$:any= undefined;
   
   ngOnInit(): void {
-  //  console.log(this.accountDetail$);
-      
+    this.authService.getDetail().subscribe({
+      next:(res)=>{
+        console.log(res);
+        this.authService.getAllCustomer().subscribe({
+          next:(allCustomer)=>{
+            // console.log(res);
+            allCustomer.forEach(customer => {
+              if(customer.userId == res.id){
+                console.log(customer);
+               this.authService.getIdByCustomer(customer.customerId).subscribe({
+                  next:(customerDetail)=>{
+                    this.customerAccount$ = customerDetail;
+                  }
+                })
+              }
+            });
+          }
+        })
+      }
+    })
+    
   }
 }

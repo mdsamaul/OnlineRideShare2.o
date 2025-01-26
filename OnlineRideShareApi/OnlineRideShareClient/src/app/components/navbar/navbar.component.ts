@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {  MatButtonModule } from '@angular/material/button';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import{MatToolbarModule} from '@angular/material/toolbar'
@@ -10,6 +10,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatSidenavModule} from '@angular/material/sidenav'
 import {MatDividerModule} from '@angular/material/divider'
 import { ToastrService } from 'ngx-toastr';
+import { switchMap, forkJoin } from 'rxjs';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -22,7 +23,9 @@ export class NavbarComponent {
   authService = inject(AuthService);
   matSnackBar = inject(MatSnackBar);
   router = inject(Router);
+  customerAccount$:any=undefined;
 constructor(private toastrService: ToastrService){}
+
 
   isLoggedIn (){
     return this.authService.isLoggedIn();

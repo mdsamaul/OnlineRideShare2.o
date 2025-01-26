@@ -1,0 +1,44 @@
+
+   /* Button Styling */
+   .animated-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    width: 100%;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(90deg, #4f46e5, #3b82f6);
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Hover Effects */
+  .animated-btn:hover {
+    background: linear-gradient(90deg, #3b82f6, #4f46e5);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+  }
+
+  /* Glow Animation */
+  .animated-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: skewX(-45deg);
+    transition: all 0.3s;
+  }
+
+  .animated-btn:hover::before {
+    left: 100%;
+    transition: all 0.5s;
+  }

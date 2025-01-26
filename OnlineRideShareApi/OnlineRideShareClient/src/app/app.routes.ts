@@ -33,6 +33,9 @@ import { RequestCustomerDetailsComponent } from './components/request-customer-d
 import { RideTrackComponent } from './pages/ride-track/ride-track.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 import { DashboardAllListComponent } from './components/dashboard-all-list/dashboard-all-list.component';
+import { AboutComponent } from './pages/about/about.component';
+import { RiderComponent } from './pages/rider/rider.component';
+import { DriverInfoComponent } from './pages/driver-info/driver-info.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -185,8 +188,25 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path:'payment', component:PaymentComponent,canActivate:[authGuard]
-  },{
-    path:'dashboard', component:DashboardAllListComponent, canActivate:[authGuard]
-  }
+    path: 'payment',
+    component: PaymentComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'dashboard',
+    component: DashboardAllListComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
+  },
+  {
+    path: 'driver-info',
+    component: DriverInfoComponent,
+  },
+  {
+    path: 'rider',
+    component: RiderComponent,
+  },
 ];

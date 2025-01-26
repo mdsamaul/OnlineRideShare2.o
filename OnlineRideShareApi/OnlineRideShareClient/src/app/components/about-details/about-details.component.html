@@ -1,0 +1,235 @@
+<section class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="space py-12">
+      <div class="container mx-auto text-center">
+        <div>
+            <div class="page-top mb-5 " style="animation-delay: 0.1s;">
+                <h1 class="text-4xl font-bold mb-2">
+                  A different kind of <span class="text-blue-500">taxi</span> company. A <br> different kind of <span class="text-blue-500">taxi</span>.
+                </h1>
+                <p class="text-gray-700">
+                  Amet, facilisis magna etiam consequat viverra mi volutpat ultrices cum. Venenatis auctor malesuada ornare volutpat nibh tortor adipiscing ornare.
+                </p>
+              </div>
+        
+              <div class="flex flex-wrap justify-center">
+                <div class="w-full xl:w-11/12 relative pb-7">
+                  <div class="img1">
+                    <img src="assets/img/normal/about_img_1.jpg" alt="about img" class="mx-auto blur-on-hover rounded-md">
+                  </div>
+                  <div class="absolute top-0 left-0 animate__animated animate__fadeInUp animate-bounce" style="animation-delay: 0.3s;">
+                    <img src="assets/img/normal/dots_1.svg" alt="dot shape" class="blur-on-hover">
+                  </div>
+                  <div class="absolute -right-10 -bottom-10 animate__animated animate__fadeInUp animate-ping" style="animation-delay: 0.3s;">
+                    <img src="assets/img/normal/dots_1.svg" alt="dot shape" class="blur-on-hover">
+                  </div>
+                </div>
+                  <!-- Counters -->
+                <div class="container mt-8 space-top">
+                  <div class="flex justify-around w-full p-12 border shadow-xl">
+                    <div class="counter-box" *ngFor="let counter of counters">
+                      <h2 class="text-4xl font-bold text-blue-500">{{ counter.value | number }}</h2>
+                      <p class="text-gray-700 animate-pulse">{{ counter.label }}</p>
+                    </div>
+                  </div>
+                </div>
+        
+              </div>
+        </div>
+    
+      </div>
+    </div>
+  </section>
+  
+
+  <div class="space-bottom pt-5 relative overflow-hidden bg-gray-100 pb-10">
+    <div class="container mx-auto">
+      <div class="flex justify-center wow fadeInUp" style="animation-delay: 0.1s;">
+        <div class="xl:w-8/12 lg:w-10/12">
+          <div class="text-center mb-4">
+            <span class="subtitle text-blue-500 text-xl font-semibold uppercase">Our vision</span>
+            <h2 class="text-4xl font-bold text-gray-800 mt-2">
+              Skillful ideas have driven for you.
+            </h2>
+          </div>
+          <p class="text-gray-600 mb-4">
+            Tristique cras arcu gravida nisi facilisis. Eget venenatis sed consequat quis mi risus lectus orci pretium. Massa commodo et lectus vestibulum duis consequat sed. Risus fames tristique vitae fames proin habitant sed urna fames.
+          </p>
+          <p class="text-gray-600">
+            Proin dolor mi auctor aenean viverra a consequat est facilisis. Diam cursus faucibus cursus et cursus dignissim tristique.
+          </p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Shape Group -->
+    <div class="absolute top-0 left-0 w-full h-full">
+      <div class="shape bg-blue-500 w-16 h-16 rounded-full absolute top-10 left-10"></div>
+      <div class="shape bg-green-500 w-12 h-12 rounded-full absolute bottom-10 right-10"></div>
+      <div class="shape bg-yellow-500 w-20 h-20 rounded-full absolute top-20 right-20"></div>
+    </div>
+  
+    <!-- Shape Mockup -->
+    <div
+      class="absolute hidden xl:block top-10 left-8 animate-bounce"
+    >
+      <img src="assets/img/normal/dots_1.svg" alt="shapes" class="w-16">
+    </div>
+  </div>
+  
+
+  <section
+  class="space relative bg-cover bg-center py-12"
+  [style.backgroundImage]="'url(assets/img/bg/process_bg_1.png)'"
+>  <div class="text-center wow fadeInUp mb-8" style="animation-delay: 0.1s;">
+    <span class="text-blue-500 font-semibold uppercase block text-lg">
+      Values
+    </span>
+    <p class="text-gray-600 text-lg">
+      Sit maecenas mi, nibh orci id nibh enim quis ut. Quam nascetur
+      <br />
+      mauris nulla a pulvinar.
+    </p>
+  </div>
+
+  <div class="container mx-auto">
+    <!-- Title Area -->
+  
+    <!-- Process Boxes -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 wow fadeInUp" style="animation-delay: 0.2s;">
+      <!-- Security Box -->
+      <mat-card class="shadow-lg p-6">
+        <div class="flex justify-center items-center text-blue-500 text-4xl mb-4">
+          <mat-icon fontIcon="shield"></mat-icon>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2 text-center">Security</h3>
+        <p class="text-gray-600 text-center">
+          Amet etiam ac vestibulum et placerat venenatis et cursus enim.
+        </p>
+      </mat-card>
+
+      <!-- Customer Oriented Box -->
+      <mat-card class="shadow-lg p-6">
+        <div class="flex justify-center items-center text-blue-500 text-4xl mb-4">
+          <mat-icon fontIcon="group"></mat-icon>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2 text-center">
+          Customer Oriented
+        </h3>
+        <p class="text-gray-600 text-center">
+          Gmea etiam ac vestibulum et placerat venenatis et cursus tines.
+        </p>
+      </mat-card>
+
+      <!-- Honesty Box -->
+      <mat-card class="shadow-lg p-6">
+        <div class="flex justify-center items-center text-blue-500 text-4xl mb-4">
+          <mat-icon fontIcon="star"></mat-icon>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2 text-center">Honesty</h3>
+        <p class="text-gray-600 text-center">
+          Kamir etiam ac vestibulum et placerat venenatis et cursus mone.
+        </p>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+
+<!-- Sustainability Section -->
+<section class="relative overflow-hidden py-12">
+  <div class="container mx-auto">
+    <div class="flex flex-col lg:flex-row-reverse items-center">
+      <!-- Image Section -->
+      <div class="lg:w-1/2 wow fadeInRight" style="animation-delay: 0.1s;">
+        <div class="relative">
+          <img
+            class="rounded-lg shadow-lg"
+            src="assets/img/normal/feature_3.jpg"
+            alt="feature"
+          />
+          <div class="absolute right-0 -bottom-20 z-50">
+            <img src="assets/img/normal/dots_1.svg" alt="dot shape" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Section -->
+      <div class="lg:w-1/2 wow fadeInLeft" style="animation-delay: 0.1s;">
+        <div class="mb-4">
+          <span class="text-blue-500 font-semibold uppercase text-lg">
+            Sustainability
+          </span>
+          <h2 class="text-3xl font-bold text-gray-800 mb-4">
+            Zero Emission Vehicles
+          </h2>
+        </div>
+        <p class="mb-6 text-gray-600">
+          Tristique tortor dui morbi eu. Nullam ornare lorem gravida amet
+          lacus, ut. Eget aenean volutpat diam ullamcorper at nunc.
+        </p>
+        <a
+         
+          routerLink="/about"
+          class="animated-btn"
+        >
+          Learn More
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="absolute inset-0 z-[-1]">
+    <div class="bg-gray-200 rounded-full h-24 w-24 absolute top-10 left-10"></div>
+    <div class="bg-gray-300 rounded-full h-32 w-32 absolute bottom-10 right-10"></div>
+    <div class="bg-gray-400 rounded-full h-16 w-16 absolute top-20 right-20"></div>
+  </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="relative  py-12 bg-slate-100 z-10">
+  <div
+    class="container mx-auto text-center wow fadeInUp"
+    style="animation-delay: 0.1s;"
+  >
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold text-gray-800">Subscribe to our newsletter</h2>
+      <p class="text-gray-600">
+        Odio enim adipiscing adipiscing viverra nunc aenean mi, justo. Ornare
+        non condimentum cursus ornare diam. Nullam aliquet ipsum tortor sed.
+      </p>
+    </div>
+    <div class="absolute inset-0 ">
+      <div class="bg-gray-200 rounded-full h-24 w-24 absolute top-10 left-10"></div>
+      <div class="bg-gray-300 rounded-full h-32 w-32 absolute bottom-10 right-10"></div>
+      <div class="bg-red-500 rounded-full h-16 w-16 absolute top-20 right-20 blur-xl animate-ping"></div>
+    </div>
+  </div>
+  <div>
+    <div class="flex justify-center items-center">
+      <form
+        class="relative w-full md:w-1/3"
+        (ngSubmit)="onSubscribe(newsletterForm.value)"
+        #newsletterForm="ngForm"
+      >
+        <div class="flex items-center bg-white rounded-full shadow-md">
+          <input
+            type="email"
+            name="email"
+            ngModel
+            required
+            placeholder="Enter email address"
+            class="w-full rounded-full py-2 pl-4 pr-16 text-gray-700 focus:outline-none"
+          />
+          <button
+            color="primary"
+            type="submit"
+            [disabled]="!newsletterForm.valid"
+            class="absolute animated-btn right-0 rounded-full h-full px-4 bg-blue-500 text-white hover:bg-blue-600 focus:outline-none"
+          >
+            Subscribe
+          </button>
+        </div>
+      </form>
+    </div>
+  
+  </div>
+</section>

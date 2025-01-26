@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,6 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { response } from 'express';
+import { MatButtonModule } from '@angular/material/button';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-customer-form',
@@ -23,7 +25,9 @@ import { response } from 'express';
     MatInputModule,
     CommonModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule, 
+    MatButtonModule,    
+    HttpClientModule
   ],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.css',
@@ -35,13 +39,25 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
   paramsFormSubscription!: Subscription;
   isEdit = false;
   customerDetails$: any[] = [];
-  id: number=0;
+  id: number = 0;
+
+selectedFile: File | null = null;
+imagePreview: string | ArrayBuffer | null = null;
+existingImageUrl: any | null = null;
+
   constructor(
     private fb: FormBuilder,
     private toastrService: ToastrService,
     private activatedRouter: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+    this.customerForm = this.fb.group({
+      customerName: ['', Validators.required],
+      customerPhoneNumber: ['', Validators.required],
+      customerEmail: ['', [Validators.required, Validators.email]],
+      customerNID: ['', Validators.required],
+    });
+  }
   ngOnDestroy(): void {
     if (this.customerFormSubscription) {
       this.customerFormSubscription.unsubscribe();
@@ -49,44 +65,67 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     if (this.paramsFormSubscription) {
       this.paramsFormSubscription.unsubscribe();
     }
-   
   }
-  // getCurrentLocation() {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         const latitude = position.coords.latitude;
-  //         const longitude = position.coords.longitude;
-  //         this.authService.sendLocationToApi(latitude, longitude).subscribe({
-  //           next: (res) => {
-  //             // console.log(res);
-  //           },
-  //           error: (err) => {
-  //             // console.log(err.message);
-  //             this.toastrService.error(err.message);
-  //           },
-  //         });
-  //       },
-  //       (error) => {
-  //         this.toastrService.error(error.message);
-  //       }
-  //     );
-  //   } else {
-  //     this.toastrService.warning(
-  //       'Geolocation is not supported by this browser.'
-  //     );
-  //     console.log('Geolocation is not supported by this browser.');
-  //   }
-  // }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input?.files?.length) {
-      const file = input.files[0];
-      console.log('Selected file:', file);
+
+
+onFileSelected(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    this.selectedFile = file;
+
+    // Generate image preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+clearFile(): void {
+  this.selectedFile = null;
+  this.imagePreview = null;
+  const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = ''; // Reset the file input
+  }
+}
+
+
+
+  onUpload(): void {
+    if (this.selectedFile) {
+      this.authService.uploadImage(this.selectedFile).subscribe(
+        (response) => {
+          console.log('Upload successful:', response.data.url);
+  
+          this.customerForm.patchValue({
+            customerImage: response.data.url,
+          });
+  
+          this.authService.editCustomer(this.id, this.customerForm.value).subscribe({
+            next: (response) => {
+              this.toastrService.success(response.message);
+              this.router.navigateByUrl('/set/location');
+            },
+            error: (err) => {
+              this.toastrService.error(err.message);
+            },
+          });
+        },
+        (error) => {
+          console.error('Upload failed:', error);
+          this.toastrService.error('Image upload failed.');
+        }
+      );
+    } else {
+      console.error('No image selected');
+      this.toastrService.warning('Please select an image before uploading.');
     }
   }
-
+  
+  
   onSubmit() {
     if (!this.isEdit) {
       if (this.customerForm.invalid) {
@@ -99,9 +138,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
         .createCustomer(this.customerForm.value)
         .subscribe({
           next: (response) => {
-            this.toastrService.success(response.message);
-            console.log(response);
-            this.router.navigateByUrl('/set/location');
+            this.onUpload();          
           },
           error: (e) => {
             this.toastrService.error(e.message);
@@ -114,59 +151,68 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
         );
         return;
       }
-      this.authService.editCustomer(this.id, this.customerForm.value).subscribe({
-        next:(response)=>{
-          this.toastrService.success(response.message);
-          this.router.navigateByUrl('/set/location');
-        },
-        error:(err)=>{
-          this.toastrService.error(err.message);
-        }
-      })
+      this.authService
+        .editCustomer(this.id, this.customerForm.value)
+        .subscribe({
+          next: (response) => {
+            this.onUpload();
+          },
+          error: (err) => {
+            this.toastrService.error(err.message);
+          },
+        });
     }
   }
   ngOnInit(): void {
     this.authService.detaislCustomer().subscribe({
-      next:(res)=>{
-        console.log(res.length);
-      }
+      next: (res) => {
+        console.log(res[0].customerImage);
+        this.existingImageUrl=res[0].customerImage;
+      },
     });
     this.authService.detaislCustomer().subscribe({
-      next:(response)=>{
-        this.customerDetails$= response;
-      },error:(err)=>{
-        this.toastrService.error(err.message);
-      }
-    })
-    // console.log(this.authService.sendLocationToApi());
-this.paramsFormSubscription= this.activatedRouter.params.subscribe({
-  next:(response)=>{
-    // console.log("res pon : ",response);
-    this.id=response['id'];
-    if(!this.id) return;
-    // console.log("data : ",this.authService.getIdByCustomer(this.id));
-    this.authService.getIdByCustomer(this.id).subscribe({
-      next:(res)=>{    
-        console.log(res);    
-        this.customerForm.patchValue(res);
-        this.isEdit=true;
+      next: (response) => {
+        console.log(response);
+        // this.existingImageUrl=response
+        this.customerDetails$ = response;
       },
-      error:(err)=>{
+      error: (err) => {
         this.toastrService.error(err.message);
-      }
+      },
     });
-  }, error:(err)=>{
-    this.toastrService.error(err.message);
-  }
-})
-    this.customerForm = this.fb.group({
-      customerName: ['', [Validators.required]],
-      customerPhoneNumber: ['', [Validators.required]],
-      customerEmail: ['', [Validators.required]],
-      customerNID: ['', [Validators.required]],
-      customerImage: [''],
-      customerLatitude: [0],
-      customerLongitude: [0],
+    // console.log(this.authService.sendLocationToApi());
+    this.paramsFormSubscription = this.activatedRouter.params.subscribe({
+      next: (response) => {
+        // console.log("res pon : ",response);
+        this.id = response['id'];
+        if (!this.id) return;
+        // console.log("data : ",this.authService.getIdByCustomer(this.id));
+        this.authService.getIdByCustomer(this.id).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.customerForm.patchValue(res);
+            this.isEdit = true;
+          },
+          error: (err) => {
+            this.toastrService.error(err.message);
+          },
+        });
+      },
+      error: (err) => {
+        this.toastrService.error(err.message);
+      },
     });
+   
+      this.customerForm = this.fb.group({
+        customerName: ['', [Validators.required]],
+        customerPhoneNumber: ['', [Validators.required]],
+        customerEmail: ['', [Validators.required]],
+        customerNID: ['', [Validators.required]],
+        customerImage: '', 
+        customerLatitude: [0],
+        customerLongitude: [0],
+      });
+
   }
 }
+

@@ -93,7 +93,7 @@ export class RequestDriverResponseComponent implements OnInit {
     }, error => {
       // this.toastrService.error('Failed to load ridebook requests');
     });
-   }, 3000);
+   }, 500);
   }
 
   private CheckCustomerConfirm(requestId:number):void{
@@ -112,6 +112,6 @@ export class RequestDriverResponseComponent implements OnInit {
           }
         }
       })
-    }, 3000);
+    }, 500);
   }
 }
