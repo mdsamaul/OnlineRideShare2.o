@@ -11,16 +11,18 @@
       <div *ngIf="accountDetail$ | async as user ">
         <!-- Profile Section -->
         <div class="flex flex-col items-center">
-          <div *ngIf="customerAccount$?.customerImage">
+          <div>
             <div class="rounded-full bg-blue-500 my-4 text-4xl w-20 h-20 flex items-center justify-center font-bold text-white">
-             <img src="{{customerAccount$?.customerImage}}" alt="image"  alt="Example Image" class="w-24 h-24 object-cover rounded-full">
+             <!-- <img src="{{currentUserAccount$?.customerImage}}" alt="image"  alt="Example Image" class="w-24 h-24 object-cover rounded-full"> -->
+             <img *ngIf="!authService.getUserDetail()?.roles.includes('Admin')" src="{{currentUserAccount$.customerImage || currentUserAccount$.driverImage }}" class="w-full rounded-full h-full justify-center items-center" alt="">
+             <img *ngIf="authService.getUserDetail()?.roles.includes('Admin')" src="https://i.ibb.co.com/KmNzZ50/samaul-images.png" class="w-full rounded-full h-full justify-center items-center" alt="">
             </div>
           </div>
-          <div *ngIf="!customerAccount$?.customerImage">
+          <!-- <div *ngIf="!currentUserAccount$?.customerImage">
             <div class="rounded-full bg-blue-500 my-4 text-4xl w-20 h-20 flex items-center justify-center font-bold text-white">
               <mat-icon>person</mat-icon>
             </div>
-          </div>
+          </div> -->
 
           <div class="w-full">
             <hr class="my-4 border-gray-300">
@@ -40,7 +42,7 @@
             <!-- Phone Number -->
             <div class="flex justify-between mb-4 text-gray-700">
               <strong class="text-lg">Phone Number:</strong>
-              <span>{{ user.phoneNumber || customerAccount$.customerPhoneNumber}}</span>
+              <span>{{ user.phoneNumber || currentUserAccount$.customerPhoneNumber}}</span>
             </div>
             
             <!-- Role -->

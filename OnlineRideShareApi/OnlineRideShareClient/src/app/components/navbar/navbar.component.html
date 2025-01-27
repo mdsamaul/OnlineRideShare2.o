@@ -1,5 +1,5 @@
     <!-- Toolbar -->
-    <mat-toolbar color="primary" style="scrollbar-width: none;" class="flex justify-between items-center px-6 py-4 fixed top-0 left-0 z-50">
+    <mat-toolbar color="primary" style="scrollbar-width: none;" class="flex justify-between items-center px-6 py-4 fixed right-0 top-0 left-0 z-50">
       <!-- Sidenav Toggle Button -->
       @if (isLoggedIn()) {
         <button mat-icon-button (click)="drawer.toggle()">
@@ -28,7 +28,9 @@
             <!-- User Icon -->
             
             <div class="bg-red-400 text-white font-bold shadow-md rounded-full w-10 h-10 flex justify-center items-center">
-              {{ userDetail?.fullName.charAt(0) }}
+              <!-- {{ userDetail?.fullName.charAt(0) }} -->
+              <img *ngIf="!userDetail.roles.includes('Admin')" src="{{currentUserAccount$.customerImage || currentUserAccount$.driverImage }}" class="w-full rounded-full h-full justify-center items-center" alt="">
+              <img *ngIf="userDetail.roles.includes('Admin')" src="https://i.ibb.co.com/KmNzZ50/samaul-images.png" class="w-full rounded-full h-full justify-center items-center" alt="">
             </div>
             <!-- User Info -->
             <div class="text-white flex flex-col">
@@ -78,7 +80,7 @@
         <!-- Sidenav -->
         <mat-drawer #drawer mode="side" style="scrollbar-width: none;"  class="bg-red-900 text-whitem pt-20">
           <div *ngIf="authService.getUserDetail() as userDetail" class="p-4 w-56" style="scrollbar-width: none;">            
-            <div>
+            <!-- <div>
               <div class="flex justify-center items-center w-full animate-ping relative -z-10" style="scrollbar-width: none;">
                 <h2 class="font-bold mb-4 border rounded-full w-32 h-32 text-center flex justify-center items-center text-6xl">s</h2>
                </div>
@@ -88,7 +90,19 @@
                 border-right-width: 1px;
             ">s</h2>
                </div>
-             </div>
+             </div> -->
+
+           <div class="w-full flex justify-center py-5">
+            <span class="relative flex size-32">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75">             
+              </span>
+              <span class="relative inline-flex size-32 rounded-full bg-sky-500">
+                <img *ngIf="!userDetail.roles.includes('Admin')" src="{{currentUserAccount$.customerImage || currentUserAccount$.driverImage }}" class="w-full rounded-full h-full justify-center items-center" alt="">
+                <img *ngIf="userDetail.roles.includes('Admin')" src="https://i.ibb.co.com/KmNzZ50/samaul-images.png" class="w-full rounded-full h-full justify-center items-center" alt="">
+                <!-- <img src="{{currentUserAccount$.customerImage || currentUserAccount$.driverImage || 'https://i.ibb.co.com/xGS91sS/samaul.jpg'}}" class="w-full rounded-full h-full justify-center items-center" alt=""> -->
+              </span>
+            </span>
+           </div>
             <ul class="space-y-3">
               <hr>
               <li>

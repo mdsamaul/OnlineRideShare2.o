@@ -14,29 +14,34 @@ export class AccountComponent implements OnInit{
  
   authService = inject(AuthService);
   accountDetail$ = this.authService.getDetail();
- customerAccount$:any= undefined;
+  currentUserAccount$:any= undefined;
   
   ngOnInit(): void {
-    this.authService.getDetail().subscribe({
-      next:(res)=>{
-        console.log(res);
-        this.authService.getAllCustomer().subscribe({
-          next:(allCustomer)=>{
-            // console.log(res);
-            allCustomer.forEach(customer => {
-              if(customer.userId == res.id){
-                console.log(customer);
-               this.authService.getIdByCustomer(customer.customerId).subscribe({
-                  next:(customerDetail)=>{
-                    this.customerAccount$ = customerDetail;
-                  }
-                })
-              }
-            });
-          }
-        })
-      }
-    })
-    
+   
+    if(this.authService.getUserDetail()?.roles=='Driver'){
+      this.authService.getDrivers().subscribe({
+        next:(allDriver)=>{
+          allDriver.forEach(deiver => {
+            if(deiver.userId == this.authService.getUserDetail()?.id){
+              console.log(deiver);
+            this.currentUserAccount$=deiver;
+            }
+          });
+        }
+      })    
+    }
+    if(this.authService.getUserDetail()?.roles=='Rider'){
+      this.authService.getAllCustomer().subscribe({
+        next:(allCustomer)=>{
+          allCustomer.forEach(customer => {
+            if(customer.userId == this.authService.getUserDetail()?.id){
+              console.log(customer);
+            this.currentUserAccount$=customer;
+            }
+          });
+        }
+      })    
+    }
+        
   }
 }

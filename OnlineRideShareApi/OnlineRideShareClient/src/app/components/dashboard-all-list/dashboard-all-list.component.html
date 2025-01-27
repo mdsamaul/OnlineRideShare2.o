@@ -149,7 +149,7 @@
   
       <!-- Monthly Revenue Chart -->
       <div class="p-4 rounded-md shadow-lg bg-white flex flex-col items-center justify-center">
-        <h3 class="text-lg font-semibold text-center mb-4">Monthly Revenue</h3>
+        <h3 class="text-lg font-semibold text-center mb-4">{{authService.getUserDetail()?.roles == 'Rider' ? 'Monthly Spending':'Monthly Revenue'}} </h3>
         <canvas id="monthlyRevenueChart" class="w-full h-[200px]"></canvas> <!-- Set height explicitly -->
       </div>
       <div class="p-4 rounded-md shadow-lg bg-white flex flex-col items-center justify-center">
@@ -163,7 +163,7 @@
 
 
 
-<div class="mt-6 mb-32 z-50 mx-10 shadow-xl ">
+<div *ngIf="authService.getUserDetail()?.roles.includes('Admin')" class="mt-6 mb-32 z-50 mx-10 shadow-xl ">
     <div class="flex overflow-x-auto">
         <div class="w-1/2 pr-2 ">
             <h3 class="text-lg font-bold text-center mb-4">Driver Table</h3>
@@ -227,8 +227,8 @@
         </div>
     </div>
 </div>
-<div class="w-full px-10 ">
-    <h3 class="text-lg font-bold text-center mb-4">Rider Table</h3>
+<div  *ngIf="authService.getUserDetail()?.roles.includes('Admin')" class="w-full px-10 ">
+    <h3 class="text-lg font-bold text-center mb-4">Company Table</h3>
     <div class="overflow-y-auto max-h-[40vh]  border border-blue-500 scroll-smooth" style="scrollbar-width: thin;">
         <table class="min-w-full divide-y   shadow-md rounded-lg">
             <thead class="sticky text-green-600">
