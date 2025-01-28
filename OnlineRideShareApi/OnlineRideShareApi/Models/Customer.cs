@@ -14,7 +14,7 @@ namespace OnlineRideShareApi.Models
         [EmailAddress]
         public string? CustomerEmail { get; set; }
         [Required]
-        public required string CustomerNID { get; set; }
+        public string? CustomerNID { get; set; }
         public string? CustomerImage { get; set; }
         [Range(-90, 90)]
         public float? CustomerLatitude { get; set; }

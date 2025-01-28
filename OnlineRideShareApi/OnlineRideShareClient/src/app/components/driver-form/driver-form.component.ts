@@ -77,53 +77,32 @@ export class DriverFormComponent implements OnInit, OnDestroy {
       this.paramsSubscription.unsubscribe();
     }
   }
-  onSubmit(): void {
-    if (!this.isEdit) {
-      if (this.form.invalid) {
-        this.toastrService.warning(
-          'please fill in all required fields correctly.'
-        );
-        return;
-      }
-      const formData = this.form.value;
-      console.log("formData ",formData);
-      this.driverFormSubscription = this.authService
-        .createDriver(formData)
-        .subscribe({
-          next: (response) => {
-            this.onUpload();
-            this.toastrService.success(response.message);
-            console.log(response);
-    this.isLoading=true;
-            // this.router.navigateByUrl('/driver');
-          },
-          error: (err) => {
-            this.toastrService.error(err.message);
-            console.log(err);
-          },
-        });
-    } else {
-      if (this.form.invalid) {
-        this.toastrService.error(
-          'please fill in all required fields correctly'
-        );
-        return;
-      }
-      this.authService.driverEdit(this.driverId, this.form.value).subscribe({
-        next: (value) => {
-          this.onUpload();
-          console.log('driver edit : ', Response);
-          this.isLoading=true;
-          // this.router.navigateByUrl('/driver');
-          this.toastrService.success('Edit successfully');
-        },
-        error: (err) => {
-          console.log(err);
-          this.toastrService.error(err.error.message);
-        },
-      });
-    }
+  
+private submitForm() {
+  if (this.isEdit) {
+    // For Edit
+    this.authService.driverEdit(this.driverId, this.form.value).subscribe({
+      next: (response) => {
+        this.toastrService.success(response.message);
+        this.router.navigateByUrl('/driver');
+      },
+      error: (err) => {
+        this.toastrService.error(err.message);
+      },
+    });
+  } else {
+    // For Create
+    this.authService.createDriver(this.form.value).subscribe({
+      next: (response) => {
+        this.toastrService.success(response.message);
+        this.router.navigateByUrl('/driver');
+      },
+      error: (err) => {
+        this.toastrService.error(err.message);
+      },
+    });
   }
+}
   
 
   onFileSelected(event: any): void {
@@ -149,42 +128,38 @@ export class DriverFormComponent implements OnInit, OnDestroy {
     }
   }
   
-  
-  
-  
-    onUpload(): void {
-      if (this.selectedFile) {
-        this.authService.uploadImage(this.selectedFile).subscribe(
-          (response) => {
-            console.log('Upload successful:', response.data.url);
-    
-            this.form.patchValue({
-              driverImage: response.data.url,
-            });
-    
-            this.authService.driverEdit(this.driverId, this.form.value).subscribe({
-              next: (response) => {
-                this.toastrService.success(response.message);   
-                this.router.navigateByUrl('/driver');    
-                this.isLoading=false;       
-              },
-              error: (err) => {
-                this.toastrService.error(err.message);
-              },
-            });
-          },
-          (error) => {
-            console.error('Upload failed:', error);
-            this.toastrService.error('Image upload failed.');
-          }
+
+    onSubmit() {
+      if (this.form.invalid) {
+        this.toastrService.error(
+          'Please fill in all required fields correctly.'
         );
+        return;
+      }
+    
+      if (this.selectedFile) {
+        // Image upload first
+        this.authService.uploadImage(this.selectedFile).subscribe({
+          next: (response) => {
+            const imageUrl = response.data.url;
+            console.log(imageUrl)
+            this.form.patchValue({
+              driverImage: imageUrl,
+            });
+    
+            // Now create or edit customer
+            this.submitForm();
+          },
+          error: (err) => {
+            this.toastrService.error('Image upload failed.');
+            console.error(err);
+          },
+        });
       } else {
-        console.error('No image selected');
-        this.toastrService.warning('Please select an image before uploading.');
+        // No image selected, directly proceed
+        this.submitForm();
       }
     }
-
-
 
 
   ngOnInit(): void {
@@ -221,7 +196,7 @@ export class DriverFormComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       drivingLicenseNo: ['', Validators.required],
       driverNid: ['', Validators.required],
-      driverImage: '',
+      driverImage: [''],
       companyId: [null],
       company: [null],
       driverLatitude: [null],
@@ -237,3 +212,6 @@ export class DriverFormComponent implements OnInit, OnDestroy {
   }
 
 }
+
+
+

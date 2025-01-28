@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +10,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { ToastrService } from 'ngx-toastr';
-import { switchMap, forkJoin } from 'rxjs';
+import { NotificationComponent } from "../notification/notification.component";
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -21,61 +22,45 @@ import { switchMap, forkJoin } from 'rxjs';
     MatButtonModule,
     MatSidenavModule,
     MatSnackBarModule,
-    MatButtonModule,
-    MatIcon,
-    RouterLink,
     MatMenuModule,
     CommonModule,
-  ],
+    RouterLink,
+    NotificationComponent
+],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css',
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
   showFiller = false;
   authService = inject(AuthService);
   matSnackBar = inject(MatSnackBar);
   router = inject(Router);
-  currentUserAccount$: any = undefined;
+  currentUserAccount$: any = {};
   constructor(private toastrService: ToastrService) {}
+
   ngOnInit(): void {
-   
-    if(this.authService.getUserDetail()?.roles=='Rider'){
+    const userDetails = this.authService.getUserDetail();
+    if (userDetails?.roles === 'Rider') {
       this.authService.getAllCustomer().subscribe((resCustomer) => {
-        resCustomer.forEach((customer) => {
-          if (this.authService.getUserDetail()?.id == customer?.userId) {
-            console.log(customer.customerImage);
-            this.currentUserAccount$=customer;
-          }
-        });
+        this.currentUserAccount$ = resCustomer.find(
+          (customer) => customer.userId === userDetails.id
+        ) || {};
       });
-    }else if(this.authService.getUserDetail()?.roles=='Driver'){
+    } else if (userDetails?.roles === 'Driver') {
       this.authService.getDrivers().subscribe((resDriver) => {
-        resDriver.forEach((driver) => {
-          if (this.authService.getUserDetail()?.id == driver?.userId) {
-            console.log(driver.driverImage);
-            this.currentUserAccount$=driver;
-          }
-        });
+        this.currentUserAccount$ = resDriver.find(
+          (driver) => driver.userId === userDetails.id
+        ) || {};
       });
-    }else{
-      console.log(this.authService.getUserDetail());
+    } else {
+      console.log('User details:', userDetails);
     }
-    
-   
-    // this.authService.getAllCustomer().subscribe((resCustomer) => {
-    //   resCustomer.forEach((customer) => {
-    //     if (this.authService.getUserDetail()?.id == customer?.userId) {
-    //       console.log(customer.customerImage);
-    //       this.currentUserAccount$=customer;
-    //     }
-    //   });
-    // });
   }
 
   isLoggedIn() {
     return this.authService.isLoggedIn();
   }
-  drawer: any;
+
   logout = () => {
     this.authService.logout();
     this.toastrService.success('Logout Successfully');
@@ -83,7 +68,8 @@ export class NavbarComponent implements OnInit {
       duration: 5000,
       horizontalPosition: 'center',
     });
-    this.router.navigate(['/login']);
-    location.reload();
+    this.router.navigate(['/login']).then(() => {
+      window.location.href = '/login';
+    });
   };
 }

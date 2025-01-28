@@ -246,8 +246,8 @@ export class AuthService {
   detailsDriver(): Observable<DriverCreateRequest[]> {
     return this.http.get<DriverCreateRequest[]>(`${this.apiUrl}driver/details`);
   }
-  createDriver(data: DriverCreateRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}driver`, data);
+  createDriver(data: DriverCreateRequest): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}driver`, data);
   }
 
   getDriverById(id: number): Observable<any> {
@@ -386,8 +386,8 @@ getAllRidebookRequest():Observable<any>{
     return this.http.put<AuthResponse>(`${this.apiUrl}Cusomer/${id}`, data);
   }
   //get by id customer
-  getIdByCustomer(id: number): Observable<AuthResponse> {
-    return this.http.get<AuthResponse>(`${this.apiUrl}Cusomer/${id}`);
+  getIdByCustomer(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}Cusomer/${id}`);
   }
 
   //delete

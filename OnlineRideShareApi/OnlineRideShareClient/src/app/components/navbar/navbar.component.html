@@ -23,13 +23,19 @@
       </div>
       <!-- User Section -->
       @if (isLoggedIn()) {
+
         <div *ngIf="authService.getUserDetail() as userDetail" class="flex items-center gap-4">
+
+          <div *ngIf="userDetail.roles.includes('Driver')">
+            <app-notification></app-notification>
+          </div>
           <a [matMenuTriggerFor]="menu" class="flex items-center gap-2 cursor-pointer">
             <!-- User Icon -->
             
             <div class="bg-red-400 text-white font-bold shadow-md rounded-full w-10 h-10 flex justify-center items-center">
               <!-- {{ userDetail?.fullName.charAt(0) }} -->
-              <img *ngIf="!userDetail.roles.includes('Admin')" src="{{currentUserAccount$.customerImage || currentUserAccount$.driverImage }}" class="w-full rounded-full h-full justify-center items-center" alt="">
+              <img *ngIf="userDetail.roles.includes('Rider')" src="{{currentUserAccount$.customerImage}}" class="w-full rounded-full h-full justify-center items-center" alt="">
+              <img *ngIf="userDetail.roles.includes('Driver')" src="{{currentUserAccount$.driverImage }}" class="w-full rounded-full h-full justify-center items-center" alt="">
               <img *ngIf="userDetail.roles.includes('Admin')" src="https://i.ibb.co.com/KmNzZ50/samaul-images.png" class="w-full rounded-full h-full justify-center items-center" alt="">
             </div>
             <!-- User Info -->
@@ -97,7 +103,8 @@
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75">             
               </span>
               <span class="relative inline-flex size-32 rounded-full bg-sky-500">
-                <img *ngIf="!userDetail.roles.includes('Admin')" src="{{currentUserAccount$.customerImage || currentUserAccount$.driverImage }}" class="w-full rounded-full h-full justify-center items-center" alt="">
+                <img *ngIf="userDetail.roles.includes('Rider')" src="{{currentUserAccount$.customerImage}}" class="w-full rounded-full h-full justify-center items-center" alt="">
+                <img *ngIf="userDetail.roles.includes('Driver')" src="{{currentUserAccount$.driverImage }}" class="w-full rounded-full h-full justify-center items-center" alt="">
                 <img *ngIf="userDetail.roles.includes('Admin')" src="https://i.ibb.co.com/KmNzZ50/samaul-images.png" class="w-full rounded-full h-full justify-center items-center" alt="">
                 <!-- <img src="{{currentUserAccount$.customerImage || currentUserAccount$.driverImage || 'https://i.ibb.co.com/xGS91sS/samaul.jpg'}}" class="w-full rounded-full h-full justify-center items-center" alt=""> -->
               </span>

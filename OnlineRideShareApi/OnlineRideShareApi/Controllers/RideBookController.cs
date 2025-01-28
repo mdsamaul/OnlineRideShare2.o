@@ -672,6 +672,5 @@ namespace OnlineRideShareApi.Controllers
             }
             return NotFound();
         }
-
     }
 }

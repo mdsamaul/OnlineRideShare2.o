@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,16 +9,14 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../services/auth.service';
-import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { response } from 'express';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
-  selector: 'app-customer-form',
+  selector: 'app-instend-customer',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -29,10 +27,10 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonModule,    
     HttpClientModule
   ],
-  templateUrl: './customer-form.component.html',
-  styleUrl: './customer-form.component.css',
+  templateUrl: './instend-customer.component.html',
+  styleUrl: './instend-customer.component.css',
 })
-export class CustomerFormComponent implements OnInit, OnDestroy {
+export class InstendCustomerComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
   customerForm!: FormGroup;
   customerFormSubscription!: Subscription;
@@ -41,9 +39,9 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
   customerDetails$: any[] = [];
   id: number = 0;
 
-selectedFile: File | null = null;
-imagePreview: string | ArrayBuffer | null = null;
-existingImageUrl: any | null = null;
+  selectedFile: File | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
+  existingImageUrl: any | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -56,8 +54,12 @@ existingImageUrl: any | null = null;
       customerPhoneNumber: ['', Validators.required],
       customerEmail: ['', [Validators.required, Validators.email]],
       customerNID: ['', Validators.required],
+      customerImage: [''], 
+      customerLatitude: [0],
+      customerLongitude: [0],
     });
   }
+
   ngOnDestroy(): void {
     if (this.customerFormSubscription) {
       this.customerFormSubscription.unsubscribe();
@@ -67,46 +69,32 @@ existingImageUrl: any | null = null;
     }
   }
 
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
 
-
-onFileSelected(event: any): void {
-  const file = event.target.files[0];
-  if (file) {
-    this.selectedFile = file;
-
-    // Generate image preview
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result;
-    };
-    reader.readAsDataURL(file);
+      // Generate image preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
-}
 
-clearFile(): void {
-  this.selectedFile = null;
-  this.imagePreview = null;
-  const fileInput = document.getElementById('file-upload') as HTMLInputElement;
-  if (fileInput) {
-    fileInput.value = ''; // Reset the file input
+  clearFile(): void {
+    this.selectedFile = null;
+    this.imagePreview = null;
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Reset the file input
+    }
   }
-}
 
-private submitForm() {
-  if (this.isEdit) {
+  private submitForm() {
     // For Edit
-    this.authService.editCustomer(this.id, this.customerForm.value).subscribe({
-      next: (response) => {
-        this.toastrService.success(response.message);
-        this.router.navigateByUrl('/set/location');
-      },
-      error: (err) => {
-        this.toastrService.error(err.message);
-      },
-    });
-  } else {
-    // For Create
-    this.authService.createCustomer(this.customerForm.value).subscribe({
+    this.authService.editCustomer(1026, this.customerForm.value).subscribe({
       next: (response) => {
         this.toastrService.success(response.message);
         this.router.navigateByUrl('/set/location');
@@ -116,8 +104,6 @@ private submitForm() {
       },
     });
   }
-}
-
 
   onSubmit() {
     if (this.customerForm.invalid) {
@@ -126,7 +112,7 @@ private submitForm() {
       );
       return;
     }
-  
+
     if (this.selectedFile) {
       // Image upload first
       this.authService.uploadImage(this.selectedFile).subscribe({
@@ -135,8 +121,8 @@ private submitForm() {
           this.customerForm.patchValue({
             customerImage: imageUrl,
           });
-  
-          // Now create or edit customer
+
+          // Now edit customer
           this.submitForm();
         },
         error: (err) => {
@@ -149,32 +135,30 @@ private submitForm() {
       this.submitForm();
     }
   }
-  
-  
+
   ngOnInit(): void {
     this.authService.detaislCustomer().subscribe({
       next: (res) => {
         console.log(res[0].customerImage);
-        this.existingImageUrl=res[0].customerImage;
+        this.existingImageUrl = res[0].customerImage;
       },
     });
+
     this.authService.detaislCustomer().subscribe({
       next: (response) => {
         console.log(response);
-        // this.existingImageUrl=response
         this.customerDetails$ = response;
       },
       error: (err) => {
         this.toastrService.error(err.message);
       },
     });
-    // console.log(this.authService.sendLocationToApi());
+
     this.paramsFormSubscription = this.activatedRouter.params.subscribe({
       next: (response) => {
-        // console.log("res pon : ",response);
         this.id = response['id'];
         if (!this.id) return;
-        // console.log("data : ",this.authService.getIdByCustomer(this.id));
+
         this.authService.getIdByCustomer(this.id).subscribe({
           next: (res) => {
             console.log(res);
@@ -190,17 +174,5 @@ private submitForm() {
         this.toastrService.error(err.message);
       },
     });
-   
-      this.customerForm = this.fb.group({
-        customerName: ['', [Validators.required]],
-        customerPhoneNumber: ['', [Validators.required]],
-        customerEmail: ['', [Validators.required]],
-        customerNID: ['', [Validators.required]],
-        customerImage: [''], 
-        customerLatitude: [0],
-        customerLongitude: [0],
-      });
-
   }
 }
-

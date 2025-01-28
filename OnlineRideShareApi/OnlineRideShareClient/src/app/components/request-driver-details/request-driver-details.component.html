@@ -61,13 +61,13 @@
   </section>
 
   
-<div *ngIf="isLoading" class="loading-overlay">
+<div *ngIf="isLoading" class="loading-overlay z-50">
   <div class="spinner"></div>
 </div>
 
   <div 
   *ngIf="isMyselfModalOpen" 
-  class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
   <div class="bg-white rounded-lg w-96 p-6 shadow-lg">
     <h2 class="text-xl font-bold text-gray-800 mb-4">Ride Booking Confirmation</h2>
     <p class="text-gray-600 mb-6">Would you like to book this ride for yourself, or refer it to someone else?</p>
@@ -133,9 +133,12 @@
       Refer to Someone
     </button>
   </form>   
-     
+<div class="w-full flex justify-center items-center pt-5">
+  <button class="w-8 h-8 rounded-full bg-slate-400 flex justify-center items-center cursor-pointer" (click)="closeReferRideDialog()">X</button>
+</div>
     </div>
   </div>
+ 
 </div>
 
 <div 
@@ -174,4 +177,141 @@ class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-5
     </div>
   </div>
 </div>
+</div>
+
+
+<!-- Main Component -->
+<!-- <div>
+  <button (click)="openDialog()">Open Customer Form</button>
+</div> -->
+
+<!-- Modal Component -->
+<div class="modal" *ngIf="isModalOpen">
+  <div class="modal-content">
+    <button class="close-button" (click)="closeDialog()">×</button>
+    <div class="modal-body">
+     
+<div class="flex justify-center items-center relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-72 h-72 bg-blue-500 rounded-full blur-3xl animate-pulse opacity-10"></div>
+  <div class="absolute top-0 right-0 w-72 h-72 bg-green-500 rounded-full blur-3xl animate-pulse opacity-20"></div>
+  <div class="absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full blur-3xl animate-pulse opacity-20"></div>
+  <div class="absolute bottom-0 right-0 w-72 h-72 bg-red-500 rounded-full blur-3xl animate-pulse opacity-10"></div>
+
+
+<div class="container  mx-auto p-8 bg-white shadow-xl rounded-xl">
+  <h2 class="text-3xl font-semibold mb-6 text-center text-blue-600">
+    Customer Form
+  </h2>
+  <form [formGroup]="customerForm" (ngSubmit)="onCustomerSubmit()">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Customer Name -->
+     <div>
+        
+        <input hidden matInput  formControlName="customerId" class="focus:ring-2 focus:ring-blue-500" />
+      
+     
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Customer Name</mat-label>
+        <input matInput placeholder="Enter Customer Name" formControlName="customerName" class="focus:ring-2 focus:ring-blue-500" />
+        <mat-error *ngIf="customerForm.get('customerName')?.hasError('required')">
+          Customer Name is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Phone Number -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Phone Number</mat-label>
+        <input matInput placeholder="Enter Phone Number" formControlName="customerPhoneNumber" class="focus:ring-2 focus:ring-blue-500" />
+        <mat-error *ngIf="customerForm.get('customerPhoneNumber')?.hasError('required')">
+          Phone Number is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Email -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" placeholder="Enter Email" formControlName="customerEmail" class="focus:ring-2 focus:ring-blue-500" />
+        <mat-error *ngIf="customerForm.get('customerEmail')?.hasError('email')">
+          Invalid email format
+        </mat-error>
+      </mat-form-field>
+
+      <!-- NID -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>NID</mat-label>
+        <input matInput placeholder="Enter NID" formControlName="customerNID" class="focus:ring-2 focus:ring-blue-500" />
+      </mat-form-field>
+     </div>
+
+     
+       <div class="relative w-48 max-w-sm mx-auto space-y-4 z-50">
+        <!-- Existing Image Preview -->
+        <div *ngIf="imagePreview " class="relative w-full max-w-sm">
+          <img
+            [src]="imagePreview "
+            alt="Selected Image"
+            class="object-cover w-48 h-48 border border-gray-300 rounded-lg shadow-md"
+          />
+          <div class="mt-2 text-sm text-gray-600">
+            <p *ngIf="selectedFile"><strong>File:</strong> {{ selectedFile.name }}</p>
+            <p *ngIf="selectedFile"><strong>Size:</strong> {{ (selectedFile.size / 1024).toFixed(2) }} KB</p>
+          </div>
+      
+          <!-- Remove Button -->
+          <button
+            (click)="clearFile()"
+            class="absolute top-2 right-2 px-2 py-1 text-xs text-white bg-red-500 rounded-full hover:bg-red-600"
+          >
+            Remove
+          </button>
+        </div>
+      
+        <!-- Upload Button -->
+        <div>
+          <label
+            for="file-upload"
+            class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-md cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 16l4-4m0 0l4-4m-4 4h12M16 12h5m-5 0h5"
+              />
+            </svg>
+            {{ selectedFile ? 'Change Image' : 'Upload Image' }}
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            class="hidden"
+          />
+        </div>
+      </div>  
+    </div>
+    <div class="flex justify-end gap-6">       
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="customerForm.invalid"
+        class="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 focus:outline-none"
+        type="submit"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+</div>
+    </div>
+  </div>
 </div>

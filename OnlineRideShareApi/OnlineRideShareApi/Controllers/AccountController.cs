@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OnlineRideShareApi.Data;
 using OnlineRideShareApi.Dtos;
 using OnlineRideShareApi.Models;
 using RestSharp;
@@ -23,18 +24,19 @@ namespace OnlineRideShareApi.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-
+        private readonly AppDbContext _context;
 
         public AccountController(UserManager<AppUser> userManager,
         RoleManager<IdentityRole> roleManager,
-        IConfiguration configuration
+        IConfiguration configuration , AppDbContext context
         )
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+           _context = context;
         }
-
+        
         // api/account/register
 
         [AllowAnonymous]
@@ -54,7 +56,7 @@ namespace OnlineRideShareApi.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
-
+            //var id = registerDto.UserId;
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors);
@@ -70,9 +72,25 @@ namespace OnlineRideShareApi.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, role);
                 }
-            }
-
-
+            } 
+            var customer = new Customer()
+            {
+                UserId= user.Id,
+                CustomerName=user.UserName,
+                CustomerNID="",
+                CustomerPhoneNumber="N/A",
+                CustomerEmail=user.Email,
+            };
+            await _context.Customers.AddAsync(customer);
+            await _context.SaveChangesAsync();
+            var driver = new Driver()
+            {
+                UserId = user.Id,
+                DriverName=user.UserName,
+                Email=user.Email,
+            };
+            await _context.Drivers.AddAsync(driver);
+            await _context.SaveChangesAsync();
             return Ok(new AuthResponseDto
             {
                 IsSuccess = true,
