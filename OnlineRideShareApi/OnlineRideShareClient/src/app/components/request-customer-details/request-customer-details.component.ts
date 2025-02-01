@@ -147,7 +147,7 @@ export class RequestCustomerDetailsComponent implements OnInit {
                             this.toastrService.success("ride book succefully");
                             this.router.navigate(['/ride-track',res.rideBookId]);
                             console.log('confirm : and ride book init : ', res);
-                            window.location.reload();
+                            // window.location.reload();
                           }
                         })                       
                       },

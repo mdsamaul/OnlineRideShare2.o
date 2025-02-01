@@ -364,90 +364,151 @@ export class RideMapComponent implements OnInit {
 
                   console.log(this.firstRequest$);
                 });
-                this.recipientEmail=this.customer$.customerEmail;
-                console.log(this.recipientEmail);
+              this.recipientEmail = this.customer$.customerEmail;
+              console.log(this.recipientEmail);
               // alert('Invoice created successfully!');
               setTimeout(() => {
+                //   this.message = `
+                //   <div style="padding: 40px 20px; text-align: center; font-family: Arial, sans-serif; color: #fff; position:relative;">
+                //     <table style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; padding: 20px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); color: #333; border: 5px solid transparent; border-image: linear-gradient(90deg, #4f46e5, #9333ea) 1;border-image-slice: 1;">
+                //       <tr>
+                //         <td style="text-align: center; background: linear-gradient(90deg, rgba(79, 70, 229, 1) 0%, rgba(147, 51, 234, 1) 100%); padding: 20px 0; border-radius: 8px;">
+                //           <h2 style="color: #fff; font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin: 0;">
+                //             Invoice
+                //           </h2>
+                //         </td>
+                //       </tr>
+
+                //       <!-- Greeting -->
+                //       <tr>
+                //         <td style="text-align: center; padding-top: 10px 0;">
+                //           <h2 style="color: #4f46e5;">Dear ${
+                //             this.customer$.customerName
+                //           },</h2>
+                //           <p style="font-size: 16px;;" >We are pleased to inform you that your ride has been successfully.</p>
+                //         </td>
+                //       </tr>
+
+                //       <!-- Ride Details -->
+                //       <tr>
+                //         <td style="padding: 1px 0 5px 0; text-align: center;">
+                //           <p style="font-size: 16px;"><strong>Pickup Location:</strong> <span style="color: #4f46e5;">${
+                //             this.firstRequest$.sourceLocation
+                //           }</span></p>
+                //           <p style="font-size: 16px;  padding-left: 16px"><strong>Drop-off Location:</strong> <span style="color: #9333ea;">${
+                //             this.firstRequest$.destinationLocation
+                //           }</span></p>
+                //         </td>
+                //       </tr>
+
+                //       <tr>
+                //         <td style="display: flex; >
+                //           <p style="font-size: 16px; "><strong>Total Km : </strong> <span style="color: #9333ea;">${(
+                //             this.totalDistance / 1000
+                //           ).toFixed(3)} KM</span></p>
+                //           <p style="font-size: 16px;  padding-left: 16px"><strong>Estimated Fare:</strong> <span style="color: #16a34a; font-weight: bold;">${totalFare.toFixed(
+                //             2
+                //           )} BDT</span></p>
+                //         </td>
+                //       </tr>
+
+                //       <!-- Payment Link -->
+                //       <tr>
+                //         <td style="text-align: center; background: linear-gradient(90deg, rgba(79, 70, 229, 1) 0%, rgba(147, 51, 234, 1) 100%); text-align: center; padding-bottom: 10px;">
+                //           <a href="http://localhost:4200/payment" style="background: #4f46e5; color: #fff; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block; font-size: 16px; font-weight: bold;">
+                //             Click here to pay invoice
+                //           </a>
+                //         </td>
+                //       </tr>
+
+                //       <!-- Driver Information -->
+                //       <tr>
+                //         <td style="background: #f9fafb; padding: 15px; border-radius: 10px; margin-top: 8px;">
+                //           <p style="font-size: 16px;"><strong>Driver:</strong> <span style="color: #4f46e5;">${
+                //             this.driver$.driverName
+                //           }</span></p>
+                //           <p style="font-size: 16px;"><strong>Contact:</strong> <span style="color: #9333ea;">${
+                //             this.driver$.phoneNumber
+                //           }</span></p>
+                //         </td>
+                //       </tr>
+
+                //       <!-- Support Section -->
+                //       <tr>
+                //         <td style="text-align: center; padding-top: 10px;">
+                //           <p style="font-size: 16px;">If you have any questions, feel free to contact us.</p>
+                //           <p style="font-size: 16px;"><strong>Company Name:</strong> Online Ride Share</p>
+                //           <p style="font-size: 16px;"><strong>Customer Support:</strong>
+                //             <a href="mailto:mdsamaul843@gmail.com" style="color: #4f46e5; text-decoration: none;">mdsamaul843@gmail.com</a> |
+                //             <span style="color: #4f46e5;">01981154473</span>
+                //           </p>
+                //         </td>
+                //       </tr>
+                //     </table>
+                //   </div>
+
+                // `;
                 this.message = `
-                <div style="background: linear-gradient(90deg, rgba(79, 70, 229, 1) 0%, rgba(147, 51, 234, 1) 100%); padding: 40px 20px; text-align: center; font-family: Arial, sans-serif; color: #fff; position:relative;">
-                  <table style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; padding: 20px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); color: #333;">
-                    
-                    <tr>
-                      <td style="text-align: center; background: linear-gradient(90deg, rgba(79, 70, 229, 1) 0%, rgba(147, 51, 234, 1) 100%); padding: 20px 0; border-radius: 8px;">
-                        <h2 style="color: #fff; font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin: 0;">
-                          Invoice
-                        </h2>
-                      </td>
-                    </tr>                 
+              <div style="max-width: 600px; margin: auto; position: relative; padding: 10px; border-radius: 10px; overflow: hidden; background: linear-gradient(90deg, #4f46e5, #9333ea);">
+                <div style="background: #ffffff; border-radius: 10px; padding: 20px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);">
+                  
+                  <!-- Invoice Title -->
+                  <h2 style="color: #4f46e5; text-align: center;">Invoice</h2>
 
-                    <!-- Greeting -->
-                    <tr>
-                      <td style="text-align: center; padding-top: 10px 0;">
-                        <h2 style="color: #4f46e5;">Dear ${
-                          this.customer$.customerName
-                        },</h2>
-                        <p style="font-size: 16px;;" >We are pleased to inform you that your ride has been successfully.</p>
-                      </td>
-                    </tr>
-                    
-                    <!-- Ride Details -->
-                    <tr>
-                      <td style="display: flex; justify-content: space-between; padding: 1px 0 5px 0; text-align: center;">
-                        <p style="font-size: 16px;"><strong>Pickup Location:</strong> <span style="color: #4f46e5;">${
-                          this.firstRequest$.sourceLocation
-                        }</span></p>
-                        <p style="font-size: 16px;  padding-left: 16px"><strong>Drop-off Location:</strong> <span style="color: #9333ea;">${
-                          this.firstRequest$.destinationLocation
-                        }</span></p>
-                      </td>
-                    </tr>
+                  <!-- Greeting -->
+                  <p style="text-align: center; font-size: 16px; color: #333;">
+                    Dear <span style="color: #4f46e5; font-weight: bold;">${
+                      this.customer$.customerName
+                    }</span>, your ride has been successfully completed.
+                  </p>
 
-                    <tr>
-                      <td style="display: flex; >
-                        <p style="font-size: 16px; "><strong>Total Km : </strong> <span style="color: #9333ea;">${(
-                          this.totalDistance / 1000
-                        ).toFixed(3)} KM</span></p>
-                        <p style="font-size: 16px;  padding-left: 16px"><strong>Estimated Fare:</strong> <span style="color: #16a34a; font-weight: bold;">${totalFare.toFixed(
-                          2
-                        )} BDT</span></p>
-                      </td>
-                    </tr>
-                    
-                    <!-- Payment Link -->
-                    <tr>
-                      <td style="text-align: center; padding-bottom: 10px;">
-                        <a href="http://localhost:4200/payment" style="background: #4f46e5; color: #fff; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block; font-size: 16px; font-weight: bold;">
-                          Click here to pay invoice
-                        </a>
-                      </td>
-                    </tr>
+                  <!-- Ride Details -->
+                  <div style="padding-top: 10px; text-align: center;">
+                    <p style="font-size: 16px;"><strong>Pickup Location:</strong> <span style="color: #4f46e5;">${
+                      this.firstRequest$.sourceLocation
+                    }</span></p>
+                    <p style="font-size: 16px;"><strong>Drop-off Location:</strong> <span style="color: #9333ea;">${
+                      this.firstRequest$.destinationLocation
+                    }</span></p>
+                  </div>
 
-                    <!-- Driver Information -->
-                    <tr>
-                      <td style="background: #f9fafb; padding: 15px; border-radius: 10px; margin-top: 8px;">
-                        <p style="font-size: 16px;"><strong>Driver:</strong> <span style="color: #4f46e5;">${
-                          this.driver$.driverName
-                        }</span></p>
-                        <p style="font-size: 16px;"><strong>Contact:</strong> <span style="color: #9333ea;">${
-                          this.driver$.phoneNumber
-                        }</span></p>
-                      </td>
-                    </tr>
+                  <div style="padding-bottom: 10px ; text-align: center;">
+                    <p style="font-size: 16px;"><strong>Total Km:</strong> <span style="color: #9333ea;">250 KM</span></p>
+                    <p style="font-size: 16px;"><strong>Estimated Fare:</strong> <span style="color: #16a34a; font-weight: bold;">${(
+                      this.totalDistance / 1000
+                    ).toFixed(3)} BDT</span></p>
+                  </div>
 
-                    <!-- Support Section -->
-                    <tr>
-                      <td style="text-align: center; padding-top: 10px;">
-                        <p style="font-size: 16px;">If you have any questions, feel free to contact us.</p>
-                        <p style="font-size: 16px;"><strong>Company Name:</strong> Online Ride Share</p>
-                        <p style="font-size: 16px;"><strong>Customer Support:</strong> 
-                          <a href="mailto:mdsamaul843@gmail.com" style="color: #4f46e5; text-decoration: none;">mdsamaul843@gmail.com</a> | 
-                          <span style="color: #4f46e5;">01981154473</span>
-                        </p>
-                      </td>
-                    </tr>                    
-                  </table>
+                  <!-- Payment Link -->
+                  <div style="text-align: center; padding: 15px;">
+                    <a href="http://localhost:4200/payment" style="background: #4f46e5; color: #fff; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block; font-size: 16px; font-weight: bold;">
+                      Click here to pay invoice
+                    </a>
+                  </div>
+
+                  <!-- Driver Information -->
+                  <div style="display: flex; justify-content: space-between;  padding: 10px 0; background: #f9fafb; padding: 15px; border-radius: 10px; margin-top: 8px;">
+                    <p style="font-size: 16px;"><strong>Driver:</strong> <span style="color: #4f46e5;">${
+                      this.driver$.driverName
+                    }</span></p>
+                    <p style="font-size: 16px;"><strong>Contact:</strong> <span style="color: #9333ea;">${
+                      this.driver$.phoneNumber
+                    }</span></p>
+                  </div>
+
+                  <!-- Support Section -->
+                  <div style="text-align: center; padding-top: 10px;">
+                    <p style="font-size: 16px;">If you have any questions, feel free to contact us.</p>
+                    <p style="font-size: 16px;"><strong>Company Name:</strong> Online Ride Share</p>
+                    <p style="font-size: 16px;"><strong>Customer Support:</strong> 
+                      <a href="mailto:mdsamaul843@gmail.com" style="color: #4f46e5; text-decoration: none;">mdsamaul843@gmail.com</a> | 
+                      <span style="color: #4f46e5;">01981154473</span>
+                    </p>
+                  </div>                    
+
                 </div>
-
+              </div>
+              
               `;
 
                 const emailData = {
