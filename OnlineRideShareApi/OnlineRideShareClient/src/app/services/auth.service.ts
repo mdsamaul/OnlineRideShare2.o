@@ -574,4 +574,18 @@ getAllRidebookRequest():Observable<any>{
       data
     );
   }
+
+  // https://localhost:7111/api/RideBook/rating?id=1
+  // /RideBook/1020
+
+  rating(id: number, data:RideBook):Observable<RideBook>{
+    return this.http.put<RideBook>(`${this.apiUrl}RideBook/${id}`, data);
+  }
+// 'http://localhost:5000/api/email/send';
+
+  sendEmail(emailData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}email/send`, emailData);
+  }
+
+
 }

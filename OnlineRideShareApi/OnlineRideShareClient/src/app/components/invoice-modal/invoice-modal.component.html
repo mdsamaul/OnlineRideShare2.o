@@ -1,97 +1,74 @@
-<!-- <div class="p-6 bg-white rounded-lg shadow-lg w-full max-w-md mx-auto">
-    <h2 class="text-xl font-semibold text-center mb-4">Invoice Details</h2>
-    <div class="mb-4">
-      <p><strong>Invoice ID:</strong> {{ invoice?.invoiceId }}</p>
-      <p><strong>Payment Time:</strong> {{ invoice?.paymentTime | date: 'yyyy-MM-dd HH:mm' }}</p>
-      <p><strong>Amount:</strong> {{ invoice?.amount | currency: 'USD' }}</p>
-      <p><strong>Customer:</strong> {{ invoice?.customer?.name || 'N/A' }}</p>
-      <p><strong>Driver:</strong> {{ invoice?.driver?.name || 'N/A' }}</p>
-      <p><strong>Payment Method:</strong> {{ invoice?.paymentMethod?.methodName || 'N/A' }}</p>
-    </div>
-    <div class="text-center mt-6">
-      <button
-        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        (click)="downloadInvoicePdf()"
-      >
-        Download PDF
-      </button>
-      <button
-        class="ml-2 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
-        (click)="closeModal()"
-      >
-        Close
-      </button>
-    </div>
-  </div>
-   -->
-   <div class="w-full lg:w-[600px] mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
-   
+<div class="h-[80vh] w-full overflow-auto overflow-x-auto overflow-y-auto flex justify-center items-center">
+  <div #invoiceSection id="invoice-section" class="w-full max-w-md lg:max-w-lg xl:max-w-2xl mx-auto mt-10 p-6 rounded-lg shadow-md">
+    
+<div *ngIf="isLoading" class="loading-overlay" style="z-index: 100000;">
+  <div class="spinner"></div>
+</div>
     <div class="text-center mb-8">
-      <h1 class="text-2xl font-bold">Online Ride Share</h1>
+      <h1 class="text-2xl font-bold text-gray-800">Online Ride Share</h1>
       <div class="text-sm text-gray-500">
         <p>123, Dhaka, Bangladesh</p>     
         <p>+880 1981 154 473</p>
       </div>
     </div>
 
-    <div class="mb-6">
-        <div class="flex justify-center w-full mb-3">
-            <div>
-                <div class="w-60">
-                    <hr>
-                </div>
-                <h2 class="text-lg font-semibold text-gray-700 text-center">Invoice</h2>
-                <div class="w-60">
-                    <hr>
-                </div>
-            </div>
+    <div class="flex justify-center w-full mb-4">
+      <div>
+        <div class="w-60 mx-auto">
+          <hr class="border-t-2 border-gray-400">
         </div>
-      
-      <div class="grid grid-cols-2 gap-4 text-sm text-gray-600 mt-2">
+        <h2 class="text-lg font-semibold text-gray-700 text-center">Invoice</h2>
+        <div class="w-60 mx-auto">
+          <hr class="border-t-2 border-gray-400">
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-around w-full gap-4 text-sm text-gray-600 py-6">
+      <div>
         <p><strong>Invoice #:</strong> 477400{{invoice!.invoiceId}}</p>
-        <p><strong>Invoice Date:</strong> {{invoice!.paymentTime}}</p>
         <p><strong>Driver :</strong> {{driver.driverName}}</p>
-        <p><strong>Rider:</strong> {{customer.customerName}}</p>
         <p><strong>Phone no :</strong> {{driver.phoneNumber}}</p>
+      </div>
+      <div>
+        <p><strong>Invoice Date:</strong> {{invoice!.paymentTime}}</p>
+        <p><strong>Rider:</strong> {{customer.customerName}}</p>
         <p><strong>Phone no :</strong> {{customer.customerPhoneNumber}}</p>
-        <p><strong>Payment Terms:</strong> 100% on delivery</p>
-        
       </div>
     </div>
-
+    <p><strong>Payment Terms:</strong> 100% on delivery</p>
     <div class="mb-6">
-      <p class="text-sm font-semibold text-gray-700"><strong>Billed To:</strong> {{invoice.Particular}}</p>
-      <!-- <p class="text-sm text-gray-600">456, Another Street, My Country</p>
-      <p class="text-sm text-gray-600">P: 456-456-4567</p>
-      <p class="text-sm text-gray-600">F: 456-456-4567</p> -->
+      <p class="text-sm font-semibold text-gray-700 mt-2"><strong>Billed To:</strong><small>Online Ride Sharing</small> {{invoice.Particular}}</p>
     </div>
 
     <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-gray-100 border-b">
+      <table class="w-full min-w-full text-left border-collapse border border-gray-300">
+        <thead class="bg-gray-200 border-b"> 
           <tr>
-            <th class="p-3 text-sm font-semibold text-gray-600">No</th>
-            <th class="p-3 text-sm font-semibold text-gray-600">Services</th>
-            <th class="p-3 text-sm font-semibold text-gray-600">Payment Status</th>
-            <th class="p-3 text-sm font-semibold text-gray-600">Paid</th>
-            <th class="p-3 text-sm font-semibold text-gray-600">Amount</th>
+            <th class="p-3 text-sm font-semibold text-gray-700 border">No</th>
+            <th class="p-3 text-sm font-semibold text-gray-700 border">Services</th>
+            <th class="p-3 text-sm font-semibold text-gray-700 border">Payment Status</th>
+            <th class="p-3 text-sm font-semibold text-gray-700 border">Paid</th>
+            <th class="p-3 text-sm font-semibold text-gray-700 border">Amount</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="border-b hover:bg-gray-50">
-            <td class="p-3 text-sm">1</td>
-            <td class="p-3 text-sm">Ride Share</td>
-            <span *ngFor="let paymentMethodItem of allPaymentsMethod">
-              <td  *ngIf="(paymentMethodItem.paymentMethodId == invoice.paymentMethodId)" class="p-3 text-sm">{{paymentMethodItem.methodType}}</td>
-            </span>
-           
-            <td class="p-3 text-sm">{{(payment.status == 'paid')?"Paid" :"Pandding"}}</td>
-            <td class="p-3 text-sm">  {{payment.amount}}</td>
+          <tr class="border-b hover:bg-gray-100">
+            <td class="p-3 text-sm border">1</td>
+            <td class="p-3 text-sm border">Ride Share</td>
+            <td class="p-3 text-sm border">
+              <span *ngFor="let paymentMethodItem of allPaymentsMethod">
+                <span *ngIf="(paymentMethodItem.paymentMethodId == invoice.paymentMethodId)">
+                  {{paymentMethodItem.methodType}}
+                </span>
+              </span>
+            </td>
+            <td class="p-3 text-sm border">{{(payment.status == 'paid') ? "Paid" : "Pending"}}</td>
+            <td class="p-3 text-sm border">${{payment.amount}}</td>
           </tr>
-         
           <tr>
-            <td colspan="4" class="p-3 text-sm text-right font-semibold">Total Amount Due:</td>
-            <td class="p-3 text-sm font-semibold">${{payment.amount}}</td>
+            <td colspan="4" class="p-3 text-sm text-right font-semibold border">Total Amount Due:</td>
+            <td class="p-3 text-sm font-semibold border">${{payment.amount}}</td>
           </tr>
         </tbody>
       </table>
@@ -99,93 +76,24 @@
 
     <div class="mt-8 text-center">
       <p class="text-sm text-gray-500">Contact Information:</p>
-      <p class="text-sm text-gray-500">Email:mdsamaul843&#64;gmail.com</p>
+      <p class="text-sm text-gray-500">Email: mdsamaul843&#64;gmail.com</p>
       <p class="text-sm text-gray-500">Website: www.online-ride-share.com</p>
-      <h3 class="text-lg font-bold text-gray-700 mt-4">THANK YOU FOR YOUR RIDE SHAREING</h3>
+      <h3 class="text-lg font-bold text-gray-700 mt-4">THANK YOU FOR YOUR RIDE SHARING</h3>
     </div>
 
-    <div class="text-center mt-6">
-        <button
-          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          (click)="downloadInvoicePdf()"
-        >
-          Download Invoice
-        </button>
-      </div>
-  </div>
+    <div class="text-center mt-6 space-x-4">
+      <!-- Download Button -->
+      <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        (click)="downloadInvoicePdf()">
+        Download Invoice
+      </button>
 
-
-<!--   
-  <div class="w-full lg:w-[600px] mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
-  
-    <div class="text-center mb-8">
-      <h1 class="text-2xl font-bold">{{ invoice.companyName }}</h1>
-      <div class="text-sm text-gray-500">
-        <p>{{ invoice.companyAddress }}</p>
-        <p>P: {{ invoice.companyPhone }}</p>
-        <p>F: {{ invoice.companyFax }}</p>
-      </div>
-    </div>
-  
-    <div class="mb-6">
-      <h2 class="text-lg font-semibold text-gray-700">Invoice</h2>
-      <div class="grid grid-cols-2 gap-4 text-sm text-gray-600 mt-2">
-        <p><strong>Invoice #:</strong> {{ invoice.invoiceId }}</p>
-        <p><strong>Invoice Date:</strong> {{ invoice.invoiceDate }}</p>
-        <p><strong>Terms:</strong> Net 30</p>
-        <p><strong>Due Date:</strong> {{ invoice.dueDate }}</p>
-        <p><strong>Payment Terms:</strong> {{ invoice.paymentTerms }}</p>
-      </div>
-    </div>
-  
-    <div class="mb-6">
-      <p class="text-sm font-semibold text-gray-700"><strong>Billed To:</strong> {{ invoice.billedTo.name }}</p>
-      <p class="text-sm text-gray-600">{{ invoice.billedTo.address }}</p>
-      <p class="text-sm text-gray-600">P: {{ invoice.billedTo.phone }}</p>
-      <p class="text-sm text-gray-600">F: {{ invoice.billedTo.fax }}</p>
-    </div>
-  
-    <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-gray-100 border-b">
-          <tr>
-            <th class="p-3 text-sm font-semibold text-gray-600">No</th>
-            <th class="p-3 text-sm font-semibold text-gray-600">Products/Services</th>
-            <th class="p-3 text-sm font-semibold text-gray-600">Quantity</th>
-            <th class="p-3 text-sm font-semibold text-gray-600">Rate</th>
-            <th class="p-3 text-sm font-semibold text-gray-600">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of invoice.items; let i = index" class="border-b hover:bg-gray-50">
-            <td class="p-3 text-sm">{{ i + 1 }}</td>
-            <td class="p-3 text-sm">{{ item.product }}</td>
-            <td class="p-3 text-sm">{{ item.quantity }}</td>
-            <td class="p-3 text-sm">{{ item.rate | currency:'USD' }}</td>
-            <td class="p-3 text-sm">{{ item.amount | currency:'USD' }}</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="p-3 text-sm text-right font-semibold">Total Amount Due:</td>
-            <td class="p-3 text-sm font-semibold">{{ invoice.totalAmount | currency:'USD' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  
-    <div class="mt-8 text-center">
-      <p class="text-sm text-gray-500">Contact Information:</p>
-      <p class="text-sm text-gray-500">Email: {{ invoice.contactEmail }}</p>
-      <p class="text-sm text-gray-500">Website: {{ invoice.website }}</p>
-      <h3 class="text-lg font-bold text-gray-700 mt-4">THANK YOU FOR YOUR BUSINESS</h3>
-    </div>
-  
-    <div class="text-center mt-6">
-      <button
-        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        (click)="downloadInvoicePdf()"
-      >
-        Download PDF
+      <!-- Print Button -->
+      <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        (click)="printInvoice()">
+        Print Invoice
       </button>
     </div>
-  </div> -->
-  
+  </div>
+</div>
+

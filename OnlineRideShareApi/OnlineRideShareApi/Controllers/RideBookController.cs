@@ -78,14 +78,14 @@ namespace OnlineRideShareApi.Controllers
                 SourceLongitude = (float?)sourceLon,
                 DestinationLatitude = (float?)destinationLat,
                 DestinationLongitude = (float?)destinationLon,
-                StartTime = rideBookDto.StartTime,
-                EndTime = rideBookDto.EndTime,
-                TotalFare = rideBookDto.TotalFare,
-                IsPaid = rideBookDto.IsPaid,
+                StartTime = (DateTime)rideBookDto.StartTime,
+                EndTime = (DateTime)rideBookDto.EndTime,
+                TotalFare = (decimal)rideBookDto.TotalFare,
+                IsPaid = (bool)rideBookDto.IsPaid,
                 DriverRating = rideBookDto.DriverRating,
                 CustomerRating = rideBookDto.CustomerRating,
-                DistanceInMeters = rideBookDto.DistanceInMeters,
-                CustomerId = rideBookDto.CustomerId,
+                DistanceInMeters = (float)rideBookDto.DistanceInMeters,
+                CustomerId = (int)rideBookDto.CustomerId,
             };
 
             // Distance calculation
@@ -165,8 +165,8 @@ namespace OnlineRideShareApi.Controllers
                     EndTime = rideBook.EndTime,
                     TotalFare = rideBook.TotalFare,
                     IsPaid = rideBook.IsPaid,
-                    DriverRating = rideBook.DriverRating,
-                    CustomerRating = rideBook.CustomerRating,
+                    DriverRating = (int?)rideBook.DriverRating,
+                    CustomerRating = (int?)rideBook.CustomerRating,
                     DistanceInMeters = rideBook.DistanceInMeters
                 });
             }
@@ -672,5 +672,41 @@ namespace OnlineRideShareApi.Controllers
             }
             return NotFound();
         }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Rating(int id, RatingDto ratingDto)
+        {
+            var exRidebook = await _context.RideBooks.FindAsync(id);
+            if (exRidebook is null)
+            {
+                return BadRequest(new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "Ridebook Driver Vehicle not found"
+                });
+            }
+            exRidebook.DriverRating = ratingDto.DriverRating;
+            exRidebook.CustomerRating = ratingDto.CustomerRating;
+
+            exRidebook.SetUpdateInfo();            
+
+            var result = await _context.SaveChangesAsync();
+            if (result > 0)
+            {
+                return Ok(new AuthResponseDto
+                {
+                    IsSuccess = true,
+                    Message = "Rating Update successfully"
+                });
+            }
+            return BadRequest(new AuthResponseDto
+            {
+                IsSuccess = false,
+                Message = "Unable to rating"
+            });
+
+        }
+
+
     }
 }

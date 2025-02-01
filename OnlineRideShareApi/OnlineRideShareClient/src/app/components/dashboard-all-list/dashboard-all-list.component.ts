@@ -6,65 +6,165 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-dashboard-all-list',
   standalone: true,
-  imports: [CommonModule, ],
+  imports: [CommonModule],
   templateUrl: './dashboard-all-list.component.html',
-  styleUrl: './dashboard-all-list.component.css'
+  styleUrl: './dashboard-all-list.component.css',
 })
-export class DashboardAllListComponent implements AfterViewInit, OnInit{
-  successRide: number=0;
+export class DashboardAllListComponent implements AfterViewInit, OnInit {
+  successRide: number = 0;
   authService = inject(AuthService);
-  constructor(    
-   
-  ) {
-    Chart.register(...registerables)
+  constructor() {
+    Chart.register(...registerables);
   }
-  
-  allDrivers$ : any[]=[];
-  allCustomers$:any[]=[];
+
+  allDrivers$: any[] = [];
+  allCustomers$: any[] = [];
+  completeRide$: any;
+  Cancelled$: any;
+  totalFare$: any;
+  driver$: any;
+  customer$: any;
   ngOnInit(): void {
-    if(this.authService.getUserDetail()?.roles == 'Admin'){
-      console.log("admin")
+    if (this.authService.getUserDetail()?.roles == 'Admin') {
+      console.log('admin');
     }
-   this.authService.getDrivers().subscribe({
-    next:(allDriver)=>{
-      this.allDrivers$=allDriver;
-      allDriver.forEach(driver => {
-        if(this.authService.getUserDetail()?.id == driver.userId){
-          console.log(driver);
-          this.authService.getAllRidebookRequest().subscribe({
-            next:(AllRidebookRequests)=>{
-             console.log(AllRidebookRequests)
-            }
-           })
-        }
-      });
-    
-    
-    }
-   })
-this.authService.getAllCustomer().subscribe({
-  next:(res)=>{
-    console.log(res);
-    this.allCustomers$=res;
+    this.authService.getDrivers().subscribe({
+      next: (allDriver) => {
+        this.allDrivers$ = allDriver;
+        allDriver.forEach((driver) => {
+          if (this.authService.getUserDetail()?.id == driver.userId) {
+            console.log(driver);
+            this.driver$ = driver;
+          }
+        });
+      },
+    });
+    this.authService.getAllCustomer().subscribe({
+      next: (resAllCustomer) => {
+        // console.log(res);
+        this.allCustomers$ = resAllCustomer;
+        resAllCustomer.forEach((customer) => {
+          if (this.authService.getUserDetail()?.id == customer.userId) {
+            console.log(customer);
+            this.customer$ = customer;
+          }
+        });
+      },
+    });
+    this.allRideBook();
   }
-})
+
+  allRideBook(): void {
+    this.authService.getAllRidebookRequest().subscribe((allRideBooks) => {
+      if (this.authService.getUserDetail()?.roles == 'Driver') {
+        this.completeRide$ = allRideBooks.filter(
+          (ridebook: any) =>
+            ridebook.driverId == this.driver$.driverId &&
+            ridebook.requestStatus == 'Pickup Confirmed'
+        );
+        this.Cancelled$ = allRideBooks.filter(
+          (ridebook: any) =>
+            ridebook.driverId == this.driver$.driverId &&
+            ridebook.requestStatus == 'Cancelled'
+        );
+
+        this.authService.getAllRidebook().subscribe((resRidebook) => {
+          console.log(resRidebook);
+          let ridebook$ = resRidebook.filter(
+            (ridebook: any) =>
+              ridebook.userId == this.authService.getUserDetail()?.id
+          );
+          let totalFare = ridebook$.reduce((total: number, element: any) => {
+            return total + (element.totalFare || 0); 
+          }, 0); 
+          this.totalFare$ = totalFare;
+        });
+        this.createDriverStatsChart(this.completeRide$.length, this.Cancelled$.length);
+      } else if (this.authService.getUserDetail()?.roles == 'Rider') {
+        this.completeRide$ = allRideBooks.filter(
+          (ridebook: any) =>
+            ridebook.userId == this.customer$.userId &&
+            ridebook.requestStatus == 'Pickup Confirmed'
+        );
+        this.Cancelled$ = allRideBooks.filter(
+          (ridebook: any) =>
+            ridebook.userId == this.authService.getUserDetail()?.id &&
+            ridebook.requestStatus == 'Cancelled'
+        );
+
+        this.authService.getAllRidebook().subscribe((resRidebook) => {
+          console.log(resRidebook);
+          let ridebook$ = resRidebook.filter(
+            (ridebook: any) =>
+              ridebook.customerId == this.customer$.customerId
+          );
+          console.log(ridebook$);
+          let totalFare = ridebook$.reduce((total: number, element: any) => {
+            return total + (element.totalFare || 0); 
+          }, 0);
+          console.log(totalFare)
+          this.totalFare$ = totalFare;
+        });
+
+
+        this.createDriverStatsChart(this.completeRide$.length, this.Cancelled$.length);
+
+      }else{
+        this.completeRide$ = allRideBooks.filter(
+          (ridebook: any) =>
+            ridebook.requestStatus == 'Pickup Confirmed'
+        );
+        this.Cancelled$ = allRideBooks.filter(
+          (ridebook: any) =>
+            ridebook.requestStatus == 'Cancelled'
+        );
+
+        this.authService.getAllRidebook().subscribe((resRidebook) => {
+          console.log(resRidebook);
+        
+          let totalFare = resRidebook.reduce((total: number, element: any) => {
+            return total + (element.totalFare || 0);
+          }, 0);
+          console.log(totalFare)
+          this.totalFare$ = totalFare;
+        });
+        this.createDriverStatsChart(this.completeRide$.length, this.Cancelled$.length);
+
+      }
+
+    });
   }
+
+
 
   ngAfterViewInit(): void {
     this.createRideStatusChart();
-    this.createDriverStatsChart();
-    this.createMonthlyRevenueChart();  
-    this.createDriverRatingChart();  
+    this.createMonthlyRevenueChart();
+    this.createDriverRatingChart();
   }
-  
 
   // Ride Status Line Chart
   createRideStatusChart() {
-    const ctx1 = document.getElementById('rideStatusChart') as HTMLCanvasElement;
+    const ctx1 = document.getElementById(
+      'rideStatusChart'
+    ) as HTMLCanvasElement;
     new Chart(ctx1, {
       type: 'line',
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ],
         datasets: [
           {
             label: 'Completed Rides',
@@ -72,7 +172,7 @@ this.authService.getAllCustomer().subscribe({
             fill: true,
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
-            tension: 0.1
+            tension: 0.1,
           },
           {
             label: 'Cancelled Rides',
@@ -80,9 +180,9 @@ this.authService.getAllCustomer().subscribe({
             fill: true,
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255, 99, 132, 1)',
-            tension: 0.1
-          }
-        ]
+            tension: 0.1,
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -92,70 +192,91 @@ this.authService.getAllCustomer().subscribe({
             max: 160,
             title: {
               display: true,
-              text: 'Number of Rides'
-            }
+              text: 'Number of Rides',
+            },
           },
           x: {
             title: {
               display: true,
-              text: 'Month'
-            }
-          }
-        }
-      }
+              text: 'Month',
+            },
+          },
+        },
+      },
     });
   }
 
   // Driver Statistics Doughnut Chart
-  createDriverStatsChart() {
-    const ctx2 = document.getElementById('driverStatsChart') as HTMLCanvasElement;
+  createDriverStatsChart(complete : any, cancelled: any) {   
+    console.log(complete)
+    const ctx2 = document.getElementById(
+      'driverStatsChart'
+    ) as HTMLCanvasElement;
     new Chart(ctx2, {
       type: 'doughnut',
       data: {
-        labels: ['Approved', 'Unapproved'],
+        labels: ['Confirmed', 'Canceled'],
         datasets: [
           {
             label: 'Driver Status',
-            data: [246, 20],
+            data: [complete,cancelled],
             backgroundColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-            borderWidth: 1
-          }
-        ]
+            borderWidth: 1,
+          },
+        ],
       },
       options: {
         responsive: true,
         plugins: {
           legend: {
-            position: 'top'
+            position: 'top',
           },
           tooltip: {
             callbacks: {
               label: function (tooltipItem: any) {
                 return tooltipItem.label + ': ' + tooltipItem.raw;
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       },
     });
   }
 
   // Monthly Revenue Bar Chart (New)
   createMonthlyRevenueChart() {
-    const ctx3 = document.getElementById('monthlyRevenueChart') as HTMLCanvasElement;
+    const ctx3 = document.getElementById(
+      'monthlyRevenueChart'
+    ) as HTMLCanvasElement;
     new Chart(ctx3, {
       type: 'bar',
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ],
         datasets: [
           {
             label: 'Monthly Revenue',
-            data: [500, 700, 600, 800, 1200, 1500, 1300, 1100, 1500, 1700, 1600, 1800],
+            data: [
+              500, 700, 600, 800, 1200, 1500, 1300, 1100, 1500, 1700, 1600,
+              1800,
+            ],
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-          }
-        ]
+            borderWidth: 1,
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -164,22 +285,24 @@ this.authService.getAllCustomer().subscribe({
             beginAtZero: true,
             title: {
               display: true,
-              text: 'Revenue in USD'
-            }
+              text: 'Revenue in USD',
+            },
           },
           x: {
             title: {
               display: true,
-              text: 'Month'
-            }
-          }
-        }
-      }
+              text: 'Month',
+            },
+          },
+        },
+      },
     });
   }
 
   createDriverRatingChart() {
-    const ctx5 = document.getElementById('driverRatingChart') as HTMLCanvasElement;
+    const ctx5 = document.getElementById(
+      'driverRatingChart'
+    ) as HTMLCanvasElement;
     new Chart(ctx5, {
       type: 'bar',
       data: {
@@ -190,9 +313,9 @@ this.authService.getAllCustomer().subscribe({
             data: [5, 12, 25, 50, 80], // Example data for the number of drivers with each rating
             backgroundColor: 'rgba(54, 162, 235, 0.5)',
             borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-          }
-        ]
+            borderWidth: 1,
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -201,18 +324,17 @@ this.authService.getAllCustomer().subscribe({
             beginAtZero: true,
             title: {
               display: true,
-              text: 'Number of Drivers'
-            }
+              text: 'Number of Drivers',
+            },
           },
           x: {
             title: {
               display: true,
-              text: 'Driver Ratings'
-            }
-          }
-        }
-      }
+              text: 'Driver Ratings',
+            },
+          },
+        },
+      },
     });
   }
-  
 }

@@ -24,8 +24,14 @@ namespace OnlineRideShareApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Payment>>> GetPayment()
         {
-            return await _context.Payments.AsNoTracking().ToListAsync();
+            var payments = await _context.Payments
+                                         .AsNoTracking()
+                                         .OrderByDescending(p => p.PaymentDate) 
+                                         .ToListAsync();
+
+            return Ok(payments);
         }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Payment>> GetByIdPayment(int id)
         {
@@ -146,7 +152,7 @@ namespace OnlineRideShareApi.Controllers
 
             var payments = await _context.Payments
                 .Include(p => p.Invoice)
-                .Where(p => p.Invoice.Driver.UserId == userId || p.Invoice.Customer.UserId == userId)
+                .Where(p => p.Invoice.Driver.UserId == userId || p.Invoice.Customer.UserId == userId).OrderByDescending(p => p.PaymentDate)
                 .ToListAsync();
 
             if (payments == null || payments.Count == 0)

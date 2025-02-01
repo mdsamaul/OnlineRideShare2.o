@@ -290,3 +290,8 @@ D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net
 D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net8.0\MailKit.dll
+D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net8.0\MimeKit.dll
+D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\samaul\OnlineRideShareApi\OnlineRideShareApi\OnlineRideShareApi\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

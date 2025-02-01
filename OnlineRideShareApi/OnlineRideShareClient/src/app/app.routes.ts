@@ -36,6 +36,7 @@ import { DashboardAllListComponent } from './components/dashboard-all-list/dashb
 import { AboutComponent } from './pages/about/about.component';
 import { RiderComponent } from './pages/rider/rider.component';
 import { DriverInfoComponent } from './pages/driver-info/driver-info.component';
+import { RatingComponent } from './components/rating/rating.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -208,5 +209,10 @@ export const routes: Routes = [
   {
     path: 'rider',
     component: RiderComponent,
+  },
+  {
+    path: 'rating',
+    component: RatingComponent,
+    canActivate: [authGuard],
   },
 ];

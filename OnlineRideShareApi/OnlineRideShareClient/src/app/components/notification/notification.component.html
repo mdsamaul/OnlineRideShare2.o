@@ -18,7 +18,7 @@
       <div class="p-4 text-sm font-medium border-b border-gray-200">Notifications</div>
       <ul class="max-h-60 overflow-y-auto">
         <li [routerLink]="['/request-driver-response']" *ngFor="let notification of notifications" class="p-3 text-sm hover:bg-gray-100 border-b-orange-50 hover:text-slate-400 cursor-pointer">
-          {{ notification.destinationLocation}} to  {{ notification.sourceLocation}} 
+       From {{ notification.sourceLocation}}  to  {{ notification.destinationLocation}} 
         </li>
         <li *ngIf="notifications.length === 0" class="p-3 text-sm text-gray-500">No notifications</li>
       </ul>

@@ -13,7 +13,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
-import { InstendCustomerComponent } from '../instend-customer/instend-customer.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
@@ -64,7 +63,7 @@ export class RequestDriverDetailsComponent implements OnInit {
       customerName: ['', Validators.required],
       customerPhoneNumber: ['', Validators.required],
       customerEmail: ['', [Validators.required, Validators.email]],
-      customerNID: ['N/A'],
+      customerNID: ['', [Validators.required]],
       customerImage: [''],
       customerLatitude: [0],
       customerLongitude: [0],

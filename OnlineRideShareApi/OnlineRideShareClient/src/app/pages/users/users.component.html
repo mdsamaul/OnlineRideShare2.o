@@ -1,29 +1,33 @@
 <div class="lg:px-60 py-10 w-full px-5">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">All Users</h1>
+  <h1 class="text-3xl font-bold text-gray-800 mb-6 sticky top-96 text-center">All Users</h1>
   
-    <div class="shadow-lg bg-white text-left rounded-lg overflow-hidden">
-      <table class="w-full table-auto border-collapse">
-        <!-- Table Header -->
-        <thead class="bg-gray-200 text-gray-700">
-          <tr>
-            <th class="px-6 py-3 text-sm font-medium border-b">Name</th>
-            <th class="px-6 py-3 text-sm font-medium border-b">Email</th>
-            <th class="px-6 py-3 text-sm font-medium border-b">Role</th>
-          </tr>
-        </thead>
-        
-        <!-- Table Body -->
-        <tbody class="divide-y divide-gray-200">
-          @for (item of allUser$ | async; track item.id) {
-            
-            <tr class="hover:bg-gray-100">
-              <td class="px-6 py-4 text-gray-600 border-b">{{item.fullName}}</td>
-              <td class="px-6 py-4 text-gray-600 border-b">{{item.email}}</td>
-              <td class="px-6 py-4 text-gray-600 border-b">{{item.roles}}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+  <div class="shadow-lg overflow-x-auto h-[80vh] overflow-scroll" style="scrollbar-width: thin;">
+    <table class="w-full table-auto border-collapse">
+      <!-- Table Header -->
+      <thead class="bg-gray-200 text-gray-700 sticky top-0">
+        <tr>
+          <th class="px-6 py-3 text-sm font-medium border-b">Name</th>
+          <th class="px-6 py-3 text-sm font-medium border-b">Email</th>
+          <th class="px-6 py-3 text-sm font-medium border-b">Role</th>
+        </tr>
+      </thead>
+      
+      <!-- Table Body -->
+      <tbody class="divide-y divide-gray-200">
+        <!-- Loop through users and assign background color based on role -->
+        <tr *ngFor="let item of allUser$ | async" class="hover:bg-gray-100 text-center"
+            [ngClass]="{
+              'bg-blue-300': item.roles == 'Admin',
+              'bg-green-300': item.roles == 'Rider',
+              'bg-yellow-300': item.roles == 'Driver',
+              'bg-gray-300': item.roles != 'Admin' && item.roles != 'Driver' && item.roles != 'Rider'
+            }">
+          <td class="px-6 py-4 text-gray-600 border-b">{{ item.fullName }}</td>
+          <td class="px-6 py-4 text-gray-600 border-b">{{ item.email }}</td>
+          <td class="px-6 py-4 text-gray-600 border-b">{{ item.roles }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  
+</div>
+

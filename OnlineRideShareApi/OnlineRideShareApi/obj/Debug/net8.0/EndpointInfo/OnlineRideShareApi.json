@@ -1278,6 +1278,37 @@
         }
       }
     },
+    "/api/email/send": {
+      "post": {
+        "tags": [
+          "Email"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Image/upload": {
       "post": {
         "tags": [
@@ -1962,6 +1993,46 @@
                 }
               }
             }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "RideBook"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RatingDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RatingDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RatingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -3367,6 +3438,24 @@
         },
         "additionalProperties": false
       },
+      "EmailRequestDto": {
+        "type": "object",
+        "properties": {
+          "recipientEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ForgotPasswordDto": {
         "required": [
           "email"
@@ -3589,6 +3678,22 @@
         },
         "additionalProperties": false
       },
+      "RatingDto": {
+        "type": "object",
+        "properties": {
+          "driverRating": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "customerRating": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ReferCustomerDto": {
         "required": [
           "name",
@@ -3783,7 +3888,8 @@
           },
           "customerId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "driverVehicleId": {
             "type": "integer",
@@ -3828,32 +3934,37 @@
           },
           "startTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "endTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "totalFare": {
-            "type": "number",
-            "format": "double"
-          },
-          "isPaid": {
-            "type": "boolean"
-          },
-          "driverRating": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
+          "isPaid": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "driverRating": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "customerRating": {
-            "type": "number",
-            "format": "double",
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "distanceInMeters": {
             "type": "number",
-            "format": "float"
+            "format": "float",
+            "nullable": true
           },
           "userId": {
             "type": "string",

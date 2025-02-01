@@ -52,7 +52,7 @@ namespace OnlineRideShareApi.Controllers
             {
                 Email = registerDto.Email,
                 FullName = registerDto.FullName,
-                UserName = registerDto.Email
+                UserName = registerDto.FullName
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
@@ -441,15 +441,6 @@ namespace OnlineRideShareApi.Controllers
             });
 
         }
-
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<UserDetailDto>>> GetUsers()
-        //{
-
-        //    var users = await _userManager.Users.AsNoTracking().ToListAsync();
-        //    return Ok(users);
-        //}
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDetailDto>>> GetUsers()
         {

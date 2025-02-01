@@ -79,7 +79,7 @@
         <!-- Content -->
         <div class="relative z-10">
             <h2 class="text-xl font-bold text-blue-700">Completed Rides</h2>
-            <p class="text-2xl font-bold text-blue-600">200</p>
+            <p class="text-2xl font-bold text-blue-600">{{completeRide$? completeRide$.length: "0"}}</p>
         </div>
         <i class="fas fa-check text-blue-700 text-3xl relative z-10"></i>
     </div>
@@ -97,8 +97,11 @@
     
         <!-- Content -->
         <div class="relative z-10">
-            <h2 class="text-xl font-bold text-green-700">Running Rides</h2>
-            <p class="text-2xl font-bold text-green-600">80</p>
+            <h2 class="text-xl font-bold text-green-700">{{authService.getUserDetail()?.roles == 'Rider' ? 'Total Spending':'Total Revenue'}}  </h2>
+            <p class="text-2xl font-bold text-green-600">
+                ৳ {{ (totalFare$ ? (totalFare$) : 0) | number:'1.2-2'}}
+              </p>             
+              
         </div>
         <i class="fas fa-spinner text-green-700 text-3xl relative z-10"></i>
     </div>
@@ -118,7 +121,7 @@
         <!-- Content -->
         <div class="relative z-10">
             <h2 class="text-xl font-bold text-red-700">Cancelled Rides</h2>
-            <p class="text-2xl font-bold text-red-600">12</p>
+            <p class="text-2xl font-bold text-red-600">{{Cancelled$ ? Cancelled$.length: "0"}}</p>
         </div>
         <i class="fas fa-ban text-red-700 text-3xl relative z-10"></i>
     </div>
@@ -137,11 +140,11 @@
       <!-- Driver Statistics Doughnut Chart -->
       <div class="p-4 rounded-md shadow-lg bg-white flex flex-col items-center justify-center relative w-[42vh] h-full">
         <canvas id="driverStatsChart" class="w-[50vh] h-[200px]"></canvas>
-        <div class="absolute top-[60%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center rounded-full p-4">
+        <div class="absolute top-[55%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center rounded-full p-4">
            
                 <div>
-                 <p class="text-2xl font-bold px-10">246</p>
-                 <p class="text-center text-[9px]">Approved Drivers</p>
+                 <p class="text-2xl font-bold px-10">{{((completeRide$.length/(completeRide$.length+Cancelled$.length)))*100 | number:'1.2-2'}}%</p>
+                 <p class="text-center text-[9px]">Completed</p>
                 </div>
            
         </div>         

@@ -1,48 +1,11 @@
-// import { CommonModule, DatePipe } from '@angular/common';
-// import { Component, Inject, OnInit } from '@angular/core';
-// import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-// import jsPDF from 'jspdf';
-// @Component({
-//   selector: 'app-invoice-modal',
-//   standalone: true,
-//   imports: [CommonModule ],
-//   templateUrl: './invoice-modal.component.html',
-//   styleUrl: './invoice-modal.component.css'
-// })
-
-// export class InvoiceModalComponent implements OnInit{
-//   constructor(
-//     public dialogRef: MatDialogRef<InvoiceModalComponent>,
-//     @Inject(MAT_DIALOG_DATA) public invoice: any
-//   ) {}
-//   ngOnInit(): void {
-// console.log(this.invoice);
-//   }
-
-//   closeModal(): void {
-//     this.dialogRef.close();
-//   }
-
-//   downloadInvoicePdf(): void {
-//     const doc = new jsPDF();
-//     doc.text(`Invoice ID: ${this.invoice.invoiceId}`, 10, 10);
-//     doc.text(`Payment Time: ${this.invoice.paymentTime}`, 10, 20);
-//     doc.text(`Amount: ${this.invoice.amount}`, 10, 30);
-//     doc.text(`Customer: ${this.invoice.customer?.name || 'N/A'}`, 10, 40);
-//     doc.text(`Driver: ${this.invoice.driver?.name || 'N/A'}`, 10, 50);
-//     doc.text(`Payment Method: ${this.invoice.paymentMethod?.methodName || 'N/A'}`, 10, 60);
-//     doc.save(`Invoice_${this.invoice.invoiceId}.pdf`);
-//   }
-// }
-
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { AuthService } from '../../services/auth.service';
 declare module 'jspdf-autotable';
-
+import html2canvas from 'html2canvas';
 @Component({
   selector: 'app-invoice-modal',
   standalone: true,
@@ -54,16 +17,33 @@ export class InvoiceModalComponent implements OnInit {
   invoice: any = undefined;
   driver: any = undefined;
   customer: any = undefined;
+  isLoading:boolean=false;
   allPaymentsMethod: any[] | undefined;
   constructor(
     public dialogRef: MatDialogRef<InvoiceModalComponent>,
     @Inject(MAT_DIALOG_DATA) public payment: any,
     private authService: AuthService
   ) {}
+  @ViewChild('invoiceSection', { static: false }) invoiceSection!: ElementRef;
 
+  downloadInvoicePdf() {
+    this.isLoading=true;
+    const element = this.invoiceSection.nativeElement;
+
+    html2canvas(element, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width; 
+
+      pdf.addImage(imgData, 'PNG', 0, 10, imgWidth, imgHeight);
+      pdf.save('invoice.pdf'); // Download PDF
+      this.isLoading=false;
+    });
+    
+  }
   ngOnInit(): void {
     // console.log(this.payment);
-
     this.authService.invoiceGetById(this.payment.invoiceId).subscribe((res) => {
       this.invoice = res;
       console.log(res);
@@ -86,33 +66,16 @@ export class InvoiceModalComponent implements OnInit {
   closeModal(): void {
     this.dialogRef.close();
   }
-
-  downloadInvoicePdf(): void {
-    const doc = new jsPDF();
-
-    // Adding content to the PDF
-    doc.setFontSize(16);
-    doc.text('Invoice Details', 10, 10);
-
-    doc.setFontSize(12);
-    doc.text(`Invoice ID: ${this.payment.paymentId}`, 10, 20);
-    doc.text(`Payment Time: ${this.payment.paymentTime}`, 10, 30);
-    doc.text(`Amount: ${this.payment.amount}`, 10, 40);
-    doc.text(`Customer: ${this.payment.customer?.name || 'N/A'}`, 10, 50);
-    doc.text(`Driver: ${this.payment.driver?.name || 'N/A'}`, 10, 60);
-    doc.text(
-      `Payment Method: ${this.payment.paymentMethod?.methodName || 'N/A'}`,
-      10,
-      70
-    );
-
-    // If there are more details, you can continue to add them similarly
-    // For example, adding a date or other attributes from the invoice
-
-    // Adding a footer with the current date (Optional)
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 10, 80);
-
-    // Save the PDF with a dynamic filename
-    doc.save(`Invoice_${this.payment.paymentId}.pdf`);
+  printInvoice() {
+    this.isLoading=true;
+    let printContent = document.getElementById("invoice-section")?.innerHTML;
+    let originalContent = document.body.innerHTML;
+  
+    if (printContent) {
+      document.body.innerHTML = printContent;
+      window.print();
+      document.body.innerHTML = originalContent;
+      window.location.reload(); 
+    }
   }
 }
