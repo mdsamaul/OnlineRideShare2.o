@@ -9,12 +9,12 @@
   
     <!-- Content Container -->
     <div class="container mx-auto px-4 relative z-10">
-      <div class="flex flex-wrap items-center">
+      <div class="flex flex-col-reverse lg:flex-row items-center gap-5 lg:gap-0">
         <!-- Left Side Text and Partners -->
-        <div class="w-full lg:w-1/2">
-          <div class="relative border p-10 rounded-lg shadow-xl me-10 z-30">
+        <div class="w-full flex justify-center items-center lg:m-0 lg:w-1/2">
+          <div class="relative border lg:p-10 rounded-lg shadow-xl lg:me-10 z-30">
             <div class="absolute  bg-slate-200 w-full h-full  left-0 top-0 right-0 rounded-lg shadow-xl me-10 opacity-30  -z-10" ></div>
-            <h1 class="text-4xl font-bold leading-tight mb-4 text-white">
+            <h1 class="text-4xl text-center lg:text-start font-bold leading-tight mb-4 text-white">
             Smart Seats & Cutting-Edge Creative Technologies in Every 
                 <span class="text-blue-600">
                   <div class="animate-bounce">Vehicle <span class="animate-ping">!</span></div>
@@ -44,13 +44,13 @@
         </div>
         
         <!-- Right Side Form and Registration -->
-        <div class="w-full lg:w-1/2 overflow-hidden">
-            <div class="p-6 relative rounded-lg shadow-lg border">
-              <div class="absolute bg-slate-200 w-full h-full left-0 top-0 right-0 rounded-lg shadow-xl me-10 opacity-30 -z-10"></div>
-              <mat-tab-group class="h-full lg:h-[50vh]" style="scrollbar-width: 5px; overflow-x: hidden;">
-                <!-- First Tab: Take a Ride -->
-                <mat-tab label="Take a Ride">
-                  <div class="flex items-center justify-center h-[40vh]">
+        <div class="w-full lg:w-1/2  overflow-hidden">
+          <div class="p-6 relative rounded-lg shadow-lg border">
+            <div class="absolute bg-slate-200 w-full h-full left-0 top-0 right-0 rounded-lg shadow-xl me-10 opacity-30 -z-10"></div>
+            <mat-tab-group class="h-full lg:h-[60vh]" style="scrollbar-width: 5px; overflow-x: hidden;">
+              <!-- First Tab: Take a Ride -->
+              <mat-tab label="Take a Ride">
+                <div class="flex items-center justify-center h-[45vh]">
                     <form [formGroup]="searchVehicleForm" (ngSubmit)="onSubmit()" class="space-y-4 w-full max-w-md">
                       <mat-form-field appearance="fill" class="w-full">
                         <mat-label>Pickup Location</mat-label>

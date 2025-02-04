@@ -21,6 +21,7 @@ export class RequestDriverResponseComponent implements OnInit {
   ridebookRequests$: any[] = [];
   customers$: any[] = [];
   isLoading = false;
+  createdRquestDate= new Date() 
   customerId$: number=0;
   constructor(
     private authService: AuthService,

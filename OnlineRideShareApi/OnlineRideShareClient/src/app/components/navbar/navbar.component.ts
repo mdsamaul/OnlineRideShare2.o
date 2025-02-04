@@ -11,6 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { ToastrService } from 'ngx-toastr';
 import { NotificationComponent } from "../notification/notification.component";
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-navbar',
@@ -29,6 +30,14 @@ import { NotificationComponent } from "../notification/notification.component";
 ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
+  animations: [
+    trigger('slideInOut', [
+      state('hidden', style({ transform: 'translateX(100%)' })), // Right side hidden
+      state('visible', style({ transform: 'translateX(0%)' })), // Fully visible
+      transition('hidden => visible', animate('300ms ease-in-out')),
+      transition('visible => hidden', animate('300ms ease-in-out'))
+    ])
+  ]
 })
 export class NavbarComponent implements OnInit {
   showFiller = false;
@@ -36,6 +45,15 @@ export class NavbarComponent implements OnInit {
   matSnackBar = inject(MatSnackBar);
   router = inject(Router);
   currentUserAccount$: any = {};
+
+  menuOpen = false;
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+ 
+
+
   constructor(private toastrService: ToastrService) {}
 
   ngOnInit(): void {
@@ -72,4 +90,6 @@ export class NavbarComponent implements OnInit {
       window.location.href = '/login';
     });
   };
+
+
 }

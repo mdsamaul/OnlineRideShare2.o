@@ -12,13 +12,13 @@
         <!-- Driver Details -->
         <div class="p-5 text-gray-800">
             <!-- Driver Image -->
-        <div class="w-20 shadow-lg h-20 rounded-full flex mx-auto bg-gray-200">
-            <img 
-              src=`${{driverDetails$.driverImage}}`
-              alt="D.Image" 
-              class="w-full h-full object-cover"
-            />
-          </div>
+            <div class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden shadow-lg border-2 border-gray-300">
+              <img 
+                [src]="driverDetails$.driverImage || 'https://via.placeholder.com/150'" 
+                alt="Driver Image" 
+                class="w-full h-full object-cover"
+              />
+            </div>
           <div class="mb-4">
             <strong class="font-semibold">Name:</strong> {{ driverDetails$.driverName }}
           </div>

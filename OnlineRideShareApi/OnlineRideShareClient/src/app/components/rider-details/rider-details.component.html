@@ -47,22 +47,22 @@
           <!-- Shape Group -->
           <div class="absolute bottom-20 flex justify-between gap-3 w-1/4 -z-10">
             <div class="shape shape1 w-32 h-96 rounded-full" style="background: linear-gradient(to top, rgba(75, 67, 67, 0.233), rgba(131, 105, 105, 0));">
-              <p class="absolute bottom-0 w-32 flex justify-center">
+              <p class="absolute bottom-0 w-16  lg:w-24 flex justify-center">
                 <mat-icon class="text-7xl text-center text-yellow-100 animate-bounce" style="width: 240px;height: auto;">motorcycle</mat-icon>
               </p>
             </div>
             <div class="shape shape1 w-28 h-96 rounded-full" style="background: linear-gradient(to top, rgba(255, 99, 71, 0.233), rgba(255, 69, 0, 0));">
-              <p class="absolute bottom-0 w-28 flex justify-center">
+              <p class="absolute bottom-0 w-16 lg:w-24 flex justify-center">
                 <mat-icon class="text-6xl text-center text-yellow-100 animate-bounce" style="width: 240px;height: auto;">drive_eta</mat-icon>
               </p>
             </div>            
             <div class="shape shape1 w-32 h-96 rounded-full" style="background: linear-gradient(to top, rgba(70, 130, 180, 0.233), rgba(0, 0, 255, 0));">
-              <p class="absolute bottom-0 w-32 flex justify-center">
+              <p class="absolute bottom-0 w-32 lg:w-32 flex justify-center">
                 <mat-icon class="text-6xl text-center text-yellow-100 animate-bounce" style="width: 240px;height: auto;">local_taxi</mat-icon>
               </p>
             </div>            
             <div class="shape shape1 w-28 h-96 rounded-full" style="background: linear-gradient(to top, rgba(34, 193, 195, 0.233), rgba(253, 187, 45, 0));">
-              <p class="absolute bottom-0 w-28 flex justify-center">
+              <p class="absolute bottom-0 w-24  lg:w-28 flex justify-center">
                 <mat-icon class="text-6xl text-center text-yellow-100 animate-bounce" style="width: 240px;height: auto;">directions_bike</mat-icon>
               </p>
             </div>                   
@@ -73,7 +73,7 @@
 
   <div class="space">
     <div class="container mx-auto py-10">
-      <div class="flex row gap-12 lg:gap-20 items-center">
+      <div class="lg:flex row gap-12 lg:gap-20 items-center">
         <!-- Input Form Section (Left Side) -->
         <div class="col-xl-4 col-lg-5 wow fadeInLeft" data-wow-delay="0.1s">
           <form action="#" class="ride-form style2 bg-white p-8 rounded-lg shadow-md">
@@ -129,10 +129,10 @@
         </div>
   
         <!-- Map Section (Right Side) -->
-        <div class="col-lg-7 offset-xl-1">
+        <div class="lg:col-lg-7 lg:offset-xl-1">
           <div class="ride-map">
             <iframe 
-            class="w-[55vw] h-[70vh] rounded-lg shadow-xl" 
+            class="lg:w-[55vw] w-full h-96 lg:h-[70vh] rounded-lg shadow-xl" 
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1825.573533079622!2d90.37655180654306!3d23.77777679917517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c74c29ceeafb%3A0xe72ef11d9cf0aeef!2z4KaG4KaH4Kah4Ka_4Kas4Ka_LeCmrOCmv-CmhuCmh-Cmj-CmuOCmh-CmoeCmrOCnjeCmsuCngQ!5e0!3m2!1sbn!2sbd!4v1737888900221!5m2!1sbn!2sbd" 
             allowfullscreen="" 
             loading="lazy" 

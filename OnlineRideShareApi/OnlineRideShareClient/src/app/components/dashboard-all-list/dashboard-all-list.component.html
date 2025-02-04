@@ -24,10 +24,10 @@
 
 
 
-<div class="grid grid-cols-3 gap-4 mt-6 mx-10"> 
+<div class="lg:grid lg:grid-cols-3 gap-4 mt-6 mx-10"> 
 
    <!-- *ngIf="userDetail?.roles.includes('Driver') -->
-    <div  *ngIf="authService.getUserDetail()?.roles.includes('Admin')" class="relative bg-blue-100 p-6 rounded-lg shadow-md flex justify-between items-center overflow-hidden transition-transform transform hover:scale-105 border-4 border-transparent animate-border-blur">
+    <div  *ngIf="authService.getUserDetail()?.roles.includes('Admin')" class="relative bg-blue-100 p-6 mb-5 lg:mb-0 rounded-lg shadow-md flex justify-between items-center overflow-hidden transition-transform transform hover:scale-105 border-4 border-transparent animate-border-blur">
         <!-- Background Blur Spots -->
         <div class="absolute inset-0">
             <!-- Blur Spot 1 -->
@@ -39,14 +39,14 @@
         <!-- Content -->
         <div class="relative z-10">
             <h2 class="text-xl font-bold text-blue-700">Active Drivers</h2>
-            <p class="text-2xl font-bold text-blue-600">155</p>
+            <p class="text-2xl font-bold text-blue-600">55</p>
         </div>
         <i class="fas fa-users text-blue-700 text-3xl relative z-10"></i>
     </div>
 
 
 
-    <div   *ngIf="authService.getUserDetail()?.roles.includes('Admin')"  class="relative /40 p-6 rounded-lg shadow-md flex justify-between items-center backdrop-blur-md transition-transform transform hover:scale-105 overflow-hidden border-2 border-transparent animate-border-blur">
+    <div   *ngIf="authService.getUserDetail()?.roles.includes('Admin')"  class=" mb-5 lg:mb-0  relative /40 p-6 rounded-lg shadow-md flex justify-between items-center backdrop-blur-md transition-transform transform hover:scale-105 overflow-hidden border-2 border-transparent animate-border-blur">
         <!-- Random Colorful Blur Spots -->
         <div class="absolute inset-0">
             <!-- Blur Spot 1 -->
@@ -60,12 +60,12 @@
         <!-- Content -->
         <div class="relative z-10">
             <h2 class="text-xl font-bold text-green-700">Approved Drivers</h2>
-            <p class="text-2xl font-bold text-green-600">246</p>
+            <p class="text-2xl font-bold text-green-600">86</p>
         </div>
         <i class="fas fa-check-circle text-green-700 text-3xl relative z-10"></i>
     </div>
     
-    <div class="relative /40 p-6 rounded-lg shadow-md flex justify-between items-center backdrop-blur-md transition-transform transform hover:scale-105 overflow-hidden border-2 border-transparent animate-border-blur">
+    <div class="relative /40 p-6  mb-5 lg:mb-0  rounded-lg shadow-md flex justify-between items-center backdrop-blur-md transition-transform transform hover:scale-105 overflow-hidden border-2 border-transparent animate-border-blur">
         <!-- Random Colorful Blur Spots -->
         <div class="absolute inset-0">
             <!-- Blur Spot 1 -->
@@ -84,7 +84,7 @@
         <i class="fas fa-check text-blue-700 text-3xl relative z-10"></i>
     </div>
     
-    <div class="relative /40 p-6 rounded-lg shadow-md flex justify-between items-center backdrop-blur-md transition-transform transform hover:scale-105 overflow-hidden border-2 border-transparent animate-border-blur">
+    <div class="relative  mb-5 lg:mb-0  /40 p-6 rounded-lg shadow-md flex justify-between items-center backdrop-blur-md transition-transform transform hover:scale-105 overflow-hidden border-2 border-transparent animate-border-blur">
         <!-- Random Colorful Blur Spots -->
         <div class="absolute inset-0">
             <!-- Blur Spot 1 -->
@@ -106,7 +106,7 @@
         <i class="fas fa-spinner text-green-700 text-3xl relative z-10"></i>
     </div>
     
-    <div class="relative /40 p-6 rounded-lg shadow-md flex justify-between items-center backdrop-blur-md transition-transform transform hover:scale-105 overflow-hidden border-2 border-transparent animate-border-blur">
+    <div class="relative /40  mb-5 lg:mb-0  p-6 rounded-lg shadow-md flex justify-between items-center backdrop-blur-md transition-transform transform hover:scale-105 overflow-hidden border-2 border-transparent animate-border-blur">
         <!-- Random Colorful Blur Spots -->
         <div class="absolute inset-0">
             <!-- Blur Spot 1 -->
@@ -129,10 +129,10 @@
 
 <div class="mt-6 mx-10">
     <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4 w-full h-[40vh]"> -->
-    <div class="flex justify-between gap-6 mt-4 w-full h-[40vh]">
+    <div class="lg:flex justify-between gap-6 mt-4 w-full lg:h-[40vh]">
       
       <!-- Ride Status Chart -->
-      <div class="p-4 rounded-md shadow-lg bg-white flex flex-col items-center justify-center">
+      <div class="py-4 rounded-md shadow-lg bg-white flex flex-col items-center justify-center">
         <h2 class="text-xl font-bold text-center mb-4">Ride Status & Driver Statistics</h2>
         <canvas id="rideStatusChart" class="w-full h-[200px]"></canvas>            
       </div>
@@ -140,11 +140,13 @@
       <!-- Driver Statistics Doughnut Chart -->
       <div class="p-4 rounded-md shadow-lg bg-white flex flex-col items-center justify-center relative w-[42vh] h-full">
         <canvas id="driverStatsChart" class="w-[50vh] h-[200px]"></canvas>
-        <div class="absolute top-[55%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center rounded-full p-4">
+        <div class="absolute top-[60%] lg:top-[55%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center rounded-full p-4">
            
                 <div>
-                 <p class="text-2xl font-bold px-10">{{((completeRide$.length/(completeRide$.length+Cancelled$.length)))*100 | number:'1.2-2'}}%</p>
-                 <p class="text-center text-[9px]">Completed</p>
+                    <p class="text-[16px] lg:text-2xl font-bold px-10">
+                        {{ ((completeRide$.length / (completeRide$.length + Cancelled$.length)) * 100) | number:'1.2-2' }}%
+                      </p>                                                             
+                 <p class="text-center text-[9px] lg:text-xl">Completed</p>
                 </div>
            
         </div>         
@@ -166,9 +168,9 @@
 
 
 
-<div *ngIf="authService.getUserDetail()?.roles.includes('Admin')" class="mt-6 mb-32 z-50 mx-10 shadow-xl ">
-    <div class="flex overflow-x-auto">
-        <div class="w-1/2 pr-2 ">
+<div *ngIf="authService.getUserDetail()?.roles.includes('Admin')" class="mt-6 mb-32 z-50 mx-10 shadow-xl">
+    <div class="lg:flex overflow-x-auto">
+        <div class="lg:w-1/2 pr-2  pt-5">
             <h3 class="text-lg font-bold text-center mb-4">Driver Table</h3>
             <div class="overflow-y-auto max-h-[40vh]  border border-blue-500  " style="scrollbar-width: thin;">
                 <table class="min-w-full divide-y  shadow-md">
@@ -201,8 +203,8 @@
             </div>
         </div>
 
-        <div class="w-1/2 pl-2">
-            <h3 class="text-lg font-bold text-center mb-4">Rider Table</h3>
+        <div class="lg:w-1/2 pl-2">
+            <h3 class="text-lg font-bold text-center mb-4 pt-5">Rider Table</h3>
             <div class="overflow-y-auto max-h-[40vh]  border border-blue-500 scroll-smooth" style="scrollbar-width: thin;">
                 <table class="min-w-full divide-y   shadow-md rounded-lg">
                     <thead class="sticky text-green-600">

@@ -78,6 +78,7 @@ export class DashboardAllListComponent implements AfterViewInit, OnInit {
             return total + (element.totalFare || 0); 
           }, 0); 
           this.totalFare$ = totalFare;
+          console.log(this.totalFare$);
         });
         this.createDriverStatsChart(this.completeRide$.length, this.Cancelled$.length);
       } else if (this.authService.getUserDetail()?.roles == 'Rider') {

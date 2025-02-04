@@ -63,11 +63,11 @@
                 </span>
               </span>
             </td>
-            <td class="p-3 text-sm border">{{(payment.status == 'paid') ? "Paid" : "Pending"}}</td>
+            <td class="p-3 text-sm border">{{(payment.status == 'Completed') ? "Paid" : "Pending"}}</td>
             <td class="p-3 text-sm border">${{payment.amount}}</td>
           </tr>
           <tr>
-            <td colspan="4" class="p-3 text-sm text-right font-semibold border">Total Amount Due:</td>
+            <td colspan="4" class="p-3 text-sm text-right font-semibold border">Total Amount:</td>
             <td class="p-3 text-sm font-semibold border">${{payment.amount}}</td>
           </tr>
         </tbody>

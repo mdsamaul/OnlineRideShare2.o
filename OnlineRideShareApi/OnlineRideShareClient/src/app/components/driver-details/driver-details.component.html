@@ -26,22 +26,22 @@
                 <!-- Shape Group -->
                 <div class="absolute bottom-4 flex justify-between gap-3 w-1/2 -z-10 ms-10">
                     <div class="shape shape1 w-40 h-96 rounded-2xl" style="background: linear-gradient(to top, rgba(75, 67, 67, 0.233), rgba(131, 105, 105, 0));">
-                    <p class="absolute bottom-0 w-40 flex justify-center">
-                        <mat-icon class="text-7xl text-center text-yellow-100 animate-bounce" style="width: 240px;height: auto;">motorcycle</mat-icon>
+                    <p class="absolute bottom-0 w-32 flex justify-center">
+                        <mat-icon class="text-7xl text-center text-yellow-100 animate-bounce" style="width: 240px; height: auto;">motorcycle</mat-icon>
                     </p>
                     </div>
                     <div class="shape shape1 w-40 h-96 rounded-2xl" style="background: linear-gradient(to top, rgba(255, 99, 71, 0.233), rgba(255, 69, 0, 0));">
-                    <p class="absolute bottom-0 w-40 flex justify-center">
+                    <p class="absolute bottom-0 w-32 flex justify-center">
                         <mat-icon class="text-6xl text-center text-yellow-100 animate-bounce" style="width: 240px;height: auto;">drive_eta</mat-icon>
                     </p>
                     </div>            
                     <div class="shape shape1 w-40 h-96 rounded-2xl" style="background: linear-gradient(to top, rgba(70, 130, 180, 0.233), rgba(0, 0, 255, 0));">
-                    <p class="absolute bottom-0 w-40 flex justify-center">
+                    <p class="absolute bottom-0 w-32 flex justify-center">
                         <mat-icon class="text-6xl text-center text-yellow-100 animate-bounce" style="width: 240px;height: auto;">local_taxi</mat-icon>
                     </p>
                     </div>            
                     <div class="shape shape1 w-40 h-96 rounded-2xl" style="background: linear-gradient(to top, rgba(34, 193, 195, 0.233), rgba(253, 187, 45, 0));">
-                    <p class="absolute bottom-0 w-40 flex justify-center">
+                    <p class="absolute bottom-0 w-32 flex justify-center">
                         <mat-icon class="text-6xl text-center text-yellow-100 animate-bounce" style="width: 240px;height: auto;">directions_bike</mat-icon>
                     </p>
                     </div>                   
@@ -76,7 +76,7 @@
 
 
 <!-- <section class="space relative  py-16" data-bg-src="assets/img/bg/process_bg_1.png"> -->
-<section  class="space relative bg-cover bg-center py-12"
+<section  class="space relative bg-cover bg-center py-12 overflow-auto"
 [style.backgroundImage]="'url(assets/img/bg/process_bg_1.png)'">
     
     <div class="container mx-auto px-4">
@@ -84,7 +84,7 @@
         <span class="subtitle text-2xl text-black my-5 font-semibold ms-auto me-auto">Benefits</span>
         <p class="sec-text text-xl py-5">Sit maecenas mi, nibh orci id nibh enim quis ut. Quam nascetur <br> mauris nulla a pulvinar.</p>
       </div>
-      <div class="flex justify-around gap-4 wow z-30" data-wow-delay="0.2s">
+      <div class="flex justify-around gap-4 wow z-30 overflow-auto" data-wow-delay="0.2s"  style="scrollbar-width: thin; scroll-behavior: smooth;">
         <div class="col-md-6 col-lg-4 cursor-pointer">
           <div class="process-box p-6 bg-white rounded-lg shadow-lg transform hover:scale-105 transition duration-300  text-center">
             <mat-icon class="process-box__icon text-4xl text-yellow-500" style="width: 240px;height: 50px;">account_balance_wallet</mat-icon>
