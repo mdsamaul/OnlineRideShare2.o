@@ -72,5 +72,11 @@ This document provides an overview of the technologies used in the development o
 
 ---
 
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mdsamaul/OnlineRideShare2.o
+   
+
 ## Conclusion
 This documentation provides an outline of the technologies implemented in the Online Ride-Sharing Project. The combination of **ASP.NET Web API** and **Angular** ensures a scalable, secure, and high-performance application.
