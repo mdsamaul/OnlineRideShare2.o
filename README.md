@@ -73,10 +73,49 @@ This document provides an overview of the technologies used in the development o
 ---
 
 ## Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/mdsamaul/OnlineRideShare2.o
+---
+## Getting Started
+
+1. *Clone the repository:*  
+   bash
+ git clone https://github.com/mdsamaul/OnlineRideShare2.o
+   
+
+2. *Navigate to the project directory:*  
+   bash
+   cd OnlineRideShareApi
+   
+
+3. *Setup Backend:*  
+   - Navigate to the API folder and run:
+     bash
+     dotnet restore
+     dotnet run
+     
+
+4. *Setup Frontend:*  
+   - Navigate to the Angular project folder and run:
+     bash
+     npm install
+     ng serve
+     
+
+5. *Access the Application:*  
+   Open your browser and go to http://localhost:4200 for the frontend and http://localhost:5000/swagger for API documentation.
+
+---
    
 
 ## Conclusion
 This documentation provides an outline of the technologies implemented in the Online Ride-Sharing Project. The combination of **ASP.NET Web API** and **Angular** ensures a scalable, secure, and high-performance application.
+
+---
+
+## License
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## Contact
+For further information or inquiries, please contact [mdsamaul843@gmail.com](mailto:mdsamaul843@gmail.com).
+
